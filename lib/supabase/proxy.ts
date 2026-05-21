@@ -1,0 +1,55 @@
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
+
+export async function updateSession(request: NextRequest) {
+  let supabaseResponse = NextResponse.next({
+    request,
+  })
+
+  // Do not put this client in a global variable — always create a new one per request.
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet, headers) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({
+            request,
+          })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+          Object.entries(headers).forEach(([key, value]) =>
+            supabaseResponse.headers.set(key, value)
+          )
+        },
+      },
+    }
+  )
+
+  // IMPORTANT: Do not run code between createServerClient and getClaims().
+  // A simple mistake here can cause users to be randomly logged out.
+  const { data } = await supabase.auth.getClaims()
+  const user = data?.claims
+
+  const pathname = request.nextUrl.pathname
+  const publicPaths = ['/', '/nosotros', '/el-producto', '/unirse', '/login', '/signup', '/forgot-password', '/reset-password']
+  const isPublic = publicPaths.includes(pathname)
+    || pathname.startsWith('/auth')
+    || pathname.startsWith('/producto')
+    || pathname.startsWith('/nosotros')
+
+  if (!user && !isPublic) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
+
+  // IMPORTANT: return supabaseResponse as-is — do not create a new NextResponse.
+  // Altering cookies on a different response object will desync browser and server sessions.
+  return supabaseResponse
+}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <linearGradient id="body" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#8fa8b8"/>
+      <stop offset="22%"  stop-color="#d8eaf3"/>
+      <stop offset="50%"  stop-color="#eef5fa"/>
+      <stop offset="78%"  stop-color="#c4d8e4"/>
+      <stop offset="100%" stop-color="#8fa8b8"/>
+    </linearGradient>
+    <linearGradient id="lid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#dde8ef"/>
+      <stop offset="100%" stop-color="#aabfcc"/>
+    </linearGradient>
+    <linearGradient id="knob" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#cfdce5"/>
+      <stop offset="100%" stop-color="#8fa8b8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Asa izquierda -->
+  <path d="M5,16 C2,16 2,21 5,21" fill="none" stroke="#7a95a5" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Asa derecha -->
+  <path d="M31,16 C34,16 34,21 31,21" fill="none" stroke="#7a95a5" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Cuerpo -->
+  <rect x="5" y="15" width="26" height="16" rx="3.5" fill="url(#body)" stroke="#6e8fa0" stroke-width="0.8"/>
+  <!-- Reflejo cuerpo -->
+  <rect x="10" y="17" width="2.5" height="11" rx="1.25" fill="rgba(255,255,255,0.42)"/>
+
+  <!-- Tapa -->
+  <rect x="5" y="11" width="26" height="5.5" rx="2.8" fill="url(#lid)" stroke="#6e8fa0" stroke-width="0.8"/>
+  <!-- Anillo exterior tapa -->
+  <ellipse cx="18" cy="13.8" rx="8.5" ry="1.4" fill="none" stroke="#9ab5c4" stroke-width="0.7"/>
+  <!-- Anillo interior tapa -->
+  <ellipse cx="18" cy="13.8" rx="4.5" ry="0.75" fill="none" stroke="#9ab5c4" stroke-width="0.55"/>
+
+  <!-- Pomo (knob) -->
+  <ellipse cx="18" cy="9.5" rx="4" ry="2.2" fill="url(#knob)" stroke="#6e8fa0" stroke-width="0.8"/>
+  <!-- Reflejo pomo -->
+  <ellipse cx="16.5" cy="8.8" rx="1.5" ry="0.7" fill="rgba(255,255,255,0.55)"/>
+</svg>
