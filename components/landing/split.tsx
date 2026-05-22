@@ -10,7 +10,7 @@ export default function Split() {
   return (
     <section className="split" id="oportunidad" aria-label="La Oportunidad — niveles de distribuidor">
 
-      {/* PREMIUM */}
+      {/* EMPRENDEDOR */}
       <div className="split__half split__half--premium">
         <div className="split__content">
 
@@ -18,25 +18,25 @@ export default function Split() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
-            Nivel Premium
+            Emprendedor
           </span>
 
           <h2 className="split__title">
-            Crece con<br />
-            <em>disciplina y propósito</em>
+            Construye tu negocio<br />
+            <em>a tu propio ritmo</em>
           </h2>
 
           <p className="split__desc">
-            Desarrolla tu negocio dentro del territorio con el respaldo de un equipo comprometido, herramientas probadas y un plan de mercadeo exitoso y sostenible en el tiempo.
+            Empieza a generar ingresos desde el primer día con el respaldo de un equipo comprometido. Desarrolla habilidades comerciales reales y crece dentro de un modelo probado y sostenible.
           </p>
 
           <ul className="split__features">
             {[
               'Capacitaciones y actividades programadas',
-              'Apoyo constante de tu sponsor y equipo',
-              'Código de emprendedor y acceso a comisiones',
-              'Ambiente ordenado, feliz y orientado a resultados',
-              'Certificado digital de nivel Premium',
+              'Acompañamiento continuo de tu sponsor',
+              'Código de emprendedor y comisiones desde el inicio',
+              'Comunidad activa orientada al crecimiento personal',
+              'Certificado digital de Emprendedor CateonCook',
             ].map(f => (
               <li key={f} className="split__feature">
                 {checkIcon}
@@ -45,11 +45,11 @@ export default function Split() {
             ))}
           </ul>
 
-          <ModalTrigger label="Quiero ser Premium" className="btn btn--premium" />
+          <ModalTrigger label="QUIERO SER EMPRENDEDOR" className="btn btn--premium" />
         </div>
       </div>
 
-      {/* MASTER */}
+      {/* DISTRIBUIDOR */}
       <div className="split__half split__half--master">
         <div className="split__content">
 
@@ -57,25 +57,25 @@ export default function Split() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17 3H7L2 12l10 9 10-9-5-9z"/>
             </svg>
-            Nivel Master
+            Distribuidor
           </span>
 
           <h2 className="split__title">
-            Lidera el territorio<br />
-            <em>con excelencia</em>
+            Expande tu red<br />
+            <em>y tus ganancias</em>
           </h2>
 
           <p className="split__desc">
-            El nivel de mayor impacto dentro de CateonCook. Lideras tu propio equipo de emprendedores, accedes a los mejores bonos del plan y trasciendes como referente del territorio.
+            Lleva CateonCook más lejos. Accede a condiciones preferenciales de compra, mayor margen de ganancia y la posibilidad de abrir nuevos territorios con el respaldo de la marca.
           </p>
 
           <ul className="split__features">
             {[
-              'Todo lo incluido en Nivel Premium',
-              'Liderazgo de tu propio equipo de socios',
-              'Acceso a los mejores bonos e incentivos',
-              'Mentoría directa con Territorios y Premiers',
-              'Expansión hacia nuevas provincias y ciudades',
+              'Todo lo incluido como Emprendedor',
+              'Compras al por mayor con condiciones preferenciales',
+              'Mayor margen de ganancia y bonos por volumen',
+              'Apertura de nuevos territorios y zonas de expansión',
+              'Soporte directo del equipo de distribución nacional',
             ].map(f => (
               <li key={f} className="split__feature">
                 {checkIcon}
@@ -84,7 +84,7 @@ export default function Split() {
             ))}
           </ul>
 
-          <ModalTrigger label="Quiero ser Master" className="btn btn--master" />
+          <ModalTrigger label="QUIERO SER DISTRIBUIDOR" className="btn btn--master" />
         </div>
       </div>
 

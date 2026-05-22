@@ -8,20 +8,24 @@ import { useRouter } from 'next/navigation'
 interface HeaderProps {
   user: { email: string } | null
   solid?: boolean
-  minimal?: boolean
 }
 
-export default function Header({ user, solid, minimal }: HeaderProps) {
+export default function Header({ user, solid }: HeaderProps) {
   const router = useRouter()
-  const [scrolled, setScrolled] = useState(false)
+  const [inHero, setInHero] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const hero = document.getElementById('inicio')
+    if (!hero) { setInHero(false); return }
+    const observer = new IntersectionObserver(
+      ([entry]) => setInHero(entry.isIntersecting),
+      { threshold: 0 }
+    )
+    observer.observe(hero)
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -45,8 +49,8 @@ export default function Header({ user, solid, minimal }: HeaderProps) {
   }
 
   const initial = user?.email?.[0]?.toUpperCase() ?? '?'
-  const isTransparent = !scrolled && !solid && (!menuOpen || !!minimal)
-  const headerClass = `header ${isTransparent ? 'header--transparent' : 'header--solid'}${minimal && isTransparent ? ' header--minimal' : ''}`
+  const showHeroMode = inHero && !solid && !menuOpen
+  const headerClass = `header ${showHeroMode ? 'header--hero' : 'header--solid'}`
 
   return (
     <>

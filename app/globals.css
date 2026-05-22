@@ -188,27 +188,21 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   box-shadow: 0 1px 0 var(--c-border);
 }
 
-/* Hero idle: todo oculto */
-.header--minimal .header__logo,
-.header--minimal .header__nav,
-.header--minimal .header__actions,
-.header--minimal .header__burger {
+/* Hero mode: solo burger visible, sin fondo */
+.header--hero {
+  background: transparent;
+  box-shadow: none;
+}
+.header--hero .header__logo,
+.header--hero .header__nav,
+.header--hero .header__actions {
   opacity: 0;
   pointer-events: none;
   transition: opacity 350ms ease;
 }
-.header--minimal .header__burger {
+.header--hero .header__burger {
   display: flex;
   color: var(--c-white);
-}
-
-/* Hover sobre la zona del header: solo textos de nav, sin el cuadro del logo */
-.header--minimal:hover {
-  background: rgba(8, 22, 64, 0.62);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.header--minimal:hover .header__burger {
   opacity: 1;
   pointer-events: auto;
 }
@@ -265,7 +259,8 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   background: currentColor;
   transition: transform var(--t-base), opacity var(--t-base);
 }
-.header--transparent .header__burger { color: var(--c-white); }
+.header--transparent .header__burger,
+.header--hero        .header__burger { color: var(--c-white); }
 .header--solid       .header__burger { color: var(--c-navy); }
 
 
@@ -1102,7 +1097,61 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 }
 
 
-/* 18c. TitleCube panel links
+/* 18c. Stack Panel — cejita accordion
+   ------------------------------------------------------------ */
+.stack-panel__inner {
+  background: var(--panel-bg, var(--c-navy));
+}
+
+.stack-panel__cejita {
+  width: 100%;
+  height: var(--stack-peek);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  gap: 1rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.stack-panel__cejita:hover {
+  color: #fff;
+}
+
+.stack-panel__cejita-chevron {
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: transform 0.35s ease, opacity 0.2s;
+}
+.stack-panel__cejita:hover .stack-panel__cejita-chevron {
+  opacity: 1;
+}
+.stack-panel--open .stack-panel__cejita-chevron {
+  transform: rotate(180deg);
+}
+
+.stack-panel__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s ease;
+}
+.stack-panel--open .stack-panel__body {
+  grid-template-rows: 1fr;
+}
+.stack-panel__body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+
+/* 18d. TitleCube panel links
    ------------------------------------------------------------ */
 .tcube-panel__link {
   position: absolute;
