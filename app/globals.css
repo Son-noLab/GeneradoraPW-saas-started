@@ -263,6 +263,24 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 .header--hero        .header__burger { color: var(--c-white); }
 .header--solid       .header__burger { color: var(--c-navy); }
 
+.home-burger {
+  position: fixed;
+  top: 1.5rem;
+  right: var(--pad-x);
+  z-index: 250;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  color: var(--c-white);
+}
+.home-burger span {
+  display: block;
+  width: 24px; height: 1.5px;
+  background: currentColor;
+  transition: transform var(--t-base), opacity var(--t-base);
+}
+
 
 /* 6. Menú móvil
    ------------------------------------------------------------ */
@@ -321,7 +339,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 3.5rem;
+  padding-bottom: 7rem;
   overflow: hidden;
 }
 
@@ -351,25 +369,18 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   background: linear-gradient(to bottom, rgba(13,33,88,0.2) 0%, rgba(13,33,88,0.55) 100%);
 }
 
-.hero__content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 860px;
-  padding-inline: var(--pad-x);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-}
-
 .hero__logo-mark {
+  position: absolute;
+  top: calc(var(--header-h) + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .hero__logo-img {
-  width: clamp(110px, 16vw, 150px);
+  width: clamp(100px, 14vw, 136px);
   height: auto;
 }
 
@@ -393,18 +404,21 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 .hero__title em { font-style: italic; color: var(--c-sky); }
 
 .hero__bottom {
-  position: relative;
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3;
-  width: 100%;
+  width: max-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 0;
-  transition: margin-top 550ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: bottom 550ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .tcube--title ~ .hero__bottom {
-  margin-top: -1.25rem;
+  bottom: clamp(3rem, calc(50vh - 14.5rem), 22rem);
 }
 
 .hero__subtitle {
@@ -419,12 +433,12 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 2rem;
 }
 
 .hero__cta .btn {
-  padding: 0.65rem 1.8rem;
-  font-size: 0.72rem;
+  padding: 0.85rem 2.4rem;
+  font-size: 0.8rem;
 }
 
 .hero__cta .hero__scroll-mouse {
@@ -892,6 +906,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   bottom: 2rem; right: 2rem;
   width: 66px; height: 66px;
   border-radius: 50%;
+  animation: wabFabIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2s both;
   background: #25D366;
   color: var(--c-white);
   display: flex;
@@ -936,6 +951,11 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 }
 .whatsapp-fab:hover .whatsapp-fab__tooltip { opacity: 1; }
 
+@keyframes wabFabIn {
+  from { opacity: 0; transform: scale(0.5) translateY(20px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
 @keyframes waPulse {
   0%  { transform: scale(1);   opacity: 0.6; }
   80% { transform: scale(1.6); opacity: 0; }
@@ -947,8 +967,9 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
    ------------------------------------------------------------ */
 .tcube {
   display: grid;
-  width: min(88vw, 640px);
+  width: min(95vw, 960px);
   aspect-ratio: 4 / 3;
+  max-height: 70vh;
   border-radius: 12px;
   position: relative;
   /* Sin background ni box-shadow propios — todo el frame vive en ::before
@@ -967,9 +988,9 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   /* Barras negras + reflejo glass */
   background:
     linear-gradient(to bottom,
-      #000 0%, #000 8%,
-      transparent 8%, transparent 92%,
-      #000 92%, #000 100%),
+      #000 0%, #000 5%,
+      transparent 5%, transparent 95%,
+      #000 95%, #000 100%),
     linear-gradient(152deg,
       rgba(255,255,255,0.07) 0%,
       rgba(255,255,255,0.02) 38%,
@@ -1066,6 +1087,13 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 .tcube-panel:nth-child(5) img { animation-delay: -11s; }
 
 
+/* 18a. Stack zone — containing block for all sticky panels
+   ------------------------------------------------------------ */
+.stack-zone {
+  position: relative; /* establishes sticky containing block */
+}
+
+
 /* 18b. Stack sections — cartas apilables en el cuerpo
    Cada sección se pega a un top diferente (header + n × peek)
    para que las anteriores asomen como pestañas encima.
@@ -1150,8 +1178,144 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   min-height: 0;
 }
 
+/* Two-column layout: image | content */
+.stack-panel__2col {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  min-height: 480px;
+}
 
-/* 18d. TitleCube panel links
+.stack-panel__img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.stack-panel__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Sections inside the content column — transparent bg, panel bg shows */
+.stack-panel__content .section,
+.stack-panel__content .mission-strip {
+  background: transparent;
+}
+
+@media (max-width: 768px) {
+  .stack-panel__2col {
+    grid-template-columns: 1fr;
+  }
+  .stack-panel__img-wrap {
+    min-height: 260px;
+  }
+}
+
+
+/* 18d. Testimonials image slider
+   ------------------------------------------------------------ */
+.tst-section {
+  padding: var(--s-xl) 0 var(--s-lg);
+  background: transparent;
+}
+
+.tst-header {
+  margin-bottom: var(--s-md);
+}
+
+.tst-header__label {
+  color: rgba(255,255,255,.45);
+  letter-spacing: .2em;
+  display: block;
+  margin-bottom: .75rem;
+}
+
+.tst-header__title {
+  color: var(--c-white);
+  margin: 0 0 .5rem;
+}
+
+.tst-header__hint {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .75rem;
+  color: rgba(255,255,255,.35);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.tst-wrap {
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+}
+.tst-wrap:active { cursor: grabbing; }
+
+.tst-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 0 var(--pad-x) var(--s-sm);
+}
+.tst-track::-webkit-scrollbar { display: none; }
+
+.tst-card {
+  flex-shrink: 0;
+  width: 260px;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.tst-card__img {
+  position: relative;
+  width: 100%;
+  height: 360px;
+}
+
+.tst-card__caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 3rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.4) 60%, transparent 100%);
+}
+
+.tst-card__quote {
+  color: rgba(255,255,255,.85);
+  font-size: .78rem;
+  line-height: 1.45;
+  font-style: italic;
+  margin: 0 0 .75rem;
+}
+
+.tst-card__name {
+  color: #fff;
+  font-weight: 600;
+  font-size: .85rem;
+  margin: 0 0 .2rem;
+}
+
+.tst-card__role {
+  color: rgba(255,255,255,.55);
+  font-size: .7rem;
+  letter-spacing: .05em;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .tst-card { width: 200px; }
+  .tst-card__img { height: 280px; }
+}
+
+
+/* 18e. TitleCube panel links
    ------------------------------------------------------------ */
 .tcube-panel__link {
   position: absolute;

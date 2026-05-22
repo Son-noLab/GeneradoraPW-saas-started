@@ -16,7 +16,7 @@ const PANELS: Panel[] = [
   { type: 'image', src: '/img/hero-4.jpg', pos: 'center 40%', nosotrosId: 'ano-2023'   },
 ]
 
-const CYCLE = [1, 2, 0, 3, 4, 0]
+const CYCLE = [0, 1, 2, 0, 3, 4]
 
 function randomMs(panelIdx: number): number {
   if (panelIdx === 0) return Math.random() * 2000 + 3000
