@@ -19,27 +19,25 @@ const WAVE_GHOST =
 
 export default function HeroTransition() {
   const wrapRef = useRef<HTMLDivElement>(null)
-  const firedRef = useRef(false)
 
   useEffect(() => {
+    const hero = document.getElementById('inicio')
     const wrap = wrapRef.current
-    if (!wrap) return
+    if (!hero || !wrap) return
+
+    let initialized = false
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !firedRef.current) {
-          firedRef.current = true
-          fire(wrap)
-        }
-        // Reset when element leaves viewport so it fires again on re-entry
-        if (!entry.isIntersecting) {
-          firedRef.current = false
-        }
+        // Skip the initial call on mount (hero starts fully visible)
+        if (!initialized) { initialized = true; return }
+        // Fires when hero goes from fully visible → not, and vice versa
+        fire(wrap)
       },
-      { threshold: 0.5 }
+      { threshold: 1.0 }
     )
 
-    observer.observe(wrap)
+    observer.observe(hero)
     return () => observer.disconnect()
   }, [])
 
