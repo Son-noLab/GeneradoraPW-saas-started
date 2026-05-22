@@ -494,108 +494,93 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 }
 
 
-/* 8. Audio Bar
+/* 8. Audio Pill
    ------------------------------------------------------------ */
-.audiobar {
+.audio-pill-anchor {
   position: relative;
-  z-index: 10;
-  width: 100%;
-  background: var(--c-dark);
-  border-top: 1px solid rgba(27, 168, 224, 0.25);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  height: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
 }
 
-.audiobar__inner {
+.audio-pill {
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 var(--pad-x);
-  height: 54px;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  background: #0c0e14;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: box-shadow var(--t-base), border-color var(--t-base);
+  color: #fff;
+}
+.audio-pill:hover {
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3);
 }
 
-.audiobar__play {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+/* Waveform bars */
+.audio-pill__wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
+  width: 20px;
+}
+.audio-pill__bar {
+  display: block;
+  width: 2.5px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--c-sky);
+  transform-origin: bottom;
+  animation: pillBar 0.9s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 0.15s);
+  animation-play-state: paused;
+}
+.audio-pill--playing .audio-pill__bar {
+  animation-play-state: running;
+}
+@keyframes pillBar {
+  0%   { height: 3px;  }
+  100% { height: 14px; }
+}
+
+/* Label */
+.audio-pill__label {
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: rgba(255,255,255,0.82);
+  font-style: italic;
+  font-family: var(--f-serif);
+}
+
+/* Toggle button (+/-) */
+.audio-pill__btn {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  border: 1px solid rgba(27, 168, 224, 0.5);
-  color: var(--c-sky);
+  border: 1px solid rgba(255,255,255,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
-}
-.audiobar__play:hover {
-  background: rgba(27, 168, 224, 0.12);
-  border-color: var(--c-sky);
-}
-
-.audiobar__label {
+  font-size: 1rem;
+  line-height: 1;
+  color: rgba(255,255,255,0.6);
+  transition: background var(--t-fast), color var(--t-fast);
   flex-shrink: 0;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(237, 241, 248, 0.4);
-  white-space: nowrap;
 }
-
-.audiobar__track {
-  flex: 1;
-  position: relative;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.audiobar__rail {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  height: 2px;
-  border-radius: 2px;
-  background: rgba(255,255,255,0.1);
-}
-
-.audiobar__fill {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 2px;
-  border-radius: 2px;
-  background: var(--c-sky);
-  transition: width 0.1s linear;
-  pointer-events: none;
-}
-
-.audiobar__thumb {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 2px rgba(27,168,224,0.5);
-  pointer-events: none;
-  transition: left 0.1s linear;
-}
-
-.audiobar__time {
-  flex-shrink: 0;
-  font-size: 0.68rem;
-  font-variant-numeric: tabular-nums;
-  color: rgba(237, 241, 248, 0.35);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.audiobar__sep {
-  margin: 0 0.25em;
-  opacity: 0.4;
+.audio-pill:hover .audio-pill__btn {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
 }
 
 
