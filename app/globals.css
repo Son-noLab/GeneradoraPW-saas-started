@@ -4489,7 +4489,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   width: 100%;
   height: 80px;
   overflow: visible;
-  filter: drop-shadow(0 0 6px rgba(27,168,224,0.55));
+  filter: drop-shadow(0 0 5px rgba(13,33,88,0.75));
 }
 
 .htrans__path {

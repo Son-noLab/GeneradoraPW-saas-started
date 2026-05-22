@@ -2,20 +2,20 @@
 
 import { useEffect, useRef } from 'react'
 
-// Sine wave path across 1440px viewport width, amplitude ±22px centered at 40px
+// Nearly straight wave, amplitude ±3px centered at y=40
 const WAVE_MAIN =
-  'M0,40 C50,10 100,70 150,40 C200,10 250,70 300,40 ' +
-  'C350,10 400,70 450,40 C500,10 550,70 600,40 ' +
-  'C650,10 700,70 750,40 C800,10 850,70 900,40 ' +
-  'C950,10 1000,70 1050,40 C1100,10 1150,70 1200,40 ' +
-  'C1250,10 1300,70 1350,40 C1400,10 1440,40 1440,40'
+  'M0,40 C50,37 100,43 150,40 C200,37 250,43 300,40 ' +
+  'C350,37 400,43 450,40 C500,37 550,43 600,40 ' +
+  'C650,37 700,43 750,40 C800,37 850,43 900,40 ' +
+  'C950,37 1000,43 1050,40 C1100,37 1150,43 1200,40 ' +
+  'C1250,37 1300,43 1350,40 C1400,37 1440,40 1440,40'
 
-// Wider, shallower ghost wave offset slightly
+// Ghost wave, amplitude ±2px, slightly wider wavelength
 const WAVE_GHOST =
-  'M0,40 C72,18 144,62 216,40 C288,18 360,62 432,40 ' +
-  'C504,18 576,62 648,40 C720,18 792,62 864,40 ' +
-  'C936,18 1008,62 1080,40 C1152,18 1224,62 1296,40 ' +
-  'C1368,18 1440,40 1440,40'
+  'M0,40 C72,38 144,42 216,40 C288,38 360,42 432,40 ' +
+  'C504,38 576,42 648,40 C720,38 792,42 864,40 ' +
+  'C936,38 1008,42 1080,40 C1152,38 1224,42 1296,40 ' +
+  'C1368,38 1440,40 1440,40'
 
 export default function HeroTransition() {
   const wrapRef = useRef<HTMLDivElement>(null)
