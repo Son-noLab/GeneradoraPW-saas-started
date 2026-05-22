@@ -494,96 +494,6 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 }
 
 
-/* 8. Audio Pill
-   ------------------------------------------------------------ */
-.audio-pill-anchor {
-  position: relative;
-  height: 0;
-  z-index: 30;
-  display: flex;
-  justify-content: center;
-}
-
-.audio-pill {
-  position: absolute;
-  top: 0;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 1rem 0.5rem 0.75rem;
-  background: #0c0e14;
-  border-radius: 100px;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: box-shadow var(--t-base), border-color var(--t-base);
-  color: #fff;
-}
-.audio-pill:hover {
-  border-color: rgba(255,255,255,0.18);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3);
-}
-
-/* Waveform bars */
-.audio-pill__wave {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  height: 16px;
-  width: 20px;
-}
-.audio-pill__bar {
-  display: block;
-  width: 2.5px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--c-sky);
-  transform-origin: bottom;
-  animation: pillBar 0.9s ease-in-out infinite alternate;
-  animation-delay: calc(var(--i) * 0.15s);
-  animation-play-state: paused;
-}
-.audio-pill--playing .audio-pill__bar {
-  animation-play-state: running;
-}
-@keyframes pillBar {
-  0%   { height: 3px;  }
-  100% { height: 14px; }
-}
-
-/* Label */
-.audio-pill__label {
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  color: rgba(255,255,255,0.82);
-  font-style: italic;
-  font-family: var(--f-serif);
-}
-
-/* Toggle button (+/-) */
-.audio-pill__btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  line-height: 1;
-  color: rgba(255,255,255,0.6);
-  transition: background var(--t-fast), color var(--t-fast);
-  flex-shrink: 0;
-}
-.audio-pill:hover .audio-pill__btn {
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-}
-
-
 /* 9. Secciones — base
    ------------------------------------------------------------ */
 .section { padding-block: var(--s-xl); }
@@ -4558,11 +4468,10 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
    ------------------------------------------------------------ */
 .htrans {
   position: fixed;
-  top: 50%;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 80px;
-  margin-top: -40px;
   pointer-events: none;
   z-index: 90;
   opacity: 0;

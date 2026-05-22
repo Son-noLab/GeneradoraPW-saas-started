@@ -13,7 +13,6 @@ import WhatsAppFab from '@/components/landing/whatsapp'
 import RevealObserver  from '@/components/reveal-observer'
 import CursorSwitcher  from '@/components/landing/cursor-switcher'
 import HeroTransition  from '@/components/landing/hero-transition'
-import AudioPill       from '@/components/landing/audio-bar'
 
 export default async function Home() {
   const supabase = await createClient()
@@ -25,7 +24,6 @@ export default async function Home() {
       <Header user={user} minimal />
       <main>
         <Hero />
-        <AudioPill />
         <Split />
         <div className="stack-section" style={{'--sn':'0'} as React.CSSProperties}><Values /></div>
         <div className="stack-section" style={{'--sn':'1'} as React.CSSProperties}><Mission /></div>
