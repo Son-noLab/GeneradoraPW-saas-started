@@ -1,6 +1,23 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Simple in-memory rate limiter: 10 auth attempts per IP per minute
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+const AUTH_PATHS = ['/login', '/signup', '/forgot-password']
+const RATE_LIMIT = 10
+const WINDOW_MS = 60_000
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS })
+    return false
+  }
+  entry.count++
+  return entry.count > RATE_LIMIT
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -15,16 +32,13 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet, headers) {
+        setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
           })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
-          )
-          Object.entries(headers).forEach(([key, value]) =>
-            supabaseResponse.headers.set(key, value)
           )
         },
       },
@@ -37,6 +51,15 @@ export async function updateSession(request: NextRequest) {
   const user = data?.claims
 
   const pathname = request.nextUrl.pathname
+
+  // Rate limit auth routes
+  if (AUTH_PATHS.includes(pathname) && request.method === 'POST') {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+    if (isRateLimited(ip)) {
+      return new NextResponse('Demasiados intentos. Espera un momento.', { status: 429 })
+    }
+  }
+
   const publicPaths = ['/', '/nosotros', '/el-producto', '/unirse', '/login', '/signup', '/forgot-password', '/reset-password']
   const isPublic = publicPaths.includes(pathname)
     || pathname.startsWith('/auth')

@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "predev": "powershell -NoProfile -Command \"$p=(Get-NetTCPConnection -LocalPort 3000 -State Listen -EA SilentlyContinue).OwningProcess; if($p){taskkill /F /PID $p /T 2>$null}\" & echo .",
+    "dev": "node --max-old-space-size=1024 node_modules/next/dist/bin/next dev --webpack",
+    "build": "node --max-old-space-size=1024 node_modules/next/dist/bin/next build",
+    "start": "next start",
+    "clean": "rmdir /s /q .next 2>nul & echo Cache limpio",
+    "cleandev": "npm run clean && npm run dev"
   },
   "dependencies": {
     "@supabase/ssr": "latest",

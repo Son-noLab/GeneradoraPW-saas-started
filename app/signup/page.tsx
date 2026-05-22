@@ -28,7 +28,7 @@ export default function SignupPage() {
     })
 
     if (error) {
-      setError(error.message)
+      setError('No se pudo crear la cuenta. Verifica los datos e intenta de nuevo.')
       setLoading(false)
       return
     }
@@ -121,11 +121,11 @@ export default function SignupPage() {
                 id="password"
                 type="password"
                 required
-                minLength={6}
+                minLength={8}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="form-input"
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Mínimo 8 caracteres"
                 autoComplete="new-password"
               />
             </div>

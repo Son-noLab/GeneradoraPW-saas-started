@@ -5,7 +5,12 @@ import AdminTable from './admin-table'
 export default async function AdminPage() {
   const supabase = await createClient()
   const { data: claimsData } = await supabase.auth.getClaims()
-  if (!claimsData?.claims) redirect('/login')
+  const claims = claimsData?.claims
+  if (!claims) redirect('/login')
+
+  // Solo el email configurado como admin puede acceder
+  const adminEmail = process.env.ADMIN_EMAIL
+  if (!adminEmail || claims.email !== adminEmail) redirect('/')
 
   const { data: solicitudes, error } = await supabase
     .from('solicitudes')
@@ -30,7 +35,7 @@ export default async function AdminPage() {
 
       <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', padding: '2rem var(--pad-x)' }}>
         {error ? (
-          <p style={{ color: '#f87171' }}>Error al cargar solicitudes: {error.message}</p>
+          <p style={{ color: '#f87171' }}>Error al cargar solicitudes.</p>
         ) : (
           <AdminTable solicitudes={solicitudes ?? []} />
         )}
