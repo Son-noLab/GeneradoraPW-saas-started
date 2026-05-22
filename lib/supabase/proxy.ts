@@ -3,12 +3,18 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 // Simple in-memory rate limiter: 10 auth attempts per IP per minute
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
-const AUTH_PATHS = ['/login', '/signup', '/forgot-password']
+const AUTH_PATHS = ['/login', '/signup', '/forgot-password', '/reset-password']
 const RATE_LIMIT = 10
 const WINDOW_MS = 60_000
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now()
+  // Purge expired entries to prevent unbounded memory growth
+  if (rateLimitMap.size > 5000) {
+    for (const [key, val] of rateLimitMap) {
+      if (now > val.resetAt) rateLimitMap.delete(key)
+    }
+  }
   const entry = rateLimitMap.get(ip)
   if (!entry || now > entry.resetAt) {
     rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS })
@@ -70,6 +76,11 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  }
+
+  // Prevent browsers and proxies from caching authenticated pages
+  if (user && !isPublic) {
+    supabaseResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate')
   }
 
   // IMPORTANT: return supabaseResponse as-is — do not create a new NextResponse.
