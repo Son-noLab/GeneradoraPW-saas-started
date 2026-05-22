@@ -25,16 +25,18 @@ export default function HeroTransition() {
     const wrap = wrapRef.current
     if (!hero || !wrap) return
 
-    let initialized = false
+    let prevRatio = 1 // hero starts fully visible
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Skip the initial call on mount (hero starts fully visible)
-        if (!initialized) { initialized = true; return }
-        // Fires when hero goes from fully visible → not, and vice versa
-        fire(wrap)
+        const ratio = entry.intersectionRatio
+        // Scrolling down: hero was fully visible, now it's not → first scroll out
+        if (prevRatio >= 1 && ratio < 1) fire(wrap)
+        // Scrolling up: hero was less than half, now at least half → returning
+        if (prevRatio < 0.5 && ratio >= 0.5) fire(wrap)
+        prevRatio = ratio
       },
-      { threshold: 1.0 }
+      { threshold: [0, 0.5, 1.0] }
     )
 
     observer.observe(hero)
