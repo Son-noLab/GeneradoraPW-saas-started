@@ -4494,27 +4494,27 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 
 .htrans__path {
   fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: 2200;
-  stroke-dashoffset: 2200;
-}
-
-.htrans__path--main {
+  stroke-linecap: butt;
+  stroke-dasharray: 1440;
+  stroke-dashoffset: 1440;
   stroke: #1BA8E0;
-  stroke-width: 1.8;
 }
 
-.htrans__path--ghost {
-  stroke: rgba(27,168,224,0.28);
-  stroke-width: 1;
+.htrans__path--thick {
+  stroke-width: 2.5;
 }
 
-.htrans--on .htrans__path--main {
-  animation: htransDraw 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s forwards;
+.htrans__path--thin {
+  stroke-width: 0.75;
+  stroke: rgba(27,168,224,0.5);
 }
 
-.htrans--on .htrans__path--ghost {
-  animation: htransDraw 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.18s forwards;
+.htrans--on .htrans__path--thick {
+  animation: htransDraw 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards;
+}
+
+.htrans--on .htrans__path--thin {
+  animation: htransDraw 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.08s forwards;
 }
 
 @keyframes htransShow {

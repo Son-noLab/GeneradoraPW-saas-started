@@ -2,20 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 
-// Nearly straight wave, amplitude ±3px centered at y=40
-const WAVE_MAIN =
-  'M0,40 C50,37 100,43 150,40 C200,37 250,43 300,40 ' +
-  'C350,37 400,43 450,40 C500,37 550,43 600,40 ' +
-  'C650,37 700,43 750,40 C800,37 850,43 900,40 ' +
-  'C950,37 1000,43 1050,40 C1100,37 1150,43 1200,40 ' +
-  'C1250,37 1300,43 1350,40 C1400,37 1440,40 1440,40'
-
-// Ghost wave, amplitude ±2px, slightly wider wavelength
-const WAVE_GHOST =
-  'M0,40 C72,38 144,42 216,40 C288,38 360,42 432,40 ' +
-  'C504,38 576,42 648,40 C720,38 792,42 864,40 ' +
-  'C936,38 1008,42 1080,40 C1152,38 1224,42 1296,40 ' +
-  'C1368,38 1440,40 1440,40'
+// Two perfectly straight horizontal lines
+const LINE_THICK = 'M0,37 L1440,37'
+const LINE_THIN  = 'M0,44 L1440,44'
 
 export default function HeroTransition() {
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -46,8 +35,8 @@ export default function HeroTransition() {
   return (
     <div ref={wrapRef} className="htrans" aria-hidden="true">
       <svg className="htrans__svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path className="htrans__path htrans__path--ghost" d={WAVE_GHOST} />
-        <path className="htrans__path htrans__path--main"  d={WAVE_MAIN}  />
+        <path className="htrans__path htrans__path--thin"  d={LINE_THIN}  />
+        <path className="htrans__path htrans__path--thick" d={LINE_THICK} />
       </svg>
     </div>
   )
