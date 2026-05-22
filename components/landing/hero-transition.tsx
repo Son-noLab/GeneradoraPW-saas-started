@@ -22,23 +22,25 @@ export default function HeroTransition() {
   const firedRef = useRef(false)
 
   useEffect(() => {
-    const hero = document.getElementById('inicio')
     const wrap = wrapRef.current
-    if (!hero || !wrap) return
+    if (!wrap) return
 
-    const onScroll = () => {
-      const rect = hero.getBoundingClientRect()
-      // Reset when hero is back in view
-      if (rect.top > -20) { firedRef.current = false; return }
-      // Fire when hero bottom has scrolled ~80% off screen
-      if (!firedRef.current && rect.bottom < window.innerHeight * 0.25) {
-        firedRef.current = true
-        fire(wrap)
-      }
-    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !firedRef.current) {
+          firedRef.current = true
+          fire(wrap)
+        }
+        // Reset when element leaves viewport so it fires again on re-entry
+        if (!entry.isIntersecting) {
+          firedRef.current = false
+        }
+      },
+      { threshold: 0.5 }
+    )
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    observer.observe(wrap)
+    return () => observer.disconnect()
   }, [])
 
   return (

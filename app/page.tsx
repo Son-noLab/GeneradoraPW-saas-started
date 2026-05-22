@@ -24,6 +24,7 @@ export default async function Home() {
       <Header user={user} minimal />
       <main>
         <Hero />
+        <HeroTransition />
         <Split />
         <div className="stack-section" style={{'--sn':'0'} as React.CSSProperties}><Values /></div>
         <div className="stack-section" style={{'--sn':'1'} as React.CSSProperties}><Mission /></div>
@@ -36,7 +37,6 @@ export default async function Home() {
       <WhatsAppFab />
       <RevealObserver />
       <CursorSwitcher />
-      <HeroTransition />
     </>
   )
 }

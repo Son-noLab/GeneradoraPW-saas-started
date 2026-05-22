@@ -4467,13 +4467,14 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 /* 22. Hero → Content transition — waveform sweep with sound
    ------------------------------------------------------------ */
 .htrans {
-  position: fixed;
-  bottom: 0;
+  position: relative;
   left: 0;
   right: 0;
-  height: 80px;
+  width: 100%;
+  height: 0;
   pointer-events: none;
   z-index: 90;
+  overflow: visible;
   opacity: 0;
 }
 
@@ -4482,8 +4483,11 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 }
 
 .htrans__svg {
+  position: absolute;
+  top: -40px;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 80px;
   overflow: visible;
   filter: drop-shadow(0 0 6px rgba(27,168,224,0.55));
 }
