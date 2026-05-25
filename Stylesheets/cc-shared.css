@@ -131,13 +131,13 @@
       radial-gradient(ellipse at 50% 50%, #2a3550 0%, transparent 60%),
       linear-gradient(180deg, #131a2a 0%, #0b1020 100%);
   }
-  /* subtle film grain via two overlapping gradients */
+  /* subtle gold-tinted linen texture on hero */
   .hero__bg::after {
     content: ""; position: absolute; inset: 0;
     background:
-      repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,0.015) 0 1px, transparent 1px 3px),
-      repeating-linear-gradient(90deg, transparent 0 80px, rgba(255,255,255,0.015) 80px 81px);
-    mix-blend-mode: overlay;
+      repeating-linear-gradient(135deg, transparent 0 36px, rgba(230,199,122,0.022) 36px 37px),
+      repeating-linear-gradient(45deg,  transparent 0 52px, rgba(230,199,122,0.012) 52px 53px);
+    pointer-events: none;
   }
   .hero__vignette {
     position: absolute; inset: 0; z-index: 1;
@@ -257,9 +257,7 @@
     position: absolute; inset: 0; z-index: 3;
     pointer-events: none;
     transform: translateZ(0);
-    background:
-      linear-gradient(to bottom, #000 0%, #000 5%, transparent 5%, transparent 95%, #000 95%, #000 100%),
-      linear-gradient(152deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 38%, transparent 62%);
+    background: linear-gradient(to bottom, #000 0%, #000 5%, transparent 5%, transparent 95%, #000 95%, #000 100%);
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.85);
   }
   .tcube-image__photo {
@@ -279,9 +277,7 @@
   .tcube-panel:nth-child(5) .tcube-image__photo { animation-delay: -11s; }
   .tcube-image__grain {
     position: absolute; inset: 0;
-    background:
-      repeating-linear-gradient(135deg, transparent 0 18px, rgba(255,255,255,0.04) 18px 19px),
-      radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.5) 100%);
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.5) 100%);
   }
   /* elegant "ver historia" nav icon — sits above the bars (z-index 4 > 3) */
   .tcube-image__nav {
@@ -680,7 +676,9 @@
     content: ""; position: absolute; inset: 0;
     background:
       radial-gradient(ellipse at 80% 10%, rgba(230,199,122,0.06) 0%, transparent 55%),
-      radial-gradient(ellipse at 10% 90%, rgba(27,168,224,0.05) 0%, transparent 55%);
+      radial-gradient(ellipse at 10% 90%, rgba(27,168,224,0.05) 0%, transparent 55%),
+      repeating-linear-gradient(135deg, transparent 0 36px, rgba(230,199,122,0.018) 36px 37px),
+      repeating-linear-gradient(45deg,  transparent 0 52px, rgba(230,199,122,0.010) 52px 53px);
     pointer-events: none;
   }
   .section--cream {
