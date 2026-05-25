@@ -1874,7 +1874,7 @@
   /* ═══════════ PRODUCTO CALLOUT (home teaser) ═══════════ */
   .pcallout {
     position: relative;
-    padding: clamp(32px, 4vw, 52px) var(--pad-x);
+    padding: clamp(44px, 5.5vw, 72px) var(--pad-x);
     background:
       radial-gradient(ellipse at 80% 10%, rgba(230,199,122,0.10) 0%, transparent 55%),
       radial-gradient(ellipse at 10% 90%, rgba(122,80,30,0.12) 0%, transparent 55%),
@@ -2053,16 +2053,14 @@
     color: rgba(230,199,122,0.55);
   }
 
-  /* strip layout — replaces the old two-col visual+content layout */
+  /* strip layout */
   .pcallout__strip {
     position: relative; z-index: 1;
     max-width: 1320px; margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 20px clamp(28px, 5vw, 60px);
+    grid-template-columns: auto 1fr auto auto;
+    gap: 20px clamp(24px, 4vw, 52px);
     align-items: center;
-    padding-left: clamp(20px, 3vw, 36px);
-    border-left: 2px solid rgba(230,199,122,0.30);
   }
   .pcallout__strip .pcallout__title {
     font-size: clamp(18px, 2vw, 26px);
@@ -2078,13 +2076,52 @@
     border-left: 1px solid rgba(255,255,255,0.12);
   }
   .pcallout__strip-specs .pcallout__spec-num { font-size: 28px; }
+
+  /* cycling image panel */
+  .pcallout__imgs {
+    position: relative;
+    width: clamp(110px, 11vw, 160px);
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: 1px solid rgba(230,199,122,0.18);
+  }
+  .pcallout__imgs:hover { border-color: rgba(230,199,122,0.45); }
+  .pcallout__img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .pcallout__img.is-active { opacity: 1; }
+  .pcallout__imgs-dots {
+    position: absolute; bottom: 8px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 5px;
+  }
+  .pcallout__imgs-dot {
+    width: 4px; height: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.35);
+    transition: background 0.3s, width 0.3s;
+  }
+  .pcallout__imgs-dot.is-active {
+    background: var(--c-gold-hi);
+    width: 12px;
+  }
+
   @media (max-width: 960px) {
-    .pcallout__strip { grid-template-columns: 1fr 1fr; }
+    .pcallout__strip { grid-template-columns: auto 1fr; }
+    .pcallout__strip-specs { grid-column: 1 / -1; border-left: none; padding-left: 0; }
     .pcallout__strip-cta { grid-column: 1 / -1; }
   }
   @media (max-width: 560px) {
-    .pcallout__strip { grid-template-columns: 1fr; border-left: none; padding-left: 0; }
-    .pcallout__strip-specs { border-left: none; padding-left: 0; flex-wrap: wrap; gap: 16px; }
+    .pcallout__strip { grid-template-columns: 1fr; gap: 16px; }
+    .pcallout__imgs { display: none; }
+    .pcallout__strip-specs { flex-wrap: wrap; gap: 16px; }
   }
 
   /* ═══════════ VOCES (testimoniales destacados — home) ═══════════ */

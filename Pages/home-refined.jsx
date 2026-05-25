@@ -480,11 +480,51 @@ function CommunityMarquee() {
 
 
 /* ════════════════ Producto Callout — banda demostrativa compacta ════════════════ */
+const CALLOUT_IMGS = [
+  "img/hero-1.jpg",
+  "img/hero-2.jpg",
+  "img/hero-3.jpg",
+  "img/hero-4.jpg",
+];
+
 function ProductoCallout() {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % CALLOUT_IMGS.length), 3200);
+    return () => clearInterval(t);
+  }, []);
+
+  const advance = () => setIdx(i => (i + 1) % CALLOUT_IMGS.length);
+
   return (
     <section className="pcallout" id="producto-callout" aria-label="El Producto Royal Prestige">
       <span className="pcallout__corner-fig">Fig. 02 · Producto</span>
       <div className="pcallout__strip reveal">
+
+        <div
+          className="pcallout__imgs"
+          onClick={advance}
+          role="button"
+          tabIndex={0}
+          aria-label="Ver siguiente imagen del producto"
+          onKeyDown={e => e.key === "Enter" && advance()}
+        >
+          {CALLOUT_IMGS.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt=""
+              className={`pcallout__img${i === idx ? " is-active" : ""}`}
+            />
+          ))}
+          <div className="pcallout__imgs-dots" aria-hidden="true">
+            {CALLOUT_IMGS.map((_, i) => (
+              <span key={i} className={`pcallout__imgs-dot${i === idx ? " is-active" : ""}`} />
+            ))}
+          </div>
+        </div>
+
         <div>
           <span className="pcallout__eyebrow">
             <span className="rule" />
@@ -494,6 +534,7 @@ function ProductoCallout() {
             Cocina sin agua, <em>sin grasa,</em> sin dolor.
           </h2>
         </div>
+
         <div className="pcallout__strip-specs">
           <div className="pcallout__spec">
             <span className="pcallout__spec-num">9<em>+</em></span>
@@ -508,11 +549,13 @@ function ProductoCallout() {
             <span className="pcallout__spec-label">garantía vitalicia</span>
           </div>
         </div>
+
         <div className="pcallout__strip-cta">
           <a className="btn btn--lg btn--primary" href="CateonCook Producto.html">
             Conoce el producto →
           </a>
         </div>
+
       </div>
     </section>
   );
