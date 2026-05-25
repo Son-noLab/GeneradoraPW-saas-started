@@ -161,26 +161,28 @@ function CompareSection() {
           </p>
         </div>
 
-        <table className="compare">
-          <thead>
-            <tr>
-              <th>Característica</th>
-              <th className="is-us">Royal Prestige</th>
-              <th>Marca premium</th>
-              <th>Marca económica</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, i) =>
-            <tr key={i}>
-                <td>{row[0]}</td>
-                <td className="cell-us">{row[1]}</td>
-                <td>{row[2]}</td>
-                <td>{row[3]}</td>
+        <div className="compare-wrap">
+          <table className="compare">
+            <thead>
+              <tr>
+                <th>Característica</th>
+                <th className="is-us">Royal Prestige</th>
+                <th>Marca premium</th>
+                <th>Marca económica</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((row, i) =>
+              <tr key={i}>
+                  <td>{row[0]}</td>
+                  <td className="cell-us">{row[1]}</td>
+                  <td>{row[2]}</td>
+                  <td>{row[3]}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
         <div className="cta-band" style={{ marginTop: "clamp(60px, 8vw, 100px)" }}>
           <div className="cta-band__text">
