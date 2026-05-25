@@ -380,6 +380,54 @@ function VocesSection() {
           </p>
         </div>
 
+        <div className="voces__product">
+          <div className="voces__product-strip">
+            <div
+              className="voces__product-imgs"
+              onClick={advanceImg}
+              role="button"
+              tabIndex={0}
+              aria-label="Ver siguiente imagen del producto"
+              onKeyDown={e => e.key === "Enter" && advanceImg()}
+            >
+              {CALLOUT_IMGS.map((src, i) => (
+                <img key={i} src={src} alt="" className={`voces__product-img${i === imgIdx ? " is-active" : ""}`} />
+              ))}
+              <div className="voces__product-dots" aria-hidden="true">
+                {CALLOUT_IMGS.map((_, i) => (
+                  <span key={i} className={`voces__product-dot${i === imgIdx ? " is-active" : ""}`} />
+                ))}
+              </div>
+            </div>
+            <div className="voces__product-text">
+              <span className="section__eyebrow">
+                <span className="section__eyebrow-rule" />
+                El producto
+              </span>
+              <h3 className="voces__product-title">
+                Cocina sin agua, <em>sin grasa,</em> sin dolor.
+              </h3>
+            </div>
+            <div className="voces__product-specs">
+              <div className="voces__product-spec">
+                <span className="voces__product-num">9<em>+</em></span>
+                <span className="voces__product-label">capas de acero</span>
+              </div>
+              <div className="voces__product-spec">
+                <span className="voces__product-num">50<em>%</em></span>
+                <span className="voces__product-label">menos energía</span>
+              </div>
+              <div className="voces__product-spec">
+                <span className="voces__product-num">∞</span>
+                <span className="voces__product-label">garantía vitalicia</span>
+              </div>
+            </div>
+            <a className="btn btn--primary" href="CateonCook Producto.html">
+              Conoce el producto →
+            </a>
+          </div>
+        </div>
+
         <div className="voces__feature">
           <div className="voces__portrait">
             <span className="voces__portrait-fig">{current.fig}</span>
@@ -456,54 +504,6 @@ function VocesSection() {
           <span>Cinco socios · cinco ciudades · una misma red</span>
           <div className="voces__nav-cta">
             <a className="btn btn--lg btn--premium" href="CateonCook Nosotros.html">Conoce a la familia →</a>
-          </div>
-        </div>
-
-        <div className="voces__product">
-          <div className="voces__product-strip">
-            <div
-              className="voces__product-imgs"
-              onClick={advanceImg}
-              role="button"
-              tabIndex={0}
-              aria-label="Ver siguiente imagen del producto"
-              onKeyDown={e => e.key === "Enter" && advanceImg()}
-            >
-              {CALLOUT_IMGS.map((src, i) => (
-                <img key={i} src={src} alt="" className={`voces__product-img${i === imgIdx ? " is-active" : ""}`} />
-              ))}
-              <div className="voces__product-dots" aria-hidden="true">
-                {CALLOUT_IMGS.map((_, i) => (
-                  <span key={i} className={`voces__product-dot${i === imgIdx ? " is-active" : ""}`} />
-                ))}
-              </div>
-            </div>
-            <div className="voces__product-text">
-              <span className="section__eyebrow">
-                <span className="section__eyebrow-rule" />
-                El producto
-              </span>
-              <h3 className="voces__product-title">
-                Cocina sin agua, <em>sin grasa,</em> sin dolor.
-              </h3>
-            </div>
-            <div className="voces__product-specs">
-              <div className="voces__product-spec">
-                <span className="voces__product-num">9<em>+</em></span>
-                <span className="voces__product-label">capas de acero</span>
-              </div>
-              <div className="voces__product-spec">
-                <span className="voces__product-num">50<em>%</em></span>
-                <span className="voces__product-label">menos energía</span>
-              </div>
-              <div className="voces__product-spec">
-                <span className="voces__product-num">∞</span>
-                <span className="voces__product-label">garantía vitalicia</span>
-              </div>
-            </div>
-            <a className="btn btn--primary" href="CateonCook Producto.html">
-              Conoce el producto →
-            </a>
           </div>
         </div>
       </div>

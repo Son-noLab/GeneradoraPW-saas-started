@@ -2377,9 +2377,9 @@
 
   /* ── product strip dentro de Comunidad ── */
   .voces__product {
-    margin-top: clamp(36px, 5vw, 56px);
-    padding-top: clamp(28px, 4vw, 44px);
-    border-top: 1px solid rgba(11,23,56,0.10);
+    margin-bottom: clamp(36px, 5vw, 56px);
+    padding-bottom: clamp(28px, 4vw, 44px);
+    border-bottom: 1px solid rgba(11,23,56,0.10);
   }
   .voces__product-strip {
     display: flex;
