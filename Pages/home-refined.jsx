@@ -320,9 +320,17 @@ const VOCES = [
   },
 ];
 
+const CALLOUT_IMGS = [
+  "img/hero-1.jpg",
+  "img/hero-2.jpg",
+  "img/hero-3.jpg",
+  "img/hero-4.jpg",
+];
+
 function VocesSection() {
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [imgIdx, setImgIdx] = useState(0);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -333,10 +341,16 @@ function VocesSection() {
     return () => clearTimeout(timerRef.current);
   }, [idx, paused]);
 
+  useEffect(() => {
+    const t = setInterval(() => setImgIdx(i => (i + 1) % CALLOUT_IMGS.length), 3200);
+    return () => clearInterval(t);
+  }, []);
+
   const current = VOCES[idx];
   const total = VOCES.length;
   const prev = () => setIdx((i) => (i - 1 + total) % total);
   const next = () => setIdx((i) => (i + 1) % total);
+  const advanceImg = () => setImgIdx(i => (i + 1) % CALLOUT_IMGS.length);
 
   return (
     <section
@@ -444,6 +458,54 @@ function VocesSection() {
             <a className="btn btn--lg btn--premium" href="CateonCook Nosotros.html">Conoce a la familia →</a>
           </div>
         </div>
+
+        <div className="voces__product">
+          <div className="voces__product-strip">
+            <div
+              className="voces__product-imgs"
+              onClick={advanceImg}
+              role="button"
+              tabIndex={0}
+              aria-label="Ver siguiente imagen del producto"
+              onKeyDown={e => e.key === "Enter" && advanceImg()}
+            >
+              {CALLOUT_IMGS.map((src, i) => (
+                <img key={i} src={src} alt="" className={`voces__product-img${i === imgIdx ? " is-active" : ""}`} />
+              ))}
+              <div className="voces__product-dots" aria-hidden="true">
+                {CALLOUT_IMGS.map((_, i) => (
+                  <span key={i} className={`voces__product-dot${i === imgIdx ? " is-active" : ""}`} />
+                ))}
+              </div>
+            </div>
+            <div className="voces__product-text">
+              <span className="section__eyebrow">
+                <span className="section__eyebrow-rule" />
+                El producto
+              </span>
+              <h3 className="voces__product-title">
+                Cocina sin agua, <em>sin grasa,</em> sin dolor.
+              </h3>
+            </div>
+            <div className="voces__product-specs">
+              <div className="voces__product-spec">
+                <span className="voces__product-num">9<em>+</em></span>
+                <span className="voces__product-label">capas de acero</span>
+              </div>
+              <div className="voces__product-spec">
+                <span className="voces__product-num">50<em>%</em></span>
+                <span className="voces__product-label">menos energía</span>
+              </div>
+              <div className="voces__product-spec">
+                <span className="voces__product-num">∞</span>
+                <span className="voces__product-label">garantía vitalicia</span>
+              </div>
+            </div>
+            <a className="btn btn--primary" href="CateonCook Producto.html">
+              Conoce el producto →
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -479,88 +541,6 @@ function CommunityMarquee() {
 }
 
 
-/* ════════════════ Producto Callout — banda demostrativa compacta ════════════════ */
-const CALLOUT_IMGS = [
-  "img/hero-1.jpg",
-  "img/hero-2.jpg",
-  "img/hero-3.jpg",
-  "img/hero-4.jpg",
-];
-
-function ProductoCallout() {
-  const [idx, setIdx] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => setIdx(i => (i + 1) % CALLOUT_IMGS.length), 3200);
-    return () => clearInterval(t);
-  }, []);
-
-  const advance = () => setIdx(i => (i + 1) % CALLOUT_IMGS.length);
-
-  return (
-    <section className="pcallout" id="producto-callout" aria-label="El Producto Royal Prestige">
-      <span className="pcallout__corner-fig">Fig. 02 · Producto</span>
-      <div className="pcallout__strip reveal">
-
-        <div
-          className="pcallout__imgs"
-          onClick={advance}
-          role="button"
-          tabIndex={0}
-          aria-label="Ver siguiente imagen del producto"
-          onKeyDown={e => e.key === "Enter" && advance()}
-        >
-          {CALLOUT_IMGS.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt=""
-              className={`pcallout__img${i === idx ? " is-active" : ""}`}
-            />
-          ))}
-          <div className="pcallout__imgs-dots" aria-hidden="true">
-            {CALLOUT_IMGS.map((_, i) => (
-              <span key={i} className={`pcallout__imgs-dot${i === idx ? " is-active" : ""}`} />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <span className="pcallout__eyebrow">
-            <span className="rule" />
-            El producto
-          </span>
-          <h2 className="pcallout__title">
-            Cocina sin agua, <em>sin grasa,</em> sin dolor.
-          </h2>
-        </div>
-
-        <div className="pcallout__strip-specs">
-          <div className="pcallout__spec">
-            <span className="pcallout__spec-num">9<em>+</em></span>
-            <span className="pcallout__spec-label">capas de acero</span>
-          </div>
-          <div className="pcallout__spec">
-            <span className="pcallout__spec-num">50<em>%</em></span>
-            <span className="pcallout__spec-label">menos energía</span>
-          </div>
-          <div className="pcallout__spec">
-            <span className="pcallout__spec-num">∞</span>
-            <span className="pcallout__spec-label">garantía vitalicia</span>
-          </div>
-        </div>
-
-        <div className="pcallout__strip-cta">
-          <a className="btn btn--lg btn--primary" href="CateonCook Producto.html">
-            Conoce el producto →
-          </a>
-        </div>
-
-      </div>
-    </section>
-  );
-}
-
 /* ════════════════ Home App ════════════════ */
 function App() {
   const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
@@ -588,8 +568,6 @@ function App() {
         <Hero accent={tw.accent} bgVariant={tw.panel0bg} />
         <HeroTransition audioOn={tw.audioOn} />
         <SplitPreview />
-        <SectionDivider direction="cream-to-dark" targetSelector="#producto-callout" />
-        <ProductoCallout />
         <SectionDivider direction="dark-to-cream" targetSelector="#voces" />
         <VocesSection />
         <CommunityMarquee />
