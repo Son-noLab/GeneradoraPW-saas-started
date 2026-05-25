@@ -346,7 +346,7 @@ function VocesSection() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <span className="section__corner-fig">Fig. 02 · Voces</span>
+      <span className="section__corner-fig">Fig. 03 · Voces</span>
       <div className="section__inner">
         <div className="section__header reveal">
           <div>
@@ -479,6 +479,45 @@ function CommunityMarquee() {
 }
 
 
+/* ════════════════ Producto Callout — banda demostrativa compacta ════════════════ */
+function ProductoCallout() {
+  return (
+    <section className="pcallout" id="producto-callout" aria-label="El Producto Royal Prestige">
+      <span className="pcallout__corner-fig">Fig. 02 · Producto</span>
+      <div className="pcallout__strip reveal">
+        <div>
+          <span className="pcallout__eyebrow">
+            <span className="rule" />
+            El producto
+          </span>
+          <h2 className="pcallout__title">
+            Cocina sin agua, <em>sin grasa,</em> sin dolor.
+          </h2>
+        </div>
+        <div className="pcallout__strip-specs">
+          <div className="pcallout__spec">
+            <span className="pcallout__spec-num">9<em>+</em></span>
+            <span className="pcallout__spec-label">capas de acero</span>
+          </div>
+          <div className="pcallout__spec">
+            <span className="pcallout__spec-num">50<em>%</em></span>
+            <span className="pcallout__spec-label">menos energía</span>
+          </div>
+          <div className="pcallout__spec">
+            <span className="pcallout__spec-num">∞</span>
+            <span className="pcallout__spec-label">garantía vitalicia</span>
+          </div>
+        </div>
+        <div className="pcallout__strip-cta">
+          <a className="btn btn--lg btn--primary" href="CateonCook Producto.html">
+            Conoce el producto →
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ════════════════ Home App ════════════════ */
 function App() {
   const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
@@ -506,6 +545,8 @@ function App() {
         <Hero accent={tw.accent} bgVariant={tw.panel0bg} />
         <HeroTransition audioOn={tw.audioOn} />
         <SplitPreview />
+        <SectionDivider direction="cream-to-dark" targetSelector="#producto-callout" />
+        <ProductoCallout />
         <SectionDivider direction="dark-to-cream" targetSelector="#voces" />
         <VocesSection />
         <CommunityMarquee />

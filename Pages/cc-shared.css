@@ -1874,7 +1874,7 @@
   /* ═══════════ PRODUCTO CALLOUT (home teaser) ═══════════ */
   .pcallout {
     position: relative;
-    padding: clamp(80px, 10vw, 140px) var(--pad-x);
+    padding: clamp(32px, 4vw, 52px) var(--pad-x);
     background:
       radial-gradient(ellipse at 80% 10%, rgba(230,199,122,0.10) 0%, transparent 55%),
       radial-gradient(ellipse at 10% 90%, rgba(122,80,30,0.12) 0%, transparent 55%),
@@ -2053,16 +2053,38 @@
     color: rgba(230,199,122,0.55);
   }
 
-  @media (max-width: 900px) {
-    .pcallout__inner { grid-template-columns: 1fr; }
-    .pcallout__visual { aspect-ratio: 5 / 4; max-width: 520px; }
+  /* strip layout — replaces the old two-col visual+content layout */
+  .pcallout__strip {
+    position: relative; z-index: 1;
+    max-width: 1320px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 20px clamp(28px, 5vw, 60px);
+    align-items: center;
+    padding-left: clamp(20px, 3vw, 36px);
+    border-left: 2px solid rgba(230,199,122,0.30);
+  }
+  .pcallout__strip .pcallout__title {
+    font-size: clamp(18px, 2vw, 26px);
+    line-height: 1.25;
+    max-width: none;
+    margin: 6px 0 0;
+  }
+  .pcallout__strip-specs {
+    display: flex;
+    gap: clamp(18px, 3vw, 36px);
+    align-items: center;
+    padding-left: clamp(18px, 3vw, 36px);
+    border-left: 1px solid rgba(255,255,255,0.12);
+  }
+  .pcallout__strip-specs .pcallout__spec-num { font-size: 28px; }
+  @media (max-width: 960px) {
+    .pcallout__strip { grid-template-columns: 1fr 1fr; }
+    .pcallout__strip-cta { grid-column: 1 / -1; }
   }
   @media (max-width: 560px) {
-    .pcallout__specs { grid-template-columns: 1fr; gap: 16px; }
-    .pcallout__spec-num { font-size: 30px; }
-    .pcallout__actions { flex-direction: column; align-items: stretch; }
-    .pcallout__actions .btn { justify-content: center; }
-    .pcallout__more { margin-left: 0; text-align: center; }
+    .pcallout__strip { grid-template-columns: 1fr; border-left: none; padding-left: 0; }
+    .pcallout__strip-specs { border-left: none; padding-left: 0; flex-wrap: wrap; gap: 16px; }
   }
 
   /* ═══════════ VOCES (testimoniales destacados — home) ═══════════ */
