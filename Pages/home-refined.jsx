@@ -346,7 +346,7 @@ function VocesSection() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <span className="section__corner-fig">Fig. 03 · Voces</span>
+      <span className="section__corner-fig">Fig. 02 · Voces</span>
       <div className="section__inner">
         <div className="section__header reveal">
           <div>
@@ -478,63 +478,6 @@ function CommunityMarquee() {
   );
 }
 
-/* ════════════════ Producto Callout — home teaser to the Producto page ════════════════ */
-function ProductoCallout() {
-  return (
-    <section className="pcallout" id="producto-callout" aria-label="El Producto Royal Prestige">
-      <span className="pcallout__corner-fig">Fig. 02 · Producto</span>
-      <div className="pcallout__inner reveal">
-        <div className="pcallout__visual" role="img" aria-label="Olla Royal Prestige">
-          <span className="pcallout__visual-fig">RP · Innove™</span>
-          <span className="pcallout__visual-tag">9-ply T304 · garantía vitalicia</span>
-          <span className="pcallout__visual-mark" aria-hidden="true">Royal Prestige.</span>
-        </div>
-
-        <div className="pcallout__content">
-          <span className="pcallout__eyebrow">
-            <span className="rule" />
-            El producto
-          </span>
-          <h2 className="pcallout__title">
-            Cocina sin agua,<br />
-            <em>sin grasa,</em><br />
-            sin dolor.
-          </h2>
-          <p className="pcallout__desc">
-            Royal Prestige no es un utensilio: es un sistema de cocción de nueve capas en acero
-            quirúrgico que devuelve el sabor real a cada comida. Diseñado para durar más que la
-            propia receta de tu abuela.
-          </p>
-
-          <div className="pcallout__specs">
-            <div className="pcallout__spec">
-              <span className="pcallout__spec-num">9<em>+</em></span>
-              <span className="pcallout__spec-label">capas de acero</span>
-            </div>
-            <div className="pcallout__spec">
-              <span className="pcallout__spec-num">50<em>%</em></span>
-              <span className="pcallout__spec-label">menos energía</span>
-            </div>
-            <div className="pcallout__spec">
-              <span className="pcallout__spec-num">∞</span>
-              <span className="pcallout__spec-label">garantía vitalicia</span>
-            </div>
-          </div>
-
-          <div className="pcallout__actions">
-            <a className="btn btn--lg btn--primary" href="CateonCook Producto.html">
-              Conoce el producto →
-            </a>
-            <a className="btn btn--lg btn--ghost-light" href="CateonCook Unete.html">
-              Agendar demostración
-            </a>
-            <span className="pcallout__more">Sin costo · en tu casa</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ════════════════ Home App ════════════════ */
 function App() {
@@ -563,8 +506,6 @@ function App() {
         <Hero accent={tw.accent} bgVariant={tw.panel0bg} />
         <HeroTransition audioOn={tw.audioOn} />
         <SplitPreview />
-        <SectionDivider direction="cream-to-dark" targetSelector="#producto-callout" />
-        <ProductoCallout />
         <SectionDivider direction="dark-to-cream" targetSelector="#voces" />
         <VocesSection />
         <CommunityMarquee />
