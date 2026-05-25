@@ -74,14 +74,23 @@ function ProductoFeatures() {
 }
 
 /* ── Línea completa ── */
+const PHOTOS = ["img/hero-1.jpg", "img/hero-2.jpg", "img/hero-3.jpg", "img/hero-4.jpg"];
+
 function ProductLine() {
   const products = [
-  { fig: "RP · 01", title: <>Innove™ <em>9-ply</em></>, meta: "Ollas · 6 piezas" },
-  { fig: "RP · 02", title: <>Sartén <em>Eclipse</em></>, meta: "Sartenes · 3 piezas" },
-  { fig: "RP · 03", title: <>Cuchillería <em>Quintal</em></>, meta: "Cuchillería · 5 piezas" },
-  { fig: "RP · 04", title: <>Sistema <em>Maxim</em></>, meta: "Filtrado de agua" },
-  { fig: "RP · 05", title: <>Extractor <em>Vital</em></>, meta: "Jugos en frío" },
-  { fig: "RP · 06", title: <>Línea <em>Novel</em></>, meta: "Vajilla y servicio" }];
+    { fig: "RP · 01", title: <>Innove™ <em>9-ply</em></>,      meta: "Ollas · 6 piezas" },
+    { fig: "RP · 02", title: <>Sartén <em>Eclipse</em></>,      meta: "Sartenes · 3 piezas" },
+    { fig: "RP · 03", title: <>Cuchillería <em>Quintal</em></>, meta: "Cuchillería · 5 piezas" },
+    { fig: "RP · 04", title: <>Sistema <em>Maxim</em></>,       meta: "Filtrado de agua" },
+    { fig: "RP · 05", title: <>Extractor <em>Vital</em></>,     meta: "Jugos en frío" },
+    { fig: "RP · 06", title: <>Línea <em>Novel</em></>,         meta: "Vajilla y servicio" },
+    { fig: "RP · 07", title: <>Wok <em>Eclipse</em></>,         meta: "Wok · 2 piezas" },
+    { fig: "RP · 08", title: <>Cafetera <em>Alma</em></>,       meta: "Café y bebidas" },
+    { fig: "RP · 09", title: <>Steamer <em>Puro</em></>,        meta: "Cocción al vapor" },
+    { fig: "RP · 10", title: <>Licuadora <em>Vita</em></>,      meta: "Jugos y batidos" },
+    { fig: "RP · 11", title: <>Accesorios <em>Pro</em></>,      meta: "Herramientas" },
+    { fig: "RP · 12", title: <>Almacenaje <em>Fresh</em></>,    meta: "Conservación al vacío" },
+  ];
 
   return (
     <section className="section section--cream" aria-label="Línea de productos">
@@ -99,25 +108,30 @@ function ProductLine() {
             </h2>
           </div>
           <p className="section__lede">
-            Más de seis líneas que cubren la mesa entera: del agua que tomas hasta el filo que
+            Doce líneas que cubren la mesa entera: del agua que tomas hasta el filo que
             corta. Pensadas para combinarse, no para competir entre sí.
           </p>
         </div>
 
         <div className="pline">
-          {products.map((p, i) =>
-          <article key={i} className="pline__card">
+          {products.map((p, i) => (
+            <article key={i} className="pline__card" tabIndex={0}>
+              <img
+                className="pline__card-photo"
+                src={PHOTOS[i % PHOTOS.length]}
+                alt=""
+                loading="lazy"
+              />
               <span className="pline__card-fig">{p.fig}</span>
               <div className="pline__card-body">
                 <h3 className="pline__card-title">{p.title}</h3>
                 <div className="pline__card-meta">{p.meta}</div>
               </div>
             </article>
-          )}
+          ))}
         </div>
       </div>
     </section>);
-
 }
 
 /* ── Comparativa ── */
