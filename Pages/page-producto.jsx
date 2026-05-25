@@ -17,7 +17,7 @@ function ProductoFeatures() {
 
   return (
     <section className="section section--dark" aria-label="Tecnología">
-      <span className="section__corner-fig">Fig. 01 · Tecnología</span>
+      <span className="section__corner-fig">Fig. 02 · Tecnología</span>
       <div className="section__inner">
         <div className="section__header">
           <div>
@@ -85,7 +85,7 @@ function ProductLine() {
 
   return (
     <section className="section section--cream" aria-label="Línea de productos">
-      <span className="section__corner-fig">Fig. 02 · Catálogo</span>
+      <span className="section__corner-fig">Fig. 01 · Catálogo</span>
       <div className="section__inner">
         <div className="section__header">
           <div>
@@ -222,10 +222,10 @@ function App() {
           { value: "50%", label: "MENOS ENERGÍA" }]
           } />
         
-        <ProductoFeatures />
         <SectionDivider direction="dark-to-cream" targetSelector=".pline" />
         <ProductLine />
-        <SectionDivider direction="cream-to-dark" targetSelector=".compare" />
+        <SectionDivider direction="cream-to-dark" targetSelector=".producto__grid" />
+        <ProductoFeatures />
         <CompareSection />
       </main>
       <FooterSection />

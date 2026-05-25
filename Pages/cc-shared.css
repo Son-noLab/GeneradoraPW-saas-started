@@ -1250,7 +1250,7 @@
   /* ═══════════ PAGE HERO (inner pages) ═══════════ */
   .phero {
     position: relative;
-    padding: clamp(140px, 16vw, 220px) var(--pad-x) clamp(60px, 8vw, 110px);
+    padding: clamp(100px, 11vw, 148px) var(--pad-x) clamp(36px, 4vw, 60px);
     overflow: hidden;
     color: #fff;
   }
@@ -1308,7 +1308,7 @@
     font-size: 11px;
     letter-spacing: 0.22em;
     color: var(--c-gold-hi);
-    margin-bottom: 22px;
+    margin-bottom: 14px;
   }
   .phero--cream .phero__crumb { color: var(--c-gold); }
   .phero__crumb-rule { width: 40px; height: 1px; background: currentColor; opacity: 0.55; display: inline-block; }
@@ -1348,7 +1348,7 @@
   .phero__meta {
     display: flex; gap: 28px;
     flex-wrap: wrap;
-    padding-top: 22px;
+    padding-top: 16px;
     border-top: 1px solid rgba(255,255,255,0.12);
   }
   .phero--cream .phero__meta { border-top-color: rgba(11,23,56,0.12); }
