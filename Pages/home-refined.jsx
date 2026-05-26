@@ -321,10 +321,10 @@ const VOCES = [
 ];
 
 const CALLOUT_IMGS = [
-  "img/hero-1.jpg",
-  "img/hero-2.jpg",
-  "img/hero-3.jpg",
-  "img/hero-4.jpg",
+  "img/prod-01-innove.jpg",
+  "img/prod-03-novel.jpg",
+  "img/prod-04-nonstick.jpg",
+  "img/prod-02-5ply.jpg",
 ];
 
 function VocesSection() {
@@ -362,24 +362,6 @@ function VocesSection() {
     >
       <span className="section__corner-fig">Fig. 03 · Voces</span>
       <div className="section__inner">
-        <div className="section__header reveal">
-          <div>
-            <span className="section__eyebrow">
-              <span className="section__eyebrow-rule" />
-              Comunidad
-            </span>
-            <h2 className="section__title">
-              Quinientas voces,<br />
-              <em>un mismo eco.</em>
-            </h2>
-          </div>
-          <p className="section__lede">
-            Cada socio que se suma a CateonCook acepta que lo llames y le hagas todas las
-            preguntas que quieras antes de unirte. Estas son cinco voces que ya pasaron por
-            esta misma página.
-          </p>
-        </div>
-
         <div className="voces__product">
           <div className="voces__product-strip">
             <div
@@ -426,6 +408,24 @@ function VocesSection() {
               Conoce el producto →
             </a>
           </div>
+        </div>
+
+        <div className="section__header reveal">
+          <div>
+            <span className="section__eyebrow">
+              <span className="section__eyebrow-rule" />
+              Comunidad
+            </span>
+            <h2 className="section__title">
+              Quinientas voces,<br />
+              <em>un mismo eco.</em>
+            </h2>
+          </div>
+          <p className="section__lede">
+            Cada socio que se suma a CateonCook acepta que lo llames y le hagas todas las
+            preguntas que quieras antes de unirte. Estas son cinco voces que ya pasaron por
+            esta misma página.
+          </p>
         </div>
 
         <div className="voces__feature">

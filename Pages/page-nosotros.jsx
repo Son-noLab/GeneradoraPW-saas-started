@@ -1,4 +1,4 @@
-/* CateonCook — Nosotros page
+﻿/* CateonCook — Nosotros page
    PageHero (dark) → Historia (photo grid + quote) → Timeline → Valores → CTA */
 
 const { useEffect: nUseEffect } = React;
@@ -36,12 +36,15 @@ function HistoriaSection() {
         <div className="nosotros__grid">
           <div className="nosotros__photos">
             <div className="nosotros__photo">
+              <img src="img/hero-2.jpg" alt="Fundadores CateonCook 2003" className="nosotros__photo-img" />
               <span className="nosotros__photo-caption">retrato · fundadores · 2003</span>
             </div>
             <div className="nosotros__photo">
+              <img src="img/hero-3.jpg" alt="Comunidad Cuenca" className="nosotros__photo-img" />
               <span className="nosotros__photo-caption">comunidad · Cuenca</span>
             </div>
             <div className="nosotros__photo">
+              <img src="img/hero-4.jpg" alt="Capacitación 2024" className="nosotros__photo-img" />
               <span className="nosotros__photo-caption">capacitación · 2024</span>
             </div>
           </div>

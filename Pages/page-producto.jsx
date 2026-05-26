@@ -1,4 +1,4 @@
-/* CateonCook — Producto page
+﻿/* CateonCook — Producto page
    PageHero (warm) → 4 features + visual → Línea completa → Tecnología (specs) → Comparativa → CTA */
 
 const { useEffect: pUseEffect } = React;
@@ -74,7 +74,20 @@ function ProductoFeatures() {
 }
 
 /* ── Línea completa ── */
-const PHOTOS = ["img/hero-1.jpg", "img/hero-2.jpg", "img/hero-3.jpg", "img/hero-4.jpg"];
+const PHOTOS = [
+  "img/prod-01-innove.jpg",
+  "img/prod-02-5ply.jpg",
+  "img/prod-03-novel.jpg",
+  "img/prod-04-nonstick.jpg",
+  "img/prod-05-pressure.jpg",
+  "img/prod-06-casserole.jpg",
+  "img/prod-07-roaster.jpg",
+  "img/prod-08-barista.jpg",
+  "img/prod-09-cafe.jpg",
+  "img/prod-10-expertea.jpg",
+  "img/prod-11-espresso.jpg",
+  "img/prod-12-elite.webp",
+];
 
 function ProductLine() {
   const products = [

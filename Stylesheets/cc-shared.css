@@ -1019,6 +1019,14 @@
   .nosotros__photo:nth-child(3) {
     background: linear-gradient(135deg, #3a5a4a 0%, #0d1f15 100%);
   }
+  .nosotros__photo-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
   .nosotros__photo::after {
     content: ""; position: absolute; inset: 0;
     background:
