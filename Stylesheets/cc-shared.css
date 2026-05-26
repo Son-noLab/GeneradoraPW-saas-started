@@ -2384,6 +2384,14 @@
   }
 
   /* ── product strip dentro de Comunidad ── */
+  @keyframes img-heartbeat {
+    0%   { transform: scale(1.000); }
+    8%   { transform: scale(1.048); }
+    16%  { transform: scale(0.982); }
+    26%  { transform: scale(1.040); }
+    36%  { transform: scale(1.000); }
+    100% { transform: scale(1.000); }
+  }
   .voces__product {
     margin-bottom: clamp(36px, 5vw, 56px);
     padding-bottom: clamp(28px, 4vw, 44px);
@@ -2397,15 +2405,24 @@
   }
   .voces__product-imgs {
     position: relative;
-    width: clamp(88px, 9vw, 140px);
+    width: clamp(160px, 17vw, 240px);
     aspect-ratio: 3 / 4;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
     flex-shrink: 0;
-    border: 1px solid rgba(11,23,56,0.12);
+    border: 2px solid rgba(11,23,56,0.12);
+    box-shadow: 0 8px 28px rgba(11,23,56,0.18);
+    animation: img-heartbeat 2.6s ease-in-out infinite;
+    animation-delay: 1.4s;
   }
-  .voces__product-imgs:hover { border-color: rgba(230,199,122,0.50); }
+  .voces__product-imgs:hover {
+    border-color: rgba(230,199,122,0.60);
+    box-shadow: 0 12px 40px rgba(11,23,56,0.26), 0 0 0 3px rgba(230,199,122,0.18);
+    animation-play-state: paused;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .voces__product-imgs:active { filter: brightness(1.12); }
   .voces__product-img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
@@ -2460,8 +2477,11 @@
     text-transform: uppercase;
   }
   @media (max-width: 640px) {
-    .voces__product-imgs { display: none; }
+    .voces__product-imgs { width: clamp(120px, 36vw, 160px); animation-delay: 0.8s; }
     .voces__product-specs { border-left: none; padding-left: 0; flex-wrap: wrap; gap: 14px 20px; }
+  }
+  @media (max-width: 440px) {
+    .voces__product-imgs { display: none; }
   }
 
   @media (max-width: 960px) {
