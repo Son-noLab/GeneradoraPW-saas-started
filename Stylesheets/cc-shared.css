@@ -247,6 +247,7 @@
   .tcube-image {
     position: relative;
     width: 100%; height: 100%;
+    cursor: pointer;
     overflow: hidden;
     cursor: pointer;
     border: 1px solid rgba(255,255,255,0.08);

@@ -43,7 +43,9 @@ function TitleCube({ accent, onActiveChange }) {
     if (onActiveChange) onActiveChange(active === 0);
   }, [active]);
 
-  useEffect(() => {
+  /* Extracted so both mount and image-click can start/restart the cycle */
+  const startCycle = () => {
+    clearTimeout(timerRef.current);
     let first = true;
     function schedule() {
       const currentPanel = CYCLE[cycleRef.current];
@@ -56,8 +58,19 @@ function TitleCube({ accent, onActiveChange }) {
       }, randomMs(currentPanel, first));
     }
     schedule();
+  };
+
+  useEffect(() => {
+    startCycle();
     return () => clearTimeout(timerRef.current);
   }, []);
+
+  /* Click on the image → back to title panel, restart cycle */
+  const handleImageClick = () => {
+    cycleRef.current = 0;
+    setActive(0);
+    startCycle();
+  };
 
   useEffect(() => {
     if (glareTimerRef.current) clearTimeout(glareTimerRef.current);
@@ -85,21 +98,23 @@ function TitleCube({ accent, onActiveChange }) {
             </h1>
           ) : (
             <>
-              <a
-                href={panel.href}
+              <div
                 className="tcube-image"
+                onClick={handleImageClick}
+                role="button"
                 tabIndex={i === active ? 0 : -1}
-                aria-label="Ver historia"
+                aria-label="Volver al inicio"
+                onKeyDown={e => e.key === "Enter" && handleImageClick()}
               >
                 <img src={panel.src} alt={panel.label} className="tcube-image__photo" style={{ objectPosition: panel.pos }} />
                 <div className="tcube-image__grain" />
-              </a>
+              </div>
               <div className="tcube-panel__bars" aria-hidden="true" />
-              <div className="tcube-image__nav" aria-hidden="true">
+              <a href={panel.href} className="tcube-image__nav" aria-label="Ver Nosotros">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2 10L10 2" /><path d="M5 2h5v5" />
                 </svg>
-              </div>
+              </a>
             </>
           )}
         </div>
