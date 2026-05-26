@@ -2153,7 +2153,7 @@
   .voces__portrait-img {
     position: absolute; inset: 0;
     background-size: cover;
-    background-position: center;
+    background-position: center 15%;
     opacity: 0;
     transition: opacity .9s ease, transform 7s linear;
     transform: scale(1.02);

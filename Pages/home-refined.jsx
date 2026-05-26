@@ -271,7 +271,7 @@ const VOCES = [
     years: "8",
     yearsLabel: "AÑOS · CC",
     quote: <>Aquí no encontré un negocio. Encontré una <span className="em-gold">familia</span> que me empujó a convertirme en la mejor versión de mí misma.</>,
-    portrait: "linear-gradient(135deg, #5a3a18 0%, #2a1a08 60%, #1a0e04 100%)",
+    portrait: "img/voces-1.jpg",
     initial: "M",
   },
   {
@@ -282,7 +282,7 @@ const VOCES = [
     years: "6",
     yearsLabel: "AÑOS · CC",
     quote: <>Empecé vendiendo a tres amigas. Hoy mi equipo de cuarenta socias cocina por <span className="em-gold">todo el austro.</span></>,
-    portrait: "linear-gradient(135deg, #3a4a6e 0%, #142d70 55%, #0d1a2e 100%)",
+    portrait: "img/voces-2.jpg",
     initial: "V",
   },
   {
@@ -293,7 +293,7 @@ const VOCES = [
     years: "2",
     yearsLabel: "AÑOS · CC",
     quote: <>Lo que me sostuvo no fueron las comisiones — fue saber que mi sponsor estaba <span className="em-gold">a un mensaje.</span></>,
-    portrait: "linear-gradient(135deg, #3a5a4a 0%, #1a3a2a 60%, #0d1f15 100%)",
+    portrait: "img/voces-3.jpg",
     initial: "A",
   },
   {
@@ -304,7 +304,7 @@ const VOCES = [
     years: "4",
     yearsLabel: "AÑOS · CC",
     quote: <>Llegué buscando un ingreso extra. Encontré una <span className="em-gold">segunda profesión</span> y una segunda familia.</>,
-    portrait: "linear-gradient(135deg, #7a6024 0%, #4a3a14 55%, #2a1f0a 100%)",
+    portrait: "img/voces-4.jpg",
     initial: "L",
   },
   {
@@ -315,16 +315,16 @@ const VOCES = [
     years: "12",
     yearsLabel: "AÑOS · CC",
     quote: <>Construí mi propia oficina, mi propio equipo y, sobre todo, <span className="em-gold">mi propia voz.</span></>,
-    portrait: "linear-gradient(135deg, #4a2a4a 0%, #2a1a3a 60%, #0d0a1f 100%)",
+    portrait: "img/voces-5.jpg",
     initial: "C",
   },
 ];
 
 const CALLOUT_IMGS = [
-  "img/cc-evento-003.jpg",
-  "img/cc-rp-team.jpg",
-  "img/cc-gala-001.jpg",
-  "img/cc-medallas-001.jpg",
+  "img/prod-01-innove.jpg",
+  "img/prod-03-novel.jpg",
+  "img/prod-04-nonstick.jpg",
+  "img/prod-02-5ply.jpg",
 ];
 
 function VocesSection() {
@@ -435,7 +435,7 @@ function VocesSection() {
               <div
                 key={i}
                 className={`voces__portrait-img${i === idx ? " is-active" : ""}`}
-                style={{ background: v.portrait }}
+                style={{ backgroundImage: `url(${v.portrait})` }}
                 aria-hidden={i !== idx}
               />
             ))}
@@ -464,7 +464,7 @@ function VocesSection() {
                   className={`voces__thumb${i === idx ? " is-active" : ""}`}
                   onClick={() => setIdx(i)}
                 >
-                  <div className="voces__thumb-img" style={{ background: v.portrait }} />
+                  <div className="voces__thumb-img" style={{ backgroundImage: `url(${v.portrait})` }} />
                   <div className="voces__thumb-bar" aria-hidden="true">
                     <span className="voces__thumb-bar-fill" />
                   </div>
