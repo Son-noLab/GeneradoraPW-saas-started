@@ -1,4 +1,4 @@
-/* CateonCook — Únete page
+﻿/* CateonCook — Únete page
    PageHero (cream) → 4 pasos → FAQ → Formulario de contacto */
 
 const { useState: uUseState, useEffect: uUseEffect } = React;
@@ -136,9 +136,28 @@ function FAQSection() {
 /* ── Contact form ── */
 function ContactSection() {
   const [sent, setSent] = uUseState(false);
-  function handleSubmit(e) {
+  const [error, setError] = uUseState(false);
+  const [sending, setSending] = uUseState(false);
+  async function handleSubmit(e) {
     e.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError(false);
+    try {
+      const res = await fetch("https://formspree.io/f/REEMPLAZAR_FORM_ID", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          nombre: e.target.nombre.value,
+          email: e.target.email.value,
+          telefono: e.target.tel.value,
+          ciudad: e.target.ciudad.value,
+          interes: e.target.interes.value,
+          mensaje: e.target.mensaje.value || "",
+        }),
+      });
+      if (res.ok) { setSent(true); } else { setError(true); }
+    } catch { setError(true); }
+    finally { setSending(false); }
   }
   return (
     <section className="section section--dark" aria-label="Contacto">
@@ -228,7 +247,14 @@ function ContactSection() {
               <span className="cform__legal" style={{ color: "rgba(255,255,255,0.5)" }}>
                 AL ENVIAR ACEPTAS QUE UN SPONSOR DE CATEONCOOK TE CONTACTE. SIN COMPROMISO.
               </span>
-              <button type="submit" className="btn btn--lg btn--primary">Enviar →</button>
+              {error && (
+              <div style={{ color: "#ff6b6b", fontSize: 13, padding: "8px 0", fontFamily: "Inter, sans-serif" }}>
+                Error al enviar. Escríbenos a <a href="mailto:hola@cateoncook.com" style={{ color: "#E6C77A" }}>hola@cateoncook.com</a>
+              </div>
+            )}
+            <button type="submit" className="btn btn--lg btn--primary" disabled={sending} style={sending ? { opacity: 0.6 } : {}}>
+              {sending ? "Enviando..." : "Enviar →"}
+            </button>
             </div>
           </form>
         )}

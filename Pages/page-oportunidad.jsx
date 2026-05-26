@@ -1,4 +1,4 @@
-/* CateonCook — Oportunidad page
+﻿/* CateonCook — Oportunidad page
    PageHero → Split (Emprendedor vs Distribuidor) → Niveles del plan → Testimoniales → CTA */
 
 const { useEffect: oUseEffect } = React;
@@ -62,7 +62,7 @@ function SplitFull() {
                 </li>
               ))}
             </ul>
-            <button className={`btn btn--lg btn--${t.tone}`}>{t.cta}</button>
+            <a href="CateonCook Unete.html" className={`btn btn--lg btn--${t.tone}`}>{t.cta}</a>
           </div>
         </div>
       ))}

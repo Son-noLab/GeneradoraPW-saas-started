@@ -1,4 +1,4 @@
-/* CateonCook — shared shell components reused across all pages.
+﻿/* CateonCook — shared shell components reused across all pages.
    Header, MobileMenu, WhatsApp FAB, Footer, SectionDivider, PageHero.
    The `currentPage` prop drives the underlined active nav link. */
 
@@ -53,7 +53,7 @@ function Header({ currentPage = null, alwaysSolid = false }) {
             ))}
           </nav>
           <div className="header__cta">
-            <a className="btn btn--ghost-light">Iniciar sesión</a>
+            <a className="btn btn--ghost-light" href="CateonCook Portal.html">Iniciar sesión</a>
             <a className="btn btn--primary" href="CateonCook Unete.html">Sé parte de la fábrica</a>
           </div>
           <button
@@ -84,7 +84,7 @@ function Header({ currentPage = null, alwaysSolid = false }) {
           </a>
         ))}
         <div className="mobile-menu__cta">
-          <a className="btn btn--ghost-light" onClick={() => setMenuOpen(false)}>Iniciar sesión</a>
+          <a className="btn btn--ghost-light" href="CateonCook Portal.html" onClick={() => setMenuOpen(false)}>Iniciar sesión</a>
           <a className="btn btn--primary" href="CateonCook Unete.html" onClick={() => setMenuOpen(false)}>
             Sé parte de la fábrica
           </a>
@@ -235,16 +235,20 @@ function FooterSection() {
           <div className="footer__col">
             <div className="footer__col-title">Socios</div>
             <ul>
-              <li><a href="#">Portal del socio</a></li>
-              <li><a href="#">Pedidos y logística</a></li>
-              <li><a href="#">Capacitaciones</a></li>
-              <li><a href="#">Soporte</a></li>
+              <li><a href="CateonCook Portal.html">Portal del socio</a></li>
+              <li><a href="CateonCook Pedidos.html">Pedidos y logística</a></li>
+              <li><a href="CateonCook Capacitaciones.html">Capacitaciones</a></li>
+              <li><a href="CateonCook Soporte.html">Soporte</a></li>
             </ul>
           </div>
         </div>
 
         <div className="footer__bottom">
           <div>© 2026 CATEONCOOK · DERECHOS RESERVADOS</div>
+          <div style={{ display: "flex", gap: 20, fontSize: 11, letterSpacing: "0.1em", opacity: 0.6 }}>
+            <a href="CateonCook Privacidad.html" style={{ color: "inherit" }}>PRIVACIDAD</a>
+            <a href="CateonCook Terminos.html" style={{ color: "inherit" }}>TÉRMINOS</a>
+          </div>
           <div className="footer__social" aria-label="Redes sociales">
             <a href="#" aria-label="Instagram">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
