@@ -54,7 +54,7 @@ function Header({ currentPage = null, alwaysSolid = false }) {
           </nav>
           <div className="header__cta">
             <a className="btn btn--ghost-light" href="CateonCook Portal.html">Iniciar sesión</a>
-            <a className="btn btn--primary" href="CateonCook Unete.html">Sé parte de la fábrica</a>
+            <a className="btn btn--primary" href="CateonCook Unete.html" onClick={e => { if (window.openCCModal) { e.preventDefault(); window.openCCModal(); } }}>Sé parte de la fábrica</a>
           </div>
           <button
             className="header__burger"
@@ -85,7 +85,7 @@ function Header({ currentPage = null, alwaysSolid = false }) {
         ))}
         <div className="mobile-menu__cta">
           <a className="btn btn--ghost-light" href="CateonCook Portal.html" onClick={() => setMenuOpen(false)}>Iniciar sesión</a>
-          <a className="btn btn--primary" href="CateonCook Unete.html" onClick={() => setMenuOpen(false)}>
+          <a className="btn btn--primary" href="CateonCook Unete.html" onClick={e => { setMenuOpen(false); if (window.openCCModal) { e.preventDefault(); window.openCCModal(); } }}>
             Sé parte de la fábrica
           </a>
         </div>
