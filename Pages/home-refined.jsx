@@ -17,10 +17,10 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 /* ════════════════ Title Cube (preserved effect) ════════════════ */
 const PANELS = [
   { type: "title" },
-  { type: "image", label: "hero-1 · década 2010", src: "img/hero-1.jpg", pos: "center 45%", href: "CateonCook Nosotros.html#decada-2010" },
-  { type: "image", label: "hero-2 · lustro 2015",  src: "img/hero-2.jpg", pos: "center 40%", href: "CateonCook Nosotros.html#lustro-2015" },
-  { type: "image", label: "hero-3 · año 2020",     src: "img/hero-3.jpg", pos: "center 30%", href: "CateonCook Nosotros.html#ano-2020"    },
-  { type: "image", label: "hero-4 · año 2023",     src: "img/hero-4.jpg", pos: "center 40%", href: "CateonCook Nosotros.html#ano-2023"    },
+  { type: "image", label: "comunidad · celebración", src: "img/cc-evento-001.jpg", pos: "center 35%", href: "CateonCook Nosotros.html" },
+  { type: "image", label: "cateon star · premiación", src: "img/cc-star.jpg",       pos: "center 25%", href: "CateonCook Nosotros.html" },
+  { type: "image", label: "logros · 2024",            src: "img/cc-confeti.jpg",    pos: "center 20%", href: "CateonCook Nosotros.html" },
+  { type: "image", label: "la mesa · comunidad",      src: "img/cc-mesa.jpg",       pos: "center 45%", href: "CateonCook Nosotros.html" },
 ];
 const CYCLE = [0, 1, 2, 0, 3, 4];
 const randomMs = (i, first) => {
@@ -321,10 +321,10 @@ const VOCES = [
 ];
 
 const CALLOUT_IMGS = [
-  "img/prod-01-innove.jpg",
-  "img/prod-03-novel.jpg",
-  "img/prod-04-nonstick.jpg",
-  "img/prod-02-5ply.jpg",
+  "img/cc-evento-003.jpg",
+  "img/cc-rp-team.jpg",
+  "img/cc-gala-001.jpg",
+  "img/cc-medallas-001.jpg",
 ];
 
 function VocesSection() {

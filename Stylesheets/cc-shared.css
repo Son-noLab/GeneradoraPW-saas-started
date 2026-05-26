@@ -1025,8 +1025,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center 25%;
   }
+  .nosotros__photo:nth-child(2) .nosotros__photo-img,
+  .nosotros__photo:nth-child(3) .nosotros__photo-img { object-position: center 15%; }
   .nosotros__photo::after {
     content: ""; position: absolute; inset: 0;
     background:
