@@ -31,7 +31,6 @@ const randomMs = (i, first) => {
 function TitleCube({ accent, onActiveChange }) {
   const [active, setActive] = useState(CYCLE[0]);
   const [glare, setGlare] = useState(false);
-  const [resetting, setResetting] = useState(false);
   const cycleRef = useRef(0);
   const timerRef = useRef(null);
   const glareTimerRef = useRef(null);
@@ -66,16 +65,11 @@ function TitleCube({ accent, onActiveChange }) {
     return () => clearTimeout(timerRef.current);
   }, []);
 
-  /* Click on the image → brief flash animation, then back to title + restart cycle */
+  /* Click on the image → back to title panel, restart cycle */
   const handleImageClick = () => {
-    if (resetting) return;
-    setResetting(true);
-    setTimeout(() => {
-      cycleRef.current = 0;
-      setActive(0);
-      startCycle();
-      setResetting(false);
-    }, 310);
+    cycleRef.current = 0;
+    setActive(0);
+    startCycle();
   };
 
   useEffect(() => {
@@ -94,7 +88,7 @@ function TitleCube({ accent, onActiveChange }) {
 
   const isTitle = active === 0;
   return (
-    <div className={`tcube${isTitle ? " tcube--title" : ""}${resetting ? " tcube--resetting" : ""}`}>
+    <div className={`tcube${isTitle ? " tcube--title" : ""}`}>
       {PANELS.map((panel, i) => (
         <div key={i} className={`tcube-panel${i === active ? " is-active" : ""}`}>
           {panel.type === "title" ? (
