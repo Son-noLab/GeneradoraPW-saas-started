@@ -133,136 +133,234 @@ function FAQSection() {
   );
 }
 
-/* ── Contact form ── */
+/* ── Contact form — Sé parte de la fábrica ── */
+
+const PROVINCIAS_EC = [
+  'Azuay','Bolívar','Cañar','Carchi','Chimborazo','Cotopaxi',
+  'El Oro','Esmeraldas','Galápagos','Guayas','Imbabura','Loja',
+  'Los Ríos','Manabí','Morona Santiago','Napo','Orellana','Pastaza',
+  'Pichincha','Santa Elena','Santo Domingo de los Tsáchilas',
+  'Sucumbíos','Tungurahua','Zamora Chinchipe',
+];
+
+const COMO_SUPO_OPS = [
+  'Redes sociales (Instagram / Facebook)',
+  'Un amigo o familiar',
+  'Evento o activación',
+  'Google / búsqueda web',
+  'Referido de un distribuidor',
+  'Otro',
+];
+
+const SB_URL = 'https://ejdrtjutjcnqmxpvbmwa.supabase.co';
+const SB_KEY = 'sb_publishable_q1bkVlBleed6x8GhB2B41w_Xh17ozXh';
+
 function ContactSection() {
   const [sent, setSent] = uUseState(false);
   const [error, setError] = uUseState(false);
   const [sending, setSending] = uUseState(false);
+  const [nombreEnviado, setNombreEnviado] = uUseState('');
+  const [telefonoEnviado, setTelefonoEnviado] = uUseState('');
+
   async function handleSubmit(e) {
     e.preventDefault();
     setSending(true);
     setError(false);
-    try {
-      const res = await fetch("https://formspree.io/f/REEMPLAZAR_FORM_ID", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          nombre: e.target.nombre.value,
-          email: e.target.email.value,
-          telefono: e.target.tel.value,
-          ciudad: e.target.ciudad.value,
-          interes: e.target.interes.value,
-          mensaje: e.target.mensaje.value || "",
-        }),
-      });
-      if (res.ok) { setSent(true); } else { setError(true); }
-    } catch { setError(true); }
-    finally { setSending(false); }
+    const t = e.target;
+    const nombre    = t.nombre.value.trim();
+    const telefono  = t.tel.value.trim();
+    const correo    = t.email.value.trim();
+    const ciudad    = t.ciudad.value.trim();
+    const provincia = t.provincia.value;
+    const comoSupo  = t.como_supo.value;
+    const notas = [
+      provincia  && `Provincia: ${provincia}`,
+      t.profesion.value.trim()  && `Profesión: ${t.profesion.value.trim()}`,
+      t.tiene_ruc.value         && `RUC: ${t.tiene_ruc.value}`,
+      t.motivacion.value.trim() && `Motivación: ${t.motivacion.value.trim()}`,
+      t.video_url.value.trim()  && `Video: ${t.video_url.value.trim()}`,
+    ].filter(Boolean).join('\n') || null;
+
+    setNombreEnviado(nombre);
+    setTelefonoEnviado(telefono);
+
+    let ok = false;
+    if (window.supabase) {
+      try {
+        const { createClient } = window.supabase;
+        const sb = createClient(SB_URL, SB_KEY);
+        const { error: sbErr } = await sb.from('solicitudes').insert({
+          nombre, telefono, correo, ciudad,
+          como_supo: comoSupo || null,
+          notas,
+        });
+        if (!sbErr) ok = true;
+      } catch (_) {}
+    }
+    setSending(false);
+    if (ok) { setSent(true); } else { setError(true); }
   }
+
+  if (sent) {
+    return (
+      <section className="section section--dark" aria-label="Solicitud enviada">
+        <div className="section__inner">
+          <div style={{ textAlign: "center", padding: "clamp(48px,8vw,100px) 0" }}>
+            <div style={{ width: 64, height: 64, borderRadius: "50%", border: "2px solid #E6C77A", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px" }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E6C77A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+            </div>
+            <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(30px,5vw,50px)", fontStyle: "italic", color: "#E6C77A", lineHeight: 1.1, marginBottom: 16 }}>
+              Solicitud recibida,
+            </div>
+            <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(30px,5vw,50px)", fontStyle: "italic", color: "#fff", lineHeight: 1.1, marginBottom: 28 }}>
+              {nombreEnviado.split(" ")[0]}.
+            </div>
+            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.65)", maxWidth: 440, margin: "0 auto 36px", lineHeight: 1.8 }}>
+              Un miembro de nuestro equipo revisará tu perfil y se comunicará contigo
+              en las próximas 24–48 horas al número <strong style={{ color: "#fff" }}>{telefonoEnviado}</strong>.
+            </p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <a
+                href={`https://wa.me/593999999999?text=${encodeURIComponent("Hola, acabo de enviar mi solicitud de ingreso a CateonCook. Me llamo " + nombreEnviado + ".")}`}
+                target="_blank" rel="noopener noreferrer"
+                className="btn btn--lg btn--primary">
+                Escribir por WhatsApp →
+              </a>
+              <a href="CateonCook Nosotros.html" className="btn btn--lg btn--ghost-light">
+                Conoce nuestra historia
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const iS = { background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" };
+  const lS = { color: "rgba(255,255,255,0.6)" };
+  const flegend = { fontFamily: "JetBrains Mono, monospace", fontSize: 10, letterSpacing: "0.14em", color: "rgba(230,199,122,0.6)", marginBottom: 20, display: "block" };
+  const grid2 = { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 16 };
+
   return (
-    <section className="section section--dark" aria-label="Contacto">
-      <span className="section__corner-fig">Fig. 03 · Contacto</span>
+    <section className="section section--dark" aria-label="Únete">
+      <span className="section__corner-fig">Fig. 03 · Solicitud</span>
       <div className="section__inner">
         <div className="section__header">
           <div>
             <span className="section__eyebrow">
               <span className="section__eyebrow-rule" />
-              Tu primera conversación
+              Sé parte de la fábrica
             </span>
             <h2 className="section__title">
-              Escríbenos<br />
-              <em>en este formulario.</em>
+              Tu solicitud<br />
+              <em>de ingreso.</em>
             </h2>
           </div>
           <p className="section__lede">
-            Te contactará un sponsor real, no un chatbot. Promesa de respuesta: 24 horas hábiles.
-            Solo te pedimos lo necesario para encontrar quién te acompañe mejor.
+            Te contactará un miembro real de nuestro equipo, no un chatbot. Promesa de respuesta:
+            24–48 horas. Solo pedimos lo necesario para acompañarte bien desde el primer día.
           </p>
         </div>
 
-        {sent ? (
-          <div style={{
-            padding: "48px",
-            background: "rgba(230,199,122,0.08)",
-            borderLeft: "3px solid #E6C77A",
-            textAlign: "center",
-            color: "#fff",
-          }}>
-            <div style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic", fontWeight: 400,
-              fontSize: 40, lineHeight: 1.1,
-              color: "#E6C77A",
-              marginBottom: 12,
-            }}>
-              Recibido.
+        <form className="cform" onSubmit={handleSubmit} style={{ background: "rgba(255,255,255,0.04)", borderLeft: "3px solid #E6C77A", color: "#fff" }}>
+
+          <fieldset style={{ border: "none", padding: 0, margin: 0 }}>
+            <legend style={flegend}>DATOS PERSONALES</legend>
+            <div style={grid2}>
+              <div className="cform__field">
+                <label className="cform__label" htmlFor="u_nombre" style={lS}>Nombre completo *</label>
+                <input id="u_nombre" name="nombre" type="text" required placeholder="Ej. María García López" style={iS} />
+              </div>
+              <div className="cform__field">
+                <label className="cform__label" htmlFor="u_tel" style={lS}>Teléfono / WhatsApp *</label>
+                <input id="u_tel" name="tel" type="tel" required placeholder="+593 99 000 0000" style={iS} />
+              </div>
             </div>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.78)", margin: 0 }}>
-              Un sponsor te escribirá en las próximas 24 horas hábiles.<br />
-              Mientras tanto, puedes seguir explorando <a href="CateonCook Nosotros.html" style={{ color: "#E6C77A", textDecoration: "underline" }}>nuestra historia</a>.
-            </p>
-          </div>
-        ) : (
-          <form className="cform" onSubmit={handleSubmit} style={{ background: "rgba(255,255,255,0.04)", borderLeft: "3px solid #E6C77A", color: "#fff" }}>
-            <div className="cform__field">
-              <label className="cform__label" htmlFor="nombre" style={{ color: "rgba(255,255,255,0.6)" }}>Nombre</label>
-              <input id="nombre" type="text" required style={{ background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" }} placeholder="Tu nombre completo" />
+            <div className="cform__field" style={{ marginTop: 16 }}>
+              <label className="cform__label" htmlFor="u_email" style={lS}>Correo electrónico *</label>
+              <input id="u_email" name="email" type="email" required placeholder="tu@correo.com" style={iS} />
             </div>
-            <div className="cform__field">
-              <label className="cform__label" htmlFor="email" style={{ color: "rgba(255,255,255,0.6)" }}>Correo</label>
-              <input id="email" type="email" required style={{ background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" }} placeholder="tu@correo.com" />
+            <div style={{ ...grid2, marginTop: 16 }}>
+              <div className="cform__field">
+                <label className="cform__label" htmlFor="u_ciudad" style={lS}>Ciudad</label>
+                <input id="u_ciudad" name="ciudad" type="text" placeholder="Ej. Quito" style={iS} />
+              </div>
+              <div className="cform__field">
+                <label className="cform__label" htmlFor="u_provincia" style={lS}>Provincia *</label>
+                <select id="u_provincia" name="provincia" required style={iS}>
+                  <option value="">Selecciona tu provincia</option>
+                  {PROVINCIAS_EC.map(p => <option key={p} value={p}>{p}</option>)}
+                </select>
+              </div>
             </div>
+          </fieldset>
+
+          <fieldset style={{ border: "none", padding: 0, margin: "28px 0 0" }}>
+            <legend style={flegend}>PERFIL PROFESIONAL</legend>
             <div className="cform__field">
-              <label className="cform__label" htmlFor="tel" style={{ color: "rgba(255,255,255,0.6)" }}>Teléfono / WhatsApp</label>
-              <input id="tel" type="tel" required style={{ background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" }} placeholder="+593 99 ..." />
+              <label className="cform__label" htmlFor="u_prof" style={lS}>Profesión / Ocupación actual</label>
+              <input id="u_prof" name="profesion" type="text" placeholder="Ej. Ingeniera comercial, emprendedora" style={iS} />
             </div>
-            <div className="cform__field">
-              <label className="cform__label" htmlFor="ciudad" style={{ color: "rgba(255,255,255,0.6)" }}>Ciudad</label>
-              <select id="ciudad" required style={{ background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" }}>
-                <option value="">Seleccionar...</option>
-                <option>Quito</option>
-                <option>Guayaquil</option>
-                <option>Cuenca</option>
-                <option>Loja</option>
-                <option>Ambato</option>
-                <option>Otra</option>
+            <div className="cform__field" style={{ marginTop: 16 }}>
+              <label className="cform__label" style={lS}>¿Tienes RUC activo?</label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
+                {['Sí, tengo RUC activo','No aún, pero puedo tramitarlo','No lo tengo y no sé cómo obtenerlo'].map(op => (
+                  <label key={op} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: 13, color: "rgba(255,255,255,0.7)" }}>
+                    <input type="radio" name="tiene_ruc" value={op} style={{ accentColor: "#E6C77A" }} />
+                    {op}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="cform__field" style={{ marginTop: 16 }}>
+              <label className="cform__label" htmlFor="u_como" style={lS}>¿Cómo nos conociste?</label>
+              <select id="u_como" name="como_supo" style={iS}>
+                <option value="">Selecciona una opción</option>
+                {COMO_SUPO_OPS.map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
-            <div className="cform__field cform__field--full">
-              <label className="cform__label" htmlFor="interes" style={{ color: "rgba(255,255,255,0.6)" }}>¿Qué te interesa explorar?</label>
-              <select id="interes" required style={{ background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" }}>
-                <option value="">Seleccionar...</option>
-                <option>Ser emprendedor (medio tiempo)</option>
-                <option>Ser emprendedor (tiempo completo)</option>
-                <option>Ser distribuidor</option>
-                <option>Comprar producto solamente</option>
-                <option>Aún no estoy seguro</option>
-              </select>
+          </fieldset>
+
+          <fieldset style={{ border: "none", padding: 0, margin: "28px 0 0" }}>
+            <legend style={flegend}>TU MOTIVACIÓN</legend>
+            <div className="cform__field">
+              <label className="cform__label" htmlFor="u_motiv" style={lS}>¿Por qué quieres ser parte de la Fábrica de Sueños? *</label>
+              <textarea id="u_motiv" name="motivacion" rows="4" required
+                placeholder="Cuéntanos tu historia, tu sueño y por qué CateonCook es el camino para lograrlo..."
+                style={{ ...iS, resize: "vertical" }} />
             </div>
-            <div className="cform__field cform__field--full">
-              <label className="cform__label" htmlFor="mensaje" style={{ color: "rgba(255,255,255,0.6)" }}>Mensaje (opcional)</label>
-              <textarea id="mensaje" rows="3" style={{ background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.15)", color: "#fff" }} placeholder="Cuéntanos por dónde nos encontraste o qué te gustaría saber primero..." />
-            </div>
-            <div className="cform__submit">
-              <span className="cform__legal" style={{ color: "rgba(255,255,255,0.5)" }}>
-                AL ENVIAR ACEPTAS QUE UN SPONSOR DE CATEONCOOK TE CONTACTE. SIN COMPROMISO.
+            <div className="cform__field" style={{ marginTop: 16 }}>
+              <label className="cform__label" htmlFor="u_video" style={lS}>Link de tu video de presentación (recomendado)</label>
+              <input id="u_video" name="video_url" type="url"
+                placeholder="https://youtube.com/... o https://drive.google.com/..." style={iS} />
+              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 4, display: "block" }}>
+                YouTube (no listado) o Google Drive. Duración recomendada: 1–3 min.
               </span>
-              {error && (
-              <div style={{ color: "#ff6b6b", fontSize: 13, padding: "8px 0", fontFamily: "Inter, sans-serif" }}>
-                Error al enviar. Escríbenos a <a href="mailto:hola@cateoncook.com" style={{ color: "#E6C77A" }}>hola@cateoncook.com</a>
+            </div>
+          </fieldset>
+
+          <div className="cform__submit" style={{ marginTop: 28 }}>
+            <span className="cform__legal" style={{ color: "rgba(255,255,255,0.5)" }}>
+              AL ENVIAR AUTORIZAS EL TRATAMIENTO DE TUS DATOS PARA EL PROCESO DE SELECCIÓN ·{" "}
+              <a href="CateonCook Privacidad.html" style={{ color: "rgba(230,199,122,0.7)" }}>VER POLÍTICA</a>
+            </span>
+            {error && (
+              <div style={{ color: "#ff6b6b", fontSize: 13, padding: "8px 0" }}>
+                Error al enviar. Escríbenos a{" "}
+                <a href="mailto:administracion@cateoncook.com" style={{ color: "#E6C77A" }}>administracion@cateoncook.com</a>
               </div>
             )}
             <button type="submit" className="btn btn--lg btn--primary" disabled={sending} style={sending ? { opacity: 0.6 } : {}}>
-              {sending ? "Enviando..." : "Enviar →"}
+              {sending ? "Enviando solicitud…" : "Enviar solicitud de ingreso →"}
             </button>
-            </div>
-          </form>
-        )}
+          </div>
+        </form>
       </div>
     </section>
   );
 }
-
 /* ── App ── */
 function App() {
   uUseEffect(() => {

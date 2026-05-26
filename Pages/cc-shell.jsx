@@ -226,7 +226,7 @@ function FooterSection() {
             <div className="footer__col-title">Contacto</div>
             <ul>
               <li><a href="tel:+593999999999">+593 99 999 9999</a></li>
-              <li><a href="mailto:hola@cateoncook.com">hola@cateoncook.com</a></li>
+              <li><a href="mailto:administracion@cateoncook.com">administracion@cateoncook.com</a></li>
               <li><a href="#">Quito · Guayaquil · Cuenca</a></li>
               <li><a href="#">Lun – Sáb · 09:00 – 19:00</a></li>
             </ul>
