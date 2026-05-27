@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
+import GaleriaGrid from '@/components/marketing/galeria'
+import HistoriaPhotos from '@/components/marketing/historia-photos'
 
 /* ── Historia ── */
 function HistoriaSection() {
@@ -16,20 +17,7 @@ function HistoriaSection() {
       <span className="section__corner-fig">Fig. 01 · Familia</span>
       <div className="section__inner">
         <div className="nosotros__grid">
-          <div className="nosotros__photos">
-            <div className="nosotros__photo">
-              <Image src="/img/cc-gala-002.jpg" alt="Socios CateonCook gala" className="nosotros__photo-img" width={600} height={450} loading="lazy" />
-              <span className="nosotros__photo-caption">socios · gala · 2024</span>
-            </div>
-            <div className="nosotros__photo">
-              <Image src="/img/cc-rp-equipo.jpg" alt="Equipo Royal Prestige" className="nosotros__photo-img" width={600} height={450} loading="lazy" />
-              <span className="nosotros__photo-caption">equipo · Royal Prestige</span>
-            </div>
-            <div className="nosotros__photo">
-              <Image src="/img/cc-medallas-002.jpg" alt="Reconocimientos 2024" className="nosotros__photo-img" width={600} height={450} loading="lazy" />
-              <span className="nosotros__photo-caption">reconocimientos · 2024</span>
-            </div>
-          </div>
+          <HistoriaPhotos />
 
           <div className="nosotros__right">
             <p className="nosotros__lede">
@@ -139,23 +127,6 @@ function ValoresSection() {
 
 /* ── Galería ── */
 function FotoSection() {
-  const fotos = [
-    { src: '/img/nos-1.jpg',           caption: 'la familia · quito',          wide: true  },
-    { src: '/img/cc-evento-001.jpg',   caption: 'celebración · 2024'                       },
-    { src: '/img/nos-2.jpg',           caption: 'cocina · comunidad'                       },
-    { src: '/img/nos-3.jpg',           caption: 'capacitación · escuela cc'                },
-    { src: '/img/cc-gala-001.jpg',     caption: 'gala · aniversario'                       },
-    { src: '/img/cc-medallas-001.jpg', caption: 'reconocimientos · ecuador',   wide: true  },
-    { src: '/img/nos-4.jpg',           caption: 'liderazgo · equipo'                       },
-    { src: '/img/cc-star.jpg',         caption: 'cateon star · premiación'                 },
-    { src: '/img/cc-confeti.jpg',      caption: 'metas · 2024'                             },
-    { src: '/img/nos-5.jpg',           caption: 'socios · austro'                          },
-    { src: '/img/cc-rp-team.jpg',      caption: 'equipo · royal prestige',     wide: true  },
-    { src: '/img/nos-6.jpg',           caption: 'producto · calidad'                       },
-    { src: '/img/nos-7.jpg',           caption: 'red · cinco países'                       },
-    { src: '/img/cc-mesa.jpg',         caption: 'la mesa · todos',             wide: true  },
-    { src: '/img/cc-evento-003.jpg',   caption: 'evento · ecuador',            wide: true  },
-  ]
   return (
     <section className="section section--dark fotos" aria-label="Galería de la familia">
       <span className="section__corner-fig">Fig. 04 · Imágenes</span>
@@ -167,21 +138,7 @@ function FotoSection() {
           </div>
         </div>
       </div>
-      <div className="fotos__grid">
-        {fotos.map((f, i) => (
-          <div key={i} className={`fotos__item${f.wide ? ' fotos__item--wide' : ''}`}>
-            <Image
-              src={f.src}
-              alt={f.caption}
-              fill
-              className="fotos__img"
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              loading="lazy"
-            />
-            <span className="fotos__caption">{f.caption}</span>
-          </div>
-        ))}
-      </div>
+      <GaleriaGrid />
     </section>
   )
 }
