@@ -125,9 +125,9 @@ function ValoresSection() {
         </div>
         <div className="values" style={{ background: 'rgba(11,23,56,0.12)', border: '1px solid rgba(11,23,56,0.12)' }}>
           {values.map((v, i) => (
-            <article key={i} className="value" style={{ background: 'var(--c-cream)', color: 'var(--c-ink)', padding: '20px 22px', gap: '8px' }}>
+            <article key={i} className="value" style={{ background: 'var(--c-cream)', color: 'var(--c-ink)' }}>
               <div className="value__num" style={{ color: 'var(--c-gold)' }}>{v.n}</div>
-              <h3 className="value__title" style={{ color: 'var(--c-ink)', fontSize: '21px' }}>{v.title}</h3>
+              <h3 className="value__title" style={{ color: 'var(--c-ink)' }}>{v.title}</h3>
               <p className="value__desc" style={{ color: 'var(--c-muted)' }}>{v.desc}</p>
             </article>
           ))}
