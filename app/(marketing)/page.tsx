@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { CCLogoMark } from '@/components/marketing/logo'
 import SectionDivider from '@/components/marketing/section-divider'
 import { useModal } from '@/components/marketing/shell'
+import { useLenis } from '@/components/lenis-provider'
 
 /* ── Title Cube ── */
 const PANELS = [
@@ -15,10 +16,7 @@ const PANELS = [
   { type: 'image' as const, label: 'la mesa · comunidad',      src: '/img/cc-mesa.jpg',       pos: 'center 45%' },
 ]
 const CYCLE = [0, 1, 2, 0, 3, 4]
-const randomMs = (i: number, first: boolean) => {
-  if (first) return 5500
-  return i === 0 ? Math.random() * 2000 + 3500 : Math.random() * 3000 + 2200
-}
+const randomMs = (_i: number, _first: boolean) => Math.random() * 3000 + 2000
 
 function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => void }) {
   const [active, setActive] = useState(CYCLE[0])
@@ -26,6 +24,24 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
   const cycleRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const glareRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lenis = useLenis()
+
+  // Parallax: desplaza objectPosition-Y al scroll para efecto de profundidad
+  useEffect(() => {
+    if (!lenis) return
+    const heroEl = document.getElementById('inicio')
+    if (!heroEl) return
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function parallax(l: any) {
+      const progress = Math.min(1, Math.max(0, l.scroll / heroEl.offsetHeight))
+      heroEl.querySelectorAll<HTMLImageElement>('.tcube-image__photo').forEach(img => {
+        const base = parseFloat(img.dataset.posY ?? '50')
+        img.style.objectPosition = `center ${base + progress * 20}%`
+      })
+    }
+    lenis.on('scroll', parallax)
+    return () => lenis.off('scroll', parallax)
+  }, [lenis])
 
   useEffect(() => { onActiveChange(CYCLE[0] === 0) }, [])
   useEffect(() => { onActiveChange(active === 0) }, [active])
@@ -38,17 +54,18 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
     const obs = new IntersectionObserver(
       ([entry]) => {
         const ratio = entry.intersectionRatio
-        if (ratio < 0.5) {
+        if (ratio < 0.65) {
           if (timerRef.current) clearTimeout(timerRef.current)
           if (glareRef.current) clearTimeout(glareRef.current)
           setActive(0)
           setGlare(false)
-        } else if (ratio >= 0.85 && prevRatio < 0.85) {
+        } else if (ratio >= 0.65 && prevRatio < 0.65) {
+          cycleRef.current = 0
           startCycle()
         }
         prevRatio = ratio
       },
-      { threshold: [0.5, 0.85] }
+      { threshold: [0.65] }
     )
     obs.observe(hero)
     return () => obs.disconnect()
@@ -91,7 +108,7 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
         glareRef.current = setTimeout(fire, Math.random() * 3000 + 1800)
       }, 1050)
     }
-    glareRef.current = setTimeout(fire, Math.random() * 1200 + 600)
+    fire()
     return () => { if (glareRef.current) clearTimeout(glareRef.current) }
   }, [active])
 
@@ -115,7 +132,7 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
                 aria-label="Volver al inicio"
                 onKeyDown={e => e.key === 'Enter' && handleImageClick()}
               >
-                <img src={panel.src} alt={panel.label} className="tcube-image__photo" style={{ objectPosition: panel.pos }} />
+                <img src={panel.src} alt={panel.label} className="tcube-image__photo" style={{ objectPosition: panel.pos }} data-pos-y={panel.pos.split(' ')[1]?.replace('%', '') ?? '50'} />
                 <div className="tcube-image__grain" />
               </div>
               <div className="tcube-panel__bars" aria-hidden="true" />
@@ -148,6 +165,17 @@ function getAudioCtx(): AudioContext | null {
 const HeroTransition = React.memo(function HeroTransition() {
   const wrapRef = useRef<HTMLDivElement>(null)
 
+  // Bake final state into inline style so CSS class toggling can't erase it
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const onEnd = (e: AnimationEvent) => {
+      (e.target as SVGPathElement).style.strokeDashoffset = '0'
+    }
+    wrap.addEventListener('animationend', onEnd)
+    return () => wrap.removeEventListener('animationend', onEnd)
+  }, [])
+
   useEffect(() => {
     const hero = document.getElementById('inicio')
     const wrap = wrapRef.current
@@ -178,6 +206,7 @@ const HeroTransition = React.memo(function HeroTransition() {
   }, [])
 
   function fire(wrap: HTMLDivElement) {
+    wrap.querySelectorAll<SVGPathElement>('.htrans__path').forEach(p => { p.style.strokeDashoffset = '' })
     wrap.classList.remove('htrans--on')
     void wrap.offsetWidth
     wrap.classList.add('htrans--on')
@@ -484,9 +513,11 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
-      <HeroTransition />
+      <div className="htrans-bg">
+        <HeroTransition />
+      </div>
       <SplitPreview />
-      <SectionDivider direction="dark-to-cream" targetSelector="#voces" />
+      <div className="htrans-bg" aria-hidden="true" />
       <VocesSection />
       <CommunityMarquee />
       <SectionDivider direction="cream-to-dark" targetSelector=".footer" />
