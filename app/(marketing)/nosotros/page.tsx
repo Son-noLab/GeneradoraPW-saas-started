@@ -55,6 +55,7 @@ function HistoriaSection() {
                 <strong>María Fernanda · Distribuidora</strong> · Loja, 8 años con CC
               </div>
             </blockquote>
+            <Link href="/unete" className="btn btn--lg btn--premium">Empezar mi camino →</Link>
           </div>
         </div>
       </div>
@@ -85,10 +86,6 @@ function TimelineSection() {
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />Línea de tiempo</span>
             <h2 className="section__title">Veintidós años,<br /><em>una sola mesa.</em></h2>
           </div>
-          <p className="section__lede">
-            No nos volvimos grandes de un día para el otro. Cada paso fue una decisión deliberada
-            de crecer despacio para crecer bien.
-          </p>
         </div>
         <div className="timeline">
           {rows.map(r => (
@@ -125,10 +122,6 @@ function ValoresSection() {
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />En qué creemos</span>
             <h2 className="section__title">Tres valores<br />que <em>no se negocian.</em></h2>
           </div>
-          <p className="section__lede">
-            Si tienes que escoger entre lo que vende más rápido y lo que cuida mejor, en
-            CateonCook escogemos lo segundo. Siempre.
-          </p>
         </div>
         <div className="values" style={{ background: 'rgba(11,23,56,0.12)', border: '1px solid rgba(11,23,56,0.12)' }}>
           {values.map((v, i) => (
@@ -138,18 +131,6 @@ function ValoresSection() {
               <p className="value__desc" style={{ color: 'var(--c-muted)' }}>{v.desc}</p>
             </article>
           ))}
-        </div>
-        <div className="cta-band">
-          <div className="cta-band__text">
-            <h3 className="cta-band__title">¿Te gustaría que tu nombre <em>esté en la próxima década</em>?</h3>
-            <p className="cta-band__desc">
-              La fábrica sigue abierta. Una conversación de 30 minutos basta para saber si este
-              es tu lugar.
-            </p>
-          </div>
-          <div className="cta-band__actions">
-            <Link href="/unete" className="btn btn--lg btn--dark">Empezar mi camino →</Link>
-          </div>
         </div>
       </div>
     </section>
@@ -184,10 +165,6 @@ function FotoSection() {
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />La familia en imágenes</span>
             <h2 className="section__title">Quinientas mesas,<br /><em>una sola historia.</em></h2>
           </div>
-          <p className="section__lede">
-            Cada foto es una cocina real. Un logro real. Una persona que decidió que
-            la mesa de su casa podía ser también el inicio de algo más grande.
-          </p>
         </div>
       </div>
       <div className="fotos__grid">
