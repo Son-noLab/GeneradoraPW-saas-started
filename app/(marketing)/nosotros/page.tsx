@@ -3,6 +3,7 @@ import Image from 'next/image'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
 
+/* ── Historia ── */
 function HistoriaSection() {
   const stats = [
     { n: <>+500</>,         l: 'FAMILIAS SOCIAS' },
@@ -17,33 +18,15 @@ function HistoriaSection() {
         <div className="nosotros__grid">
           <div className="nosotros__photos">
             <div className="nosotros__photo">
-              <Image
-                src="/img/cc-gala-002.jpg"
-                alt="Socios CateonCook gala"
-                className="nosotros__photo-img"
-                width={600} height={450}
-                loading="lazy"
-              />
+              <Image src="/img/cc-gala-002.jpg" alt="Socios CateonCook gala" className="nosotros__photo-img" width={600} height={450} loading="lazy" />
               <span className="nosotros__photo-caption">socios · gala · 2024</span>
             </div>
             <div className="nosotros__photo">
-              <Image
-                src="/img/cc-rp-equipo.jpg"
-                alt="Equipo Royal Prestige"
-                className="nosotros__photo-img"
-                width={600} height={450}
-                loading="lazy"
-              />
+              <Image src="/img/cc-rp-equipo.jpg" alt="Equipo Royal Prestige" className="nosotros__photo-img" width={600} height={450} loading="lazy" />
               <span className="nosotros__photo-caption">equipo · Royal Prestige</span>
             </div>
             <div className="nosotros__photo">
-              <Image
-                src="/img/cc-medallas-002.jpg"
-                alt="Reconocimientos 2024"
-                className="nosotros__photo-img"
-                width={600} height={450}
-                loading="lazy"
-              />
+              <Image src="/img/cc-medallas-002.jpg" alt="Reconocimientos 2024" className="nosotros__photo-img" width={600} height={450} loading="lazy" />
               <span className="nosotros__photo-caption">reconocimientos · 2024</span>
             </div>
           </div>
@@ -54,7 +37,6 @@ function HistoriaSection() {
               el centro de la casa. Veintidós años después, cada socio que se suma extiende esa
               misma promesa a una familia más.
             </p>
-
             <div className="nosotros__stats">
               {stats.map((s, i) => (
                 <div key={i}>
@@ -63,7 +45,6 @@ function HistoriaSection() {
                 </div>
               ))}
             </div>
-
             <blockquote className="nosotros__quote">
               <span className="nosotros__quote-fig">Fig. 01·a</span>
               <p className="nosotros__quote-text">
@@ -81,6 +62,7 @@ function HistoriaSection() {
   )
 }
 
+/* ── Timeline ── */
 function TimelineSection() {
   const rows = [
     { year: '2003', title: <>La primera <em>olla</em></>,
@@ -100,14 +82,8 @@ function TimelineSection() {
       <div className="section__inner">
         <div className="section__header">
           <div>
-            <span className="section__eyebrow">
-              <span className="section__eyebrow-rule" />
-              Línea de tiempo
-            </span>
-            <h2 className="section__title">
-              Veintidós años,<br />
-              <em>una sola mesa.</em>
-            </h2>
+            <span className="section__eyebrow"><span className="section__eyebrow-rule" />Línea de tiempo</span>
+            <h2 className="section__title">Veintidós años,<br /><em>una sola mesa.</em></h2>
           </div>
           <p className="section__lede">
             No nos volvimos grandes de un día para el otro. Cada paso fue una decisión deliberada
@@ -130,6 +106,7 @@ function TimelineSection() {
   )
 }
 
+/* ── Valores ── */
 function ValoresSection() {
   const values = [
     { n: 'Valor · I',   title: <>Comunidad <em>que nutre</em></>,
@@ -145,14 +122,8 @@ function ValoresSection() {
       <div className="section__inner">
         <div className="section__header">
           <div>
-            <span className="section__eyebrow">
-              <span className="section__eyebrow-rule" />
-              En qué creemos
-            </span>
-            <h2 className="section__title">
-              Tres valores<br />
-              que <em>no se negocian.</em>
-            </h2>
+            <span className="section__eyebrow"><span className="section__eyebrow-rule" />En qué creemos</span>
+            <h2 className="section__title">Tres valores<br />que <em>no se negocian.</em></h2>
           </div>
           <p className="section__lede">
             Si tienes que escoger entre lo que vende más rápido y lo que cuida mejor, en
@@ -185,6 +156,144 @@ function ValoresSection() {
   )
 }
 
+/* ── Galería ── */
+function FotoSection() {
+  const fotos = [
+    { src: '/img/nos-1.jpg',           caption: 'la familia · quito',          wide: true  },
+    { src: '/img/cc-evento-001.jpg',   caption: 'celebración · 2024'                       },
+    { src: '/img/nos-2.jpg',           caption: 'cocina · comunidad'                       },
+    { src: '/img/nos-3.jpg',           caption: 'capacitación · escuela cc'                },
+    { src: '/img/cc-gala-001.jpg',     caption: 'gala · aniversario'                       },
+    { src: '/img/cc-medallas-001.jpg', caption: 'reconocimientos · ecuador',   wide: true  },
+    { src: '/img/nos-4.jpg',           caption: 'liderazgo · equipo'                       },
+    { src: '/img/cc-star.jpg',         caption: 'cateon star · premiación'                 },
+    { src: '/img/cc-confeti.jpg',      caption: 'metas · 2024'                             },
+    { src: '/img/nos-5.jpg',           caption: 'socios · austro'                          },
+    { src: '/img/cc-rp-team.jpg',      caption: 'equipo · royal prestige',     wide: true  },
+    { src: '/img/nos-6.jpg',           caption: 'producto · calidad'                       },
+    { src: '/img/nos-7.jpg',           caption: 'red · cinco países'                       },
+    { src: '/img/cc-mesa.jpg',         caption: 'la mesa · todos',             wide: true  },
+    { src: '/img/cc-evento-003.jpg',   caption: 'evento · ecuador',            wide: true  },
+  ]
+  return (
+    <section className="section section--dark fotos" aria-label="Galería de la familia">
+      <span className="section__corner-fig">Fig. 04 · Imágenes</span>
+      <div className="section__inner">
+        <div className="section__header reveal">
+          <div>
+            <span className="section__eyebrow"><span className="section__eyebrow-rule" />La familia en imágenes</span>
+            <h2 className="section__title">Quinientas mesas,<br /><em>una sola historia.</em></h2>
+          </div>
+          <p className="section__lede">
+            Cada foto es una cocina real. Un logro real. Una persona que decidió que
+            la mesa de su casa podía ser también el inicio de algo más grande.
+          </p>
+        </div>
+      </div>
+      <div className="fotos__grid">
+        {fotos.map((f, i) => (
+          <div key={i} className={`fotos__item${f.wide ? ' fotos__item--wide' : ''}`}>
+            <Image
+              src={f.src}
+              alt={f.caption}
+              fill
+              className="fotos__img"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              loading="lazy"
+            />
+            <span className="fotos__caption">{f.caption}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ── Redes sociales ── */
+const REDES = [
+  {
+    name: 'Instagram',
+    handle: '@cateoncook',
+    href: '#',
+    desc: 'Recetas, logros y el detrás de cámara de quinientas cocinas reales.',
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Facebook',
+    handle: 'CateonCook',
+    href: '#',
+    desc: 'Comunidad activa. Noticias, eventos y conversaciones de socios de todo el Ecuador.',
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'TikTok',
+    handle: '@cateoncook',
+    href: '#',
+    desc: 'Cocina sin grasa, en minutos. Royal Prestige en la pantalla de tu teléfono.',
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9a8.22 8.22 0 0 0 4.83 1.56V7.11a4.85 4.85 0 0 1-1.06-.42z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'WhatsApp',
+    handle: '+593 999 999 999',
+    href: 'https://wa.me/593999999999',
+    desc: 'Una pregunta directa. Sin formularios, sin tiempos de espera. La fábrica siempre contesta.',
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+      </svg>
+    ),
+  },
+]
+
+function RedesSection() {
+  return (
+    <section className="section section--dark redes" aria-label="Redes sociales">
+      <span className="section__corner-fig">Fig. 05 · Red</span>
+      <div className="section__inner">
+        <div className="redes__header reveal">
+          <div>
+            <span className="section__eyebrow"><span className="section__eyebrow-rule" />La fábrica también vive aquí</span>
+            <h2 className="section__title">Entra a la<br /><em>conversación.</em></h2>
+          </div>
+          <p className="section__lede">
+            Cada publicación es una mesa extendida. Un espacio donde socios, familias y
+            nuevas voces comparten lo que pasa cuando la cocina se convierte en algo más
+            que cocinar.
+          </p>
+        </div>
+        <div className="redes__grid">
+          {REDES.map(r => (
+            <a key={r.name} href={r.href} target="_blank" rel="noopener noreferrer" className="red">
+              <div className="red__icon">{r.icon}</div>
+              <div className="red__body">
+                <span className="red__name">{r.name}</span>
+                <span className="red__handle">{r.handle}</span>
+                <p className="red__desc">{r.desc}</p>
+              </div>
+              <span className="red__arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ── Page ── */
 export default function NosotrosPage() {
   return (
     <main>
@@ -205,6 +314,9 @@ export default function NosotrosPage() {
       <TimelineSection />
       <SectionDivider direction="dark-to-cream" targetSelector=".values" />
       <ValoresSection />
+      <SectionDivider direction="cream-to-dark" targetSelector=".fotos" />
+      <FotoSection />
+      <RedesSection />
     </main>
   )
 }
