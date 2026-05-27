@@ -977,7 +977,7 @@ body:has(.mk) {
   color: rgba(255,255,255,0.78); padding: 4px 8px; background: rgba(0,0,0,0.42);
 }
 .mk .nosotros__right { display: flex; flex-direction: column; gap: 40px; height: 100%; }
-.mk .nosotros__valores .section__inner { padding-top: clamp(36px, 4vw, 56px); padding-bottom: clamp(36px, 4vw, 56px); }
+.mk .nosotros__valores .section__inner { padding-top: clamp(36px, 4vw, 56px); padding-bottom: clamp(36px, 4vw, 56px); max-width: 860px; }
 .mk .nosotros__valores .section__header { margin-bottom: 24px; }
 .mk .nosotros__valores .section__title { font-size: clamp(26px, 2.8vw, 36px); }
 .mk .nosotros__lede { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.72); max-width: 540px; margin: 0; }
