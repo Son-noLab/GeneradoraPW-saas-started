@@ -1649,7 +1649,7 @@ body:has(.mk) {
   margin-bottom: clamp(40px, 6vw, 72px);
 }
 .mk .redes__grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
   border: 1px solid rgba(255,255,255,0.07);
 }
 .mk .red {
@@ -1681,6 +1681,13 @@ body:has(.mk) {
   margin-top: 12px; transition: color 0.2s, transform 0.2s; display: block;
 }
 .mk .red:hover .red__arrow { color: var(--c-gold); transform: translate(3px,-3px); }
+.mk .red--pending { opacity: 0.38; cursor: default; pointer-events: none; }
+.mk .red__soon {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.12); padding: 3px 7px;
+  align-self: flex-end; margin-top: 12px;
+}
 
 /* ════════════════════════════════════
    RESPONSIVE
@@ -1701,10 +1708,9 @@ body:has(.mk) {
   .mk .nosotros__stats { grid-template-columns: repeat(2, 1fr); gap: 24px; }
   .mk .fotos__grid { grid-auto-rows: 180px; }
   .mk .redes__header { grid-template-columns: 1fr; gap: 24px; }
-  .mk .redes__grid { grid-template-columns: repeat(2, 1fr); }
+  .mk .redes__grid { grid-template-columns: repeat(3, 1fr); }
   .mk .red { border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .mk .redes__grid .red:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.07); }
-  .mk .redes__grid .red:nth-child(even) { border-right: none; }
+  .mk .redes__grid .red:nth-child(3n) { border-right: none; }
   .mk .redes__grid .red:nth-last-child(-n+2) { border-bottom: none; }
   .mk .unete__steps { grid-template-columns: repeat(2, 1fr); gap: 32px 0; }
   .mk .unete__steps::before { display: none; }
@@ -1758,8 +1764,10 @@ body:has(.mk) {
 @media (max-width: 560px) {
   .mk .unete__steps { grid-template-columns: 1fr; }
   .mk .nosotros__stats { grid-template-columns: 1fr 1fr; }
-  .mk .redes__grid { grid-template-columns: 1fr; }
-  .mk .redes__grid .red { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .mk .redes__grid { grid-template-columns: repeat(2, 1fr); }
+  .mk .redes__grid .red { border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .mk .redes__grid .red:nth-child(even) { border-right: none; }
+  .mk .redes__grid .red:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.07); }
   .mk .redes__grid .red:last-child { border-bottom: none; }
   .mk .producto__feature { grid-template-columns: 48px 1fr; gap: 14px; }
   .mk .producto__feature-num { font-size: 26px; }

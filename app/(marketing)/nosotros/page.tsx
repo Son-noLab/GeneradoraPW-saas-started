@@ -55,7 +55,7 @@ function HistoriaSection() {
                 <strong>María Fernanda · Distribuidora</strong> · Loja, 8 años con CC
               </div>
             </blockquote>
-            <Link href="/unete" className="btn btn--lg btn--premium">Empezar mi camino →</Link>
+            <Link href="/unete" className="btn btn--lg btn--premium" style={{ marginTop: 'auto' }}>Empezar mi camino →</Link>
           </div>
         </div>
       </div>
@@ -125,9 +125,9 @@ function ValoresSection() {
         </div>
         <div className="values" style={{ background: 'rgba(11,23,56,0.12)', border: '1px solid rgba(11,23,56,0.12)' }}>
           {values.map((v, i) => (
-            <article key={i} className="value" style={{ background: 'var(--c-cream)', color: 'var(--c-ink)' }}>
+            <article key={i} className="value" style={{ background: 'var(--c-cream)', color: 'var(--c-ink)', padding: '20px 22px', gap: '8px' }}>
               <div className="value__num" style={{ color: 'var(--c-gold)' }}>{v.n}</div>
-              <h3 className="value__title" style={{ color: 'var(--c-ink)' }}>{v.title}</h3>
+              <h3 className="value__title" style={{ color: 'var(--c-ink)', fontSize: '21px' }}>{v.title}</h3>
               <p className="value__desc" style={{ color: 'var(--c-muted)' }}>{v.desc}</p>
             </article>
           ))}
@@ -191,7 +191,8 @@ const REDES = [
   {
     name: 'Instagram',
     handle: '@cateoncook',
-    href: '#',
+    href: 'https://www.instagram.com/cateoncook',
+    active: true,
     desc: 'Recetas, logros y el detrás de cámara de quinientas cocinas reales.',
     icon: (
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -204,7 +205,8 @@ const REDES = [
   {
     name: 'Facebook',
     handle: 'CateonCook',
-    href: '#',
+    href: 'https://www.facebook.com/cateoncook',
+    active: true,
     desc: 'Comunidad activa. Noticias, eventos y conversaciones de socios de todo el Ecuador.',
     icon: (
       <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -215,7 +217,8 @@ const REDES = [
   {
     name: 'TikTok',
     handle: '@cateoncook',
-    href: '#',
+    href: null,
+    active: false,
     desc: 'Cocina sin grasa, en minutos. Royal Prestige en la pantalla de tu teléfono.',
     icon: (
       <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -224,9 +227,22 @@ const REDES = [
     ),
   },
   {
+    name: 'YouTube',
+    handle: '@cateoncook',
+    href: null,
+    active: false,
+    desc: 'Capacitaciones, testimonios y el mundo CC en video.',
+    icon: (
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      </svg>
+    ),
+  },
+  {
     name: 'WhatsApp',
-    handle: '+593 999 999 999',
-    href: 'https://wa.me/593999999999',
+    handle: '+593 984 909 878',
+    href: 'https://wa.me/593984909878',
+    active: true,
     desc: 'Una pregunta directa. Sin formularios, sin tiempos de espera. La fábrica siempre contesta.',
     icon: (
       <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -246,24 +262,27 @@ function RedesSection() {
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />La fábrica también vive aquí</span>
             <h2 className="section__title">Entra a la<br /><em>conversación.</em></h2>
           </div>
-          <p className="section__lede">
-            Cada publicación es una mesa extendida. Un espacio donde socios, familias y
-            nuevas voces comparten lo que pasa cuando la cocina se convierte en algo más
-            que cocinar.
-          </p>
         </div>
         <div className="redes__grid">
-          {REDES.map(r => (
-            <a key={r.name} href={r.href} target="_blank" rel="noopener noreferrer" className="red">
-              <div className="red__icon">{r.icon}</div>
-              <div className="red__body">
-                <span className="red__name">{r.name}</span>
-                <span className="red__handle">{r.handle}</span>
-                <p className="red__desc">{r.desc}</p>
-              </div>
-              <span className="red__arrow" aria-hidden="true">↗</span>
-            </a>
-          ))}
+          {REDES.map(r => {
+            const inner = (
+              <>
+                <div className="red__icon">{r.icon}</div>
+                <div className="red__body">
+                  <span className="red__name">{r.name}</span>
+                  <span className="red__handle">{r.handle}</span>
+                  <p className="red__desc">{r.desc}</p>
+                </div>
+                {r.active
+                  ? <span className="red__arrow" aria-hidden="true">↗</span>
+                  : <span className="red__soon" aria-label="Próximamente">Próximamente</span>
+                }
+              </>
+            )
+            return r.active
+              ? <a key={r.name} href={r.href!} target="_blank" rel="noopener noreferrer" className="red">{inner}</a>
+              : <div key={r.name} className="red red--pending" aria-disabled="true">{inner}</div>
+          })}
         </div>
       </div>
     </section>
