@@ -37,6 +37,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  turbopack: {},
   experimental: {
     workerThreads: false,
     cpus: 1,
