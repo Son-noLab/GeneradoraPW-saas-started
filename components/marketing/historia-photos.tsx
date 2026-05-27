@@ -90,7 +90,7 @@ export default function HistoriaPhotos() {
               fill
               className="nosotros__photo-img"
               sizes="(max-width: 960px) 50vw, 30vw"
-              loading="lazy"
+              {...(i === 0 ? { priority: true } : { loading: 'lazy' as const })}
             />
             <span className="nosotros__photo-caption">{f.caption}</span>
           </button>
