@@ -66,7 +66,11 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  const publicPaths = ['/', '/nosotros', '/el-producto', '/unirse', '/login', '/signup', '/forgot-password', '/reset-password']
+  const publicPaths = [
+    '/', '/nosotros', '/oportunidad', '/producto', '/unete',
+    '/privacidad', '/terminos', '/el-producto', '/unirse',
+    '/login', '/signup', '/forgot-password', '/reset-password',
+  ]
   const isPublic = publicPaths.includes(pathname)
     || pathname.startsWith('/auth')
     || pathname.startsWith('/producto')

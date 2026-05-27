@@ -17,7 +17,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: https://images.unsplash.com",
+      "img-src 'self' data: https://images.unsplash.com https://ejdrtjutjcnqmxpvbmwa.supabase.co",
       `connect-src 'self' https://*.supabase.co wss://*.supabase.co`,
       "frame-ancestors 'none'",
     ].join('; '),
@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ejdrtjutjcnqmxpvbmwa.supabase.co',
       },
     ],
   },

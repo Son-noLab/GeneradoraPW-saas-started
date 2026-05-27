@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Cormorant_Garamond } from 'next/font/google'
+import { Inter, Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
 import LenisProvider from '@/components/lenis-provider'
 import './globals.css'
 
@@ -17,6 +17,13 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 })
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   title: 'CateonCook — Fábrica de Sueños',
   description: 'Territorio CateonCook. Distribuidor Autorizado Royal Prestige en Ecuador. Únete a nuestra fábrica de sueños.',
@@ -25,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${cormorant.variable}`}>
+      <body className={`${inter.variable} ${cormorant.variable} ${jetbrainsMono.variable}`}>
         <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
