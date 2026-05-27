@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import PageHero from '@/components/marketing/page-hero'
 
-export const metadata: Metadata = { title: 'Términos y Condiciones — CateonCook' }
+export const metadata: Metadata = {
+  title: 'Términos y Condiciones — CateonCook',
+  description: 'Términos y condiciones de uso del sitio web y los servicios de CateonCook, distribuidor autorizado de Royal Prestige en Ecuador.',
+}
 
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (

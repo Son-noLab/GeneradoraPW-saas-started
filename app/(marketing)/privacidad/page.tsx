@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import PageHero from '@/components/marketing/page-hero'
 
-export const metadata: Metadata = { title: 'Política de Privacidad — CateonCook' }
+export const metadata: Metadata = {
+  title: 'Política de Privacidad — CateonCook',
+  description: 'Conoce cómo CateonCook recopila, usa y protege tus datos personales conforme a la legislación ecuatoriana de protección de datos.',
+}
 
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (

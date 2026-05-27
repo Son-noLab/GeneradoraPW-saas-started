@@ -32,8 +32,8 @@ export default function Footer() {
             <ul>
               <li><a href="tel:+593984909878">+593 98 490 9878</a></li>
               <li><a href="mailto:administracion@cateoncook.com">administracion@cateoncook.com</a></li>
-              <li><a href="#">Quito · Guayaquil · Cuenca</a></li>
-              <li><a href="#">Lun – Sáb · 09:00 – 19:00</a></li>
+              <li><span>Quito · Guayaquil · Cuenca</span></li>
+              <li><span>Lun – Sáb · 09:00 – 19:00</span></li>
             </ul>
           </div>
 

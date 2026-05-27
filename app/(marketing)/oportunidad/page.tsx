@@ -1,8 +1,12 @@
-'use client'
-
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
+
+export const metadata: Metadata = {
+  title: 'Oportunidad · CateonCook — Fábrica de Sueños',
+  description: 'Dos modelos, cuatro niveles, una sola promesa. Conoce el plan de mercadeo de CateonCook y empieza a construir tu negocio con respaldo real.',
+}
 
 function SplitFull() {
   return (
@@ -99,7 +103,7 @@ function LevelsSection() {
     <section className="section section--dark" aria-label="Plan de mercadeo">
       <span className="section__corner-fig">Fig. 01 · Plan</span>
       <div className="section__inner">
-        <div className="section__header">
+        <div className="section__header reveal">
           <div>
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />Plan de mercadeo</span>
             <h2 className="section__title">Cuatro niveles,<br /><em>un solo camino.</em></h2>
@@ -135,7 +139,7 @@ function TestimonialsSection() {
     <section className="section section--cream" aria-label="Testimoniales">
       <span className="section__corner-fig">Fig. 02 · Voces</span>
       <div className="section__inner">
-        <div className="section__header">
+        <div className="section__header reveal">
           <div>
             <span className="section__eyebrow">
               <span className="section__eyebrow-rule" />

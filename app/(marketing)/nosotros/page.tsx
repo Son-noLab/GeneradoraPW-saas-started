@@ -1,8 +1,14 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
 import GaleriaGrid from '@/components/marketing/galeria'
 import HistoriaPhotos from '@/components/marketing/historia-photos'
+
+export const metadata: Metadata = {
+  title: 'Nosotros · CateonCook — Fábrica de Sueños',
+  description: 'Veintidós años construyendo comunidad. Conoce la historia, los valores y las personas detrás de CateonCook y Royal Prestige en Ecuador.',
+}
 
 /* ── Historia ── */
 function HistoriaSection() {
@@ -69,7 +75,7 @@ function TimelineSection() {
     <section className="section section--dark" aria-label="Línea de tiempo">
       <span className="section__corner-fig">Fig. 02 · Cronología</span>
       <div className="section__inner">
-        <div className="section__header">
+        <div className="section__header reveal">
           <div>
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />Línea de tiempo</span>
             <h2 className="section__title">Veintidós años,<br /><em>una sola mesa.</em></h2>
@@ -105,7 +111,7 @@ function ValoresSection() {
     <section className="section section--cream nosotros__valores" aria-label="Valores">
       <span className="section__corner-fig">Fig. 03 · Valores</span>
       <div className="section__inner">
-        <div className="section__header">
+        <div className="section__header reveal">
           <div>
             <span className="section__eyebrow"><span className="section__eyebrow-rule" />En qué creemos</span>
             <h2 className="section__title">Tres valores<br />que <em>no se negocian.</em></h2>
