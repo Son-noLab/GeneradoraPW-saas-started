@@ -114,7 +114,7 @@ function ValoresSection() {
       desc: 'Preferimos diez socios sólidos que cien apresurados. El tiempo es lo único que el negocio no puede comprar.' },
   ]
   return (
-    <section className="section section--cream" aria-label="Valores">
+    <section className="section section--cream nosotros__valores" aria-label="Valores">
       <span className="section__corner-fig">Fig. 03 · Valores</span>
       <div className="section__inner">
         <div className="section__header">
