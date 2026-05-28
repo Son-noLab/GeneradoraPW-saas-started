@@ -12,15 +12,24 @@ function ForgotPasswordForm() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [sendError, setSendError] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
+    setSendError(false)
 
     const supabase = createClient()
-    await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
     })
+
+    if (error) {
+      console.error('[forgot-password]', error.message)
+      setSendError(true)
+      setLoading(false)
+      return
+    }
 
     setDone(true)
     setLoading(false)
@@ -100,6 +109,12 @@ function ForgotPasswordForm() {
                 autoComplete="email"
               />
             </div>
+
+            {sendError && (
+              <p style={{ fontSize: '0.85rem', color: '#b91c1c', padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fecaca' }}>
+                No se pudo enviar el correo. Intenta de nuevo en unos minutos.
+              </p>
+            )}
 
             <button type="submit" className="modal__submit" disabled={loading} style={{ marginTop: '0.25rem' }}>
               {loading ? 'Enviando…' : 'Enviar enlace de recuperación'}
