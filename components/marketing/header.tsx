@@ -14,12 +14,17 @@ const NAV = [
   { href: '/nosotros',    label: 'Nosotros' },
 ]
 
-export default function Header() {
+interface HeaderProps {
+  initialLoggedIn?: boolean
+  initialProfile?: { name: string | null; avatar: string | null } | null
+}
+
+export default function Header({ initialLoggedIn = false, initialProfile = null }: HeaderProps) {
   const [solid, setSolid] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [userProfile, setUserProfile] = useState<{ name: string | null; avatar: string | null } | null>(null)
+  const [loggedIn, setLoggedIn] = useState(initialLoggedIn)
+  const [userProfile, setUserProfile] = useState<{ name: string | null; avatar: string | null } | null>(initialProfile)
   const pathname = usePathname()
   const isHome = pathname === '/'
   const { openModal } = useModal()
@@ -36,11 +41,8 @@ export default function Header() {
       if (data) setUserProfile({ name: data.display_name, avatar: data.avatar_url })
     }
 
-    supabase.auth.getSession().then(({ data }) => {
-      setLoggedIn(!!data.session)
-      if (data.session) loadProfile(data.session.user.id)
-    })
-
+    // Solo escucha cambios de sesión en cliente (login/logout sin recarga de página).
+    // El estado inicial viene del servidor via props.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
       setLoggedIn(!!s)
       if (s) loadProfile(s.user.id)

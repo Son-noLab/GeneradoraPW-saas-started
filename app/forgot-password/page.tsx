@@ -1,10 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
-export default function ForgotPasswordPage() {
+function ForgotPasswordForm() {
+  const searchParams = useSearchParams()
+  const linkExpired = searchParams.get('error') === 'link'
+
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
@@ -74,6 +78,12 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
+        {linkExpired && (
+          <div style={{ marginBottom: 'var(--s-sm)', padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fecaca', fontSize: '0.875rem', color: '#b91c1c', lineHeight: 1.5 }}>
+            El enlace expiró o ya fue usado. Solicita uno nuevo a continuación.
+          </div>
+        )}
+
         <div style={{ background: 'var(--c-white)', border: '1px solid var(--c-border)', padding: 'var(--s-lg)' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-sm)' }}>
 
@@ -111,5 +121,13 @@ export default function ForgotPasswordPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function ForgotPasswordPage() {
+  return (
+    <Suspense>
+      <ForgotPasswordForm />
+    </Suspense>
   )
 }

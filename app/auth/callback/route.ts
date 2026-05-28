@@ -24,5 +24,11 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(`${origin}/`)
+  // Recovery link expired or invalid — send back to forgot-password with context
+  const isForgotFlow = next === '/reset-password'
+  return NextResponse.redirect(
+    isForgotFlow
+      ? `${origin}/forgot-password?error=link`
+      : `${origin}/login`
+  )
 }

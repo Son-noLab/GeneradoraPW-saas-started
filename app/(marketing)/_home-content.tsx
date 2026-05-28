@@ -16,7 +16,7 @@ const PANELS = [
   { type: 'image' as const, label: 'la mesa · comunidad',      src: '/img/cc-mesa.jpg',       pos: 'center 45%' },
 ]
 const CYCLE = [0, 1, 2, 0, 3, 4]
-const randomMs = (_i: number, _first: boolean) => Math.random() * 3000 + 2000
+const randomMs = (_i: number, _first: boolean) => Math.random() * 3200 + 2500
 
 function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => void }) {
   const [active, setActive] = useState(CYCLE[0])

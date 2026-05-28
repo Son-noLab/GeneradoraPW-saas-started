@@ -9,12 +9,19 @@ export default function SignupPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    if (password !== confirm) {
+      setError('Las contraseñas no coinciden.')
+      return
+    }
+
     setLoading(true)
     setError(null)
 
@@ -33,14 +40,19 @@ export default function SignupPage() {
       return
     }
 
-    // Si la sesión ya está activa (confirmación de email desactivada), redirigir directamente
+    // Cuenta existente: Supabase devuelve identities vacío en lugar de error
+    if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
+      setError('__existing__')
+      setLoading(false)
+      return
+    }
+
     if (data.session) {
-      router.push('/')
+      router.push('/portal')
       router.refresh()
       return
     }
 
-    // Si hay usuario pero sin sesión, necesita confirmar email
     setDone(true)
     setLoading(false)
   }
@@ -130,7 +142,29 @@ export default function SignupPage() {
               />
             </div>
 
-            {error && (
+            <div className="form-group">
+              <label htmlFor="confirm" className="form-label">Confirmar contraseña</label>
+              <input
+                id="confirm"
+                type="password"
+                required
+                minLength={8}
+                value={confirm}
+                onChange={e => setConfirm(e.target.value)}
+                className="form-input"
+                placeholder="Repite tu contraseña"
+                autoComplete="new-password"
+              />
+            </div>
+
+            {error === '__existing__' ? (
+              <div style={{ fontSize: '0.85rem', color: '#b91c1c', padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fecaca', lineHeight: 1.6 }}>
+                Ya existe una cuenta con este correo.{' '}
+                <Link href="/login" style={{ color: '#b91c1c', fontWeight: 600, textDecoration: 'underline' }}>Inicia sesión</Link>
+                {' '}o{' '}
+                <Link href="/forgot-password" style={{ color: '#b91c1c', fontWeight: 600, textDecoration: 'underline' }}>recupera tu contraseña</Link>.
+              </div>
+            ) : error && (
               <p style={{ fontSize: '0.85rem', color: '#ef4444', padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fecaca' }}>
                 {error}
               </p>

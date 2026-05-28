@@ -30,7 +30,7 @@ export default function ResetPasswordPage() {
       return
     }
 
-    router.push('/')
+    router.push('/portal')
     router.refresh()
   }
 
@@ -70,11 +70,11 @@ export default function ResetPasswordPage() {
                 id="password"
                 type="password"
                 required
-                minLength={6}
+                minLength={8}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="form-input"
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Mínimo 8 caracteres"
                 autoComplete="new-password"
               />
             </div>
@@ -85,7 +85,7 @@ export default function ResetPasswordPage() {
                 id="confirm"
                 type="password"
                 required
-                minLength={6}
+                minLength={8}
                 value={confirm}
                 onChange={e => setConfirm(e.target.value)}
                 className="form-input"
@@ -95,9 +95,12 @@ export default function ResetPasswordPage() {
             </div>
 
             {error && (
-              <p style={{ fontSize: '0.85rem', color: '#ef4444', padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fecaca' }}>
-                {error}
-              </p>
+              <div style={{ fontSize: '0.85rem', color: '#b91c1c', padding: '0.75rem 1rem', background: '#fef2f2', border: '1px solid #fecaca', lineHeight: 1.5 }}>
+                <p style={{ margin: 0 }}>{error}</p>
+                <Link href="/forgot-password" style={{ display: 'inline-block', marginTop: '0.4rem', color: '#b91c1c', fontWeight: 600, textDecoration: 'underline' }}>
+                  Solicitar nuevo enlace →
+                </Link>
+              </div>
             )}
 
             <button type="submit" className="modal__submit" disabled={loading} style={{ marginTop: '0.25rem' }}>
