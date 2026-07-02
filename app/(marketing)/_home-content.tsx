@@ -273,10 +273,10 @@ function Hero() {
           <Link href="/producto" className="btn btn--lg btn--ghost-light" onClick={() => window.scrollTo(0, 0)}>Conoce el producto</Link>
         </div>
       </div>
-      <a className="hero__scroll" href="#oportunidad" aria-label="Bajar a oportunidad">
+      <div className="hero__scroll" aria-hidden="true">
         <span className="hero__scroll-label">DESCUBRE</span>
         <div className="hero__scroll-mouse"><div className="hero__scroll-wheel" /></div>
-      </a>
+      </div>
     </section>
   )
 }
