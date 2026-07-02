@@ -163,8 +163,11 @@ function getAudioCtx(): AudioContext | null {
   } catch { return null }
 }
 
+const SOUND_MIN_GAP_MS = 7000
+
 const HeroTransition = React.memo(function HeroTransition() {
   const wrapRef = useRef<HTMLDivElement>(null)
+  const lastSoundAtRef = useRef(0)
 
   // Bake final state into inline style so CSS class toggling can't erase it
   useEffect(() => {
@@ -211,8 +214,11 @@ const HeroTransition = React.memo(function HeroTransition() {
     wrap.classList.remove('htrans--on')
     void wrap.offsetWidth
     wrap.classList.add('htrans--on')
+    const now = Date.now()
+    if (now - lastSoundAtRef.current < SOUND_MIN_GAP_MS) return
     const ctx = getAudioCtx()
     if (!ctx || ctx.state !== 'running') return
+    lastSoundAtRef.current = now
     ;[[261.63, 0], [329.63, 0.07], [392.0, 0.14]].forEach(([freq, delay]) => {
       const osc = ctx.createOscillator(); const gain = ctx.createGain()
       osc.connect(gain); gain.connect(ctx.destination)

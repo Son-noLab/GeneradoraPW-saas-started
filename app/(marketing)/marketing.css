@@ -390,8 +390,7 @@ body:has(.mk) {
 .mk .hero--img-active .hero__scroll { opacity: 0 !important; pointer-events: none; }
 .mk .hero__subtitle,
 .mk .hero__cta-row { transition: opacity 0.55s ease, transform 0.55s ease; }
-.mk .hero--img-active .hero__subtitle,
-.mk .hero--img-active .hero__cta-row { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.mk .hero--img-active .hero__subtitle { opacity: 0; transform: translateY(10px); pointer-events: none; }
 .mk .hero__scroll-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; }
 .mk .hero__scroll-mouse {
   width: 22px; height: 36px;
