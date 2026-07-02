@@ -6,59 +6,7 @@ import Link from 'next/link'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
 import { useModal } from '@/components/marketing/shell'
-
-const PHOTOS = [
-  '/img/prod-01-innove.jpg', '/img/prod-02-5ply.jpg',   '/img/prod-03-novel.jpg',
-  '/img/prod-04-nonstick.jpg', '/img/prod-05-pressure.jpg', '/img/prod-06-casserole.jpg',
-  '/img/prod-07-roaster.jpg', '/img/prod-08-barista.jpg', '/img/prod-09-cafe.jpg',
-  '/img/prod-10-expertea.jpg', '/img/prod-11-espresso.jpg', '/img/prod-12-elite.webp',
-]
-
-function ProductLine() {
-  const products = [
-    { fig: 'RP · 01', title: <>Innove™ <em>9-ply</em></>,      meta: 'Ollas · 6 piezas' },
-    { fig: 'RP · 02', title: <>Sartén <em>Eclipse</em></>,      meta: 'Sartenes · 3 piezas' },
-    { fig: 'RP · 03', title: <>Cuchillería <em>Quintal</em></>, meta: 'Cuchillería · 5 piezas' },
-    { fig: 'RP · 04', title: <>Sistema <em>Maxim</em></>,       meta: 'Filtrado de agua' },
-    { fig: 'RP · 05', title: <>Extractor <em>Vital</em></>,     meta: 'Jugos en frío' },
-    { fig: 'RP · 06', title: <>Línea <em>Novel</em></>,         meta: 'Vajilla y servicio' },
-    { fig: 'RP · 07', title: <>Wok <em>Eclipse</em></>,         meta: 'Wok · 2 piezas' },
-    { fig: 'RP · 08', title: <>Cafetera <em>Alma</em></>,       meta: 'Café y bebidas' },
-    { fig: 'RP · 09', title: <>Steamer <em>Puro</em></>,        meta: 'Cocción al vapor' },
-    { fig: 'RP · 10', title: <>Licuadora <em>Vita</em></>,      meta: 'Jugos y batidos' },
-    { fig: 'RP · 11', title: <>Accesorios <em>Pro</em></>,      meta: 'Herramientas' },
-    { fig: 'RP · 12', title: <>Almacenaje <em>Fresh</em></>,    meta: 'Conservación al vacío' },
-  ]
-  return (
-    <section className="section section--cream" aria-label="Línea de productos">
-      <span className="section__corner-fig">Fig. 01 · Catálogo</span>
-      <div className="section__inner">
-        <div className="section__header reveal">
-          <div>
-            <span className="section__eyebrow"><span className="section__eyebrow-rule" />La línea completa</span>
-            <h2 className="section__title">Una cocina<br /><em>completa.</em></h2>
-          </div>
-          <p className="section__lede">
-            Doce líneas que cubren la mesa entera: del agua que tomas hasta el filo que
-            corta. Pensadas para combinarse, no para competir entre sí.
-          </p>
-        </div>
-        <div className="pline">
-          {products.map((p, i) => (
-            <article key={i} className="pline__card" tabIndex={0}>
-              <Image fill className="pline__card-photo" src={PHOTOS[i % PHOTOS.length]} alt="" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 16vw, 13vw" style={{ objectFit: 'cover' }} />
-              <span className="pline__card-fig">{p.fig}</span>
-              <div className="pline__card-body">
-                <h3 className="pline__card-title">{p.title}</h3>
-                <div className="pline__card-meta">{p.meta}</div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
+import CatalogClient from '@/components/producto/catalog'
 
 function ProductoFeatures() {
   const features = [
@@ -192,7 +140,7 @@ function CompareSection() {
 
 export default function ProductoPage() {
   return (
-    <main>
+    <>
       <PageHero
         variant="warm"
         chapter="Capítulo II"
@@ -206,11 +154,11 @@ export default function ProductoPage() {
           { value: '50%', label: 'MENOS ENERGÍA' },
         ]}
       />
-      <SectionDivider direction="dark-to-cream" targetSelector=".pline" />
-      <ProductLine />
+      <SectionDivider direction="dark-to-cream" targetSelector=".ccat-head" />
+      <CatalogClient />
       <SectionDivider direction="cream-to-dark" targetSelector=".producto__grid" />
       <ProductoFeatures />
       <CompareSection />
-    </main>
+    </>
   )
 }
