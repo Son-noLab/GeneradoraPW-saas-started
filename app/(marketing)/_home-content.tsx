@@ -219,7 +219,7 @@ const HeroTransition = React.memo(function HeroTransition() {
       osc.type = 'sine'; osc.frequency.value = freq
       const t = ctx.currentTime + (delay as number)
       gain.gain.setValueAtTime(0, t)
-      gain.gain.linearRampToValueAtTime(0.34, t + 0.09)
+      gain.gain.linearRampToValueAtTime(1.85, t + 0.09)
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.85)
       osc.start(t); osc.stop(t + 0.85)
     })
