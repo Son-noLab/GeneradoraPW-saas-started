@@ -300,6 +300,11 @@ body:has(.mk) {
   pointer-events: none; border-radius: inherit; overflow: hidden;
 }
 .mk .tcube-panel.is-active { opacity: 1; transform: scale(1); pointer-events: auto; }
+/* Image panels now mount dynamically (random pool) instead of staying pre-rendered,
+   so a freshly-mounted active panel needs its own enter animation — CSS transitions
+   don't fire on first paint, but animations do. */
+.mk .tcube-panel--enter { animation: mk-tcubeEnter .9s ease forwards; }
+@keyframes mk-tcubeEnter { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: scale(1); } }
 
 .mk .hero-title {
   margin: 0;

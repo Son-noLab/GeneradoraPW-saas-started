@@ -8,23 +8,66 @@ import { useModal } from '@/components/marketing/shell'
 import { useLenis } from '@/components/lenis-provider'
 
 /* ── Title Cube ── */
-const PANELS = [
-  { type: 'title' as const },
-  { type: 'image' as const, label: 'comunidad · celebración', src: '/img/eventos/571a1008.jpg', pos: 'center 30%' },
-  { type: 'image' as const, label: 'cateon star · premiación', src: '/img/eventos/571a1131.jpg', pos: 'center 20%' },
-  { type: 'image' as const, label: 'logros · 2024',            src: '/img/cc-confeti.jpg',    pos: 'center 20%' },
-  { type: 'image' as const, label: 'la mesa · comunidad',      src: '/img/cc-mesa.jpg',       pos: 'center 45%' },
-]
-const CYCLE = [0, 1, 2, 0, 3, 4]
-const randomMs = (_i: number, _first: boolean) => Math.random() * 3200 + 2500
+// Pool of the best community/event photos — randomized per panel, never repeating
+// the same photo within a 7s window. Mínimo 50 fotos, curadas a mano.
+const IMAGES: { src: string; pos: string }[] = [
+  '571a0852', '571a0853', '571a0880', '571a0881', '571a0882', '571a0883', '571a0886', '571a0887', '571a0896',
+  '571a0913', '571a0918', '571a0922', '571a0926', '571a0930', '571a0938', '571a0944', '571a0945',
+  '571a0977', '571a0979', '571a0986', '571a0991', '571a0993', '571a0995',
+  '571a1006', '571a1008', '571a1011', '571a1013', '571a1016',
+  '571a1023', '571a1029', '571a1030', '571a1039', '571a1042', '571a1043', '571a1045', '571a1047',
+  '571a1067', '571a1069', '571a1071', '571a1078', '571a1080', '571a1083', '571a1087',
+  '571a1111', '571a1112', '571a1114', '571a1115',
+  '571a1121', '571a1125', '571a1130', '571a1131', '571a1142', '571a1144', '571a1146',
+  '571a1165', '571a1169', '571a1171', '571a1176', '571a1180', '571a1183', '571a1188', '571a1192', '571a1195',
+  '571a1196', '571a1202', '571a1205', '571a1208', '571a1210', '571a1211', '571a1213', '571a1214', '571a1215',
+].map(name => ({ src: `/img/eventos/${name}.jpg`, pos: 'center 30%' })).concat(
+  ['img-0149', 'img-0784', 'img-0788', 'img-0789', 'img-0790', 'img-0791', 'img-0792', 'img-0793', 'img-0794']
+    .map(name => ({ src: `/img/eventos/${name}.jpg`, pos: 'center 30%' }))
+)
+const ROLE_CYCLE = ['title', 'image', 'image', 'title', 'image', 'image'] as const
+const randomMs = () => Math.random() * 3200 + 2500
+const NO_REPEAT_MS = 7000
+const IMG_TRANSITION_MS = 1500
+
+function TCubeImagePanel({ img, isActive, entering, onClick }: { img: { src: string; pos: string }; isActive: boolean; entering: boolean; onClick: () => void }) {
+  return (
+    <div className={`tcube-panel${isActive ? ' is-active' : ''}${entering ? ' tcube-panel--enter' : ''}`}>
+      <div
+        className="tcube-image"
+        onClick={onClick}
+        role="button"
+        tabIndex={isActive ? 0 : -1}
+        aria-label="Cambiar imagen"
+        onKeyDown={e => e.key === 'Enter' && onClick()}
+      >
+        <img src={img.src} alt="comunidad · cateoncook" className="tcube-image__photo" style={{ objectPosition: img.pos }} data-pos-y={img.pos.split(' ')[1]?.replace('%', '') ?? '50'} />
+        <div className="tcube-image__grain" />
+      </div>
+      <div className="tcube-panel__bars" aria-hidden="true" />
+      <Link href="/nosotros" className="tcube-image__nav" aria-label="Ver Nosotros">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 10L10 2" /><path d="M5 2h5v5" />
+        </svg>
+      </Link>
+    </div>
+  )
+}
 
 function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => void }) {
-  const [active, setActive] = useState(CYCLE[0])
+  const [isTitle, setIsTitle] = useState(true)
+  const [activeImgIdx, setActiveImgIdx] = useState<number | null>(null)
+  const [prevImgIdx, setPrevImgIdx] = useState<number | null>(null)
   const [glare, setGlare] = useState(false)
+
+  const isTitleRef = useRef(true)
+  const activeImgIdxRef = useRef<number | null>(null)
   const cycleRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const glareRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const prevClearRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const consecutiveImagesRef = useRef(0)
+  const recentShownRef = useRef<Map<number, number>>(new Map())
   const lenis = useLenis()
 
   // Parallax: desplaza objectPosition-Y al scroll para efecto de profundidad
@@ -45,13 +88,48 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
     return () => lenis.off('scroll', parallax)
   }, [lenis])
 
-  useEffect(() => { onActiveChange(CYCLE[0] === 0) }, [])
+  useEffect(() => { onActiveChange(true) }, [])
   useEffect(() => {
-    onActiveChange(active === 0)
+    onActiveChange(isTitle)
     // keeps the click-streak counter honest whenever text shows up for any reason
     // (click, automatic cycle, or the scroll-out reset below)
-    if (active === 0) consecutiveImagesRef.current = 0
-  }, [active])
+    if (isTitle) consecutiveImagesRef.current = 0
+  }, [isTitle])
+
+  // Picks a random pool image, excluding the one given and anything shown in the last 7s.
+  function pickPoolImage(excludeIdx: number | null): number {
+    const now = Date.now()
+    const all = IMAGES.map((_, i) => i).filter(i => i !== excludeIdx)
+    const fresh = all.filter(i => {
+      const last = recentShownRef.current.get(i)
+      return last === undefined || now - last >= NO_REPEAT_MS
+    })
+    const pool = fresh.length > 0 ? fresh : all
+    const chosen = pool[Math.floor(Math.random() * pool.length)]
+    recentShownRef.current.set(chosen, now)
+    return chosen
+  }
+
+  function goToImage(excludeIdx: number | null) {
+    if (prevClearRef.current) clearTimeout(prevClearRef.current)
+    const nextIdx = pickPoolImage(excludeIdx)
+    setPrevImgIdx(activeImgIdxRef.current)
+    activeImgIdxRef.current = nextIdx
+    setActiveImgIdx(nextIdx)
+    isTitleRef.current = false
+    setIsTitle(false)
+    prevClearRef.current = setTimeout(() => setPrevImgIdx(null), IMG_TRANSITION_MS)
+  }
+
+  function goToTitle() {
+    if (prevClearRef.current) clearTimeout(prevClearRef.current)
+    setPrevImgIdx(activeImgIdxRef.current)
+    activeImgIdxRef.current = null
+    setActiveImgIdx(null)
+    isTitleRef.current = true
+    setIsTitle(true)
+    prevClearRef.current = setTimeout(() => setPrevImgIdx(null), IMG_TRANSITION_MS)
+  }
 
   // Reset to title when hero < 50% visible; restart cycle when hero >= 85%
   useEffect(() => {
@@ -64,7 +142,7 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
         if (ratio < 0.65) {
           if (timerRef.current) clearTimeout(timerRef.current)
           if (glareRef.current) clearTimeout(glareRef.current)
-          setActive(0)
+          goToTitle()
           setGlare(false)
         } else if (ratio >= 0.65 && prevRatio < 0.65) {
           cycleRef.current = 0
@@ -80,16 +158,14 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
 
   const startCycle = () => {
     if (timerRef.current) clearTimeout(timerRef.current)
-    let first = true
     function schedule() {
-      const cur = CYCLE[cycleRef.current]
       timerRef.current = setTimeout(() => {
-        const next = (cycleRef.current + 1) % CYCLE.length
+        const next = (cycleRef.current + 1) % ROLE_CYCLE.length
         cycleRef.current = next
-        setActive(CYCLE[next])
-        first = false
+        if (ROLE_CYCLE[next] === 'title') goToTitle()
+        else goToImage(activeImgIdxRef.current)
         schedule()
-      }, randomMs(cur, first))
+      }, randomMs())
     }
     schedule()
   }
@@ -105,27 +181,23 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
   // time — capped so a click never shows a 4th image in a row (forces text instead).
   const MAX_CONSECUTIVE_IMAGES = 3
   const handleCubeClick = () => {
-    const imageIndices = PANELS.map((_, i) => i).filter(i => i !== 0)
-    let nextIdx: number
-    if (active === 0) {
-      nextIdx = imageIndices[Math.floor(Math.random() * imageIndices.length)]
+    if (isTitleRef.current) {
+      goToImage(null)
       consecutiveImagesRef.current = 1
     } else if (consecutiveImagesRef.current >= MAX_CONSECUTIVE_IMAGES || Math.random() < 0.11) {
-      nextIdx = 0
+      goToTitle()
       consecutiveImagesRef.current = 0
     } else {
-      const others = imageIndices.filter(i => i !== active)
-      nextIdx = others[Math.floor(Math.random() * others.length)]
+      goToImage(activeImgIdxRef.current)
       consecutiveImagesRef.current++
     }
     cycleRef.current = 0
-    setActive(nextIdx)
     startCycle()
   }
 
   useEffect(() => {
     if (glareRef.current) clearTimeout(glareRef.current)
-    if (active !== 0) return
+    if (!isTitle) return
     function fire() {
       setGlare(true)
       glareRef.current = setTimeout(() => {
@@ -135,48 +207,29 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
     }
     fire()
     return () => { if (glareRef.current) clearTimeout(glareRef.current) }
-  }, [active])
+  }, [isTitle])
 
-  const isTitle = active === 0
   return (
     <div className={`tcube${isTitle ? ' tcube--title' : ''}`}>
-      {PANELS.map((panel, i) => (
-        <div key={i} className={`tcube-panel${i === active ? ' is-active' : ''}`}>
-          {panel.type === 'title' ? (
-            <h1
-              className="hero-title"
-              onClick={handleCubeClick}
-              role="button"
-              tabIndex={i === active ? 0 : -1}
-              aria-label="Ver fotos de la comunidad"
-              onKeyDown={e => e.key === 'Enter' && handleCubeClick()}
-            >
-              Fábrica de<br />
-              <em className={glare ? 'glare' : ''}>Sueños</em>
-            </h1>
-          ) : (
-            <>
-              <div
-                className="tcube-image"
-                onClick={handleCubeClick}
-                role="button"
-                tabIndex={i === active ? 0 : -1}
-                aria-label="Cambiar imagen"
-                onKeyDown={e => e.key === 'Enter' && handleCubeClick()}
-              >
-                <img src={panel.src} alt={panel.label} className="tcube-image__photo" style={{ objectPosition: panel.pos }} data-pos-y={panel.pos.split(' ')[1]?.replace('%', '') ?? '50'} />
-                <div className="tcube-image__grain" />
-              </div>
-              <div className="tcube-panel__bars" aria-hidden="true" />
-              <Link href="/nosotros" className="tcube-image__nav" aria-label="Ver Nosotros">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2 10L10 2" /><path d="M5 2h5v5" />
-                </svg>
-              </Link>
-            </>
-          )}
-        </div>
-      ))}
+      <div className={`tcube-panel${isTitle ? ' is-active' : ''}`}>
+        <h1
+          className="hero-title"
+          onClick={handleCubeClick}
+          role="button"
+          tabIndex={isTitle ? 0 : -1}
+          aria-label="Ver fotos de la comunidad"
+          onKeyDown={e => e.key === 'Enter' && handleCubeClick()}
+        >
+          Fábrica de<br />
+          <em className={glare ? 'glare' : ''}>Sueños</em>
+        </h1>
+      </div>
+      {prevImgIdx !== null && (
+        <TCubeImagePanel key={`img-${prevImgIdx}`} img={IMAGES[prevImgIdx]} isActive={false} entering={false} onClick={handleCubeClick} />
+      )}
+      {activeImgIdx !== null && (
+        <TCubeImagePanel key={`img-${activeImgIdx}`} img={IMAGES[activeImgIdx]} isActive={true} entering={true} onClick={handleCubeClick} />
+      )}
     </div>
   )
 }
