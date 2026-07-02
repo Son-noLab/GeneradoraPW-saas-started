@@ -251,9 +251,9 @@ function Hero() {
       <div className="hero__stage">
         <div className="hero__logo-mark" style={{ height: isTitle ? 140 : 147, marginTop: isTitle ? 34 : -56, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'margin-top .4s ease .13s' }}>
           {isTitle ? (
-            <LogoStacked key="stacked" tone="positive" height={90} style={{ transform: 'scale(1.87)' }} />
+            <LogoStacked key="stacked" tone="positive" height={90} priority style={{ transform: 'scale(1.87)' }} />
           ) : (
-            <BrandLogo key="horizontal" tone="positive" height={40} style={{ transform: 'scale(1.9178125)' }} />
+            <BrandLogo key="horizontal" tone="positive" height={40} priority style={{ transform: 'scale(1.9178125)' }} />
           )}
         </div>
         <TitleCube onActiveChange={setIsTitle} />

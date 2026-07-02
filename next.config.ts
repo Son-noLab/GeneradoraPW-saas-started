@@ -63,6 +63,15 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/producto/olla-presion-65',
+        destination: '/producto/sistema-coccion-presion',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig

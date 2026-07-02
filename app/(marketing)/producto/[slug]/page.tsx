@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ImageViewer from '@/components/producto/image-viewer'
@@ -110,10 +111,10 @@ export default async function ProductoDetailPage({
                 <h3 className="pdet-specs__h3">Especificaciones</h3>
                 <dl className="pdet-specs__dl">
                   {Object.entries(producto.especificaciones).map(([k, v]) => (
-                    <>
-                      <dt key={`k-${k}`}>{k}</dt>
-                      <dd key={`v-${k}`}>{v}</dd>
-                    </>
+                    <Fragment key={k}>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </Fragment>
                   ))}
                 </dl>
               </div>

@@ -3139,7 +3139,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   white-space: nowrap;
   padding-bottom: 0.2rem;
 }
-.ccat-head__clear {
+.ccat-head__count .ccat-head__clear {
   background: none;
   border: 1px solid var(--c-border);
   border-radius: 2px;
@@ -3149,7 +3149,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   cursor: pointer;
   transition: border-color 150ms, color 150ms;
 }
-.ccat-head__clear:hover { border-color: var(--c-navy); color: var(--c-navy); }
+.ccat-head__count .ccat-head__clear:hover { border-color: var(--c-navy); color: var(--c-navy); }
 
 /* Filtros */
 .ccat-filters {
@@ -3180,7 +3180,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   gap: 0.4rem;
   flex-wrap: wrap;
 }
-.ccat-fbtn {
+.ccat-fbtn-row .ccat-fbtn {
   padding: 0.3rem 0.85rem;
   border-radius: 2px;
   font-size: 0.72rem;
@@ -3193,8 +3193,8 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   transition: background 150ms, color 150ms, border-color 150ms;
   white-space: nowrap;
 }
-.ccat-fbtn:hover   { background: var(--c-bg); color: var(--c-navy); border-color: var(--c-navy); }
-.ccat-fbtn--on     { background: var(--c-navy); color: var(--c-white); border-color: var(--c-navy); }
+.ccat-fbtn-row .ccat-fbtn:hover { background: var(--c-bg); color: var(--c-navy); border-color: var(--c-navy); }
+.ccat-fbtn-row .ccat-fbtn--on   { background: var(--c-navy); color: var(--c-white); border-color: var(--c-navy); }
 
 /* Quick bar + Advanced toggle */
 .ccat-quick-row {
@@ -3208,7 +3208,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   flex: 1 1 auto;
   padding: 0;
 }
-.ccat-adv-toggle {
+.ccat-quick-row .ccat-adv-toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -3225,8 +3225,8 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   transition: background 150ms, color 150ms, border-color 150ms;
   white-space: nowrap;
 }
-.ccat-adv-toggle:hover,
-.ccat-adv-toggle--open {
+.ccat-quick-row .ccat-adv-toggle:hover,
+.ccat-quick-row .ccat-adv-toggle--open {
   background: var(--c-bg);
   color: var(--c-navy);
   border-color: var(--c-navy);
