@@ -309,6 +309,7 @@ body:has(.mk) {
   line-height: 0.92; letter-spacing: -0.02em;
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
+  cursor: pointer;
   animation: mk-titleZoom 7s ease-in-out infinite alternate;
 }
 @keyframes mk-titleZoom { from { transform: scale(1); } to { transform: scale(1.04); } }

@@ -93,9 +93,22 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [])
 
-  const handleImageClick = () => {
+  // Click interaction (manual override of the automatic cycle — does not alter it):
+  // from the text panel, a click always jumps to a random image; from an image panel,
+  // a click jumps to another random image 89% of the time, or back to text 11% of the time.
+  const handleCubeClick = () => {
+    const imageIndices = PANELS.map((_, i) => i).filter(i => i !== 0)
+    let nextIdx: number
+    if (active === 0) {
+      nextIdx = imageIndices[Math.floor(Math.random() * imageIndices.length)]
+    } else if (Math.random() < 0.11) {
+      nextIdx = 0
+    } else {
+      const others = imageIndices.filter(i => i !== active)
+      nextIdx = others[Math.floor(Math.random() * others.length)]
+    }
     cycleRef.current = 0
-    setActive(0)
+    setActive(nextIdx)
     startCycle()
   }
 
@@ -119,7 +132,14 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
       {PANELS.map((panel, i) => (
         <div key={i} className={`tcube-panel${i === active ? ' is-active' : ''}`}>
           {panel.type === 'title' ? (
-            <h1 className="hero-title">
+            <h1
+              className="hero-title"
+              onClick={handleCubeClick}
+              role="button"
+              tabIndex={i === active ? 0 : -1}
+              aria-label="Ver fotos de la comunidad"
+              onKeyDown={e => e.key === 'Enter' && handleCubeClick()}
+            >
               Fábrica de<br />
               <em className={glare ? 'glare' : ''}>Sueños</em>
             </h1>
@@ -127,11 +147,11 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
             <>
               <div
                 className="tcube-image"
-                onClick={handleImageClick}
+                onClick={handleCubeClick}
                 role="button"
                 tabIndex={i === active ? 0 : -1}
-                aria-label="Volver al inicio"
-                onKeyDown={e => e.key === 'Enter' && handleImageClick()}
+                aria-label="Cambiar imagen"
+                onKeyDown={e => e.key === 'Enter' && handleCubeClick()}
               >
                 <img src={panel.src} alt={panel.label} className="tcube-image__photo" style={{ objectPosition: panel.pos }} data-pos-y={panel.pos.split(' ')[1]?.replace('%', '') ?? '50'} />
                 <div className="tcube-image__grain" />
