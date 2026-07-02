@@ -52,8 +52,29 @@ body:has(.mk) {
   transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1),
               background .35s ease, border-color .35s ease, color .35s ease;
   border-bottom: 1px solid transparent;
+  /* backdrop-filter + transform on a fixed element can desync during the
+     hide/show animation (Chromium compositing quirk) — a frame briefly
+     shows through unblurred. will-change forces its own layer upfront. */
+  will-change: transform;
+  transform: translateZ(0);
 }
-.mk .header.is-hidden { transform: translateY(-100%); }
+.mk .header.is-hidden {
+  transform: translateY(-100%) translateZ(0);
+}
+/* Drop the blur and go fully opaque while off-screen. The header's usual
+   background is translucent (rgba(...,0.92) or blurred) so it can sit over
+   a hero image — but that same translucency lets whatever's directly below
+   it bleed through for an instant while it's mid-slide (most visible on
+   pages with a hero color that clashes, like /producto's brown). Nothing
+   needs to show through once it's leaving the viewport, so kill both.
+   Higher specificity (3 classes) needed to beat .header.is-solid, which is
+   present at the same time and re-sets backdrop-filter + background. */
+.mk .header.is-hidden.is-solid,
+.mk .header.is-hidden:not(.is-solid) {
+  background: var(--c-cream, #FAF6EE);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 .mk .header-fab {
   position: fixed; top: 14px; right: var(--pad-x); z-index: 60;
   width: 42px; height: 42px;
