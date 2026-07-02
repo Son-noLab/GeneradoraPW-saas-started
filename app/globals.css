@@ -3262,7 +3262,7 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
   justify-content: flex-end;
   padding: 3rem 3.5rem;
   clip-path: inset(0 0 0% 0);
-  transition: clip-path 0.72s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: clip-path 0.28s cubic-bezier(0.76, 0, 0.24, 1);
   pointer-events: all;
   overflow: hidden;
 }

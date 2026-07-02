@@ -72,7 +72,7 @@ export default function CatalogClient() {
   const [cardsReady,  setCardsReady]  = useState(false)
 
   useEffect(() => {
-    const DURATION = 900 // ms for 0→100
+    const DURATION = 280 // ms for 0→100
     const start = performance.now()
     let raf: number
 
@@ -85,9 +85,9 @@ export default function CatalogClient() {
         raf = requestAnimationFrame(tick)
       } else {
         setCount(100)
-        setTimeout(() => setLoaderOut(true),  180)  // brief pause then wipe
-        setTimeout(() => setCardsReady(true), 380)  // cards start as curtain lifts
-        setTimeout(() => setLoaderDone(true), 1050) // remove overlay from DOM
+        setTimeout(() => setLoaderOut(true),  60)   // brief pause then wipe
+        setTimeout(() => setCardsReady(true), 120)  // cards start as curtain lifts
+        setTimeout(() => setLoaderDone(true), 340)  // remove overlay from DOM
       }
     }
 
