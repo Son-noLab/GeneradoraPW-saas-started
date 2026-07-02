@@ -1,25 +1,123 @@
 'use client'
 
 import type { CSSProperties } from 'react'
+import Image from 'next/image'
 
-export function CCLogoMark({
-  size = 36,
-  color = 'currentColor',
+const TONES = {
+  natural: { src: '/img/brand/logo-horizontal-natural.png', w: 1076, h: 453 },
+  positive: { src: '/img/brand/logo-horizontal-positive.png', w: 1076, h: 453 },
+} as const
+
+/** Official CateonCook horizontal logo lockup (icon + wordmark), from brand-provided PNGs. */
+export function BrandLogo({
+  tone = 'natural',
+  height = 40,
+  priority,
   style,
 }: {
-  size?: number
-  color?: string
+  tone?: keyof typeof TONES
+  height?: number
+  priority?: boolean
   style?: CSSProperties
 }) {
+  const { src, w, h } = TONES[tone]
   return (
-    <svg viewBox="0 0 80 80" width={size} height={size} fill="none" style={style} aria-hidden="true">
-      <circle cx="40" cy="40" r="37" stroke={color} strokeWidth="3.5" />
-      <circle cx="40" cy="40" r="28" stroke={color} strokeWidth="1.2" />
-      <rect x="36" y="16" width="8" height="7" rx="3" fill={color} />
-      <path d="M20 27 Q20 24 40 24 Q60 24 60 27 Q60 31 40 31 Q20 31 20 27Z" fill={color} />
-      <path d="M22 31 L22 52 Q22 61 40 61 Q58 61 58 52 L58 31 Z" fill={color} />
-      <path d="M22 36 Q13 36 13 44 Q13 52 22 49" stroke={color} strokeWidth="3.5" strokeLinecap="round" />
-      <path d="M58 36 Q67 36 67 44 Q67 52 58 49" stroke={color} strokeWidth="3.5" strokeLinecap="round" />
-    </svg>
+    <Image
+      src={src}
+      alt="CateonCook"
+      width={w}
+      height={h}
+      priority={priority}
+      style={{ height, width: 'auto', objectFit: 'contain', flexShrink: 0, ...style }}
+    />
+  )
+}
+
+const STACKED_TONES = {
+  natural: { src: '/img/brand/logo-stacked-natural.png', w: 896, h: 1092 },
+  positive: { src: '/img/brand/logo-stacked-positive.png', w: 896, h: 1092 },
+} as const
+
+/** Official CateonCook stacked logo lockup (icon on top, wordmark below), from brand-provided PNGs. */
+export function LogoStacked({
+  tone = 'natural',
+  height = 56,
+  priority,
+  style,
+}: {
+  tone?: keyof typeof STACKED_TONES
+  height?: number
+  priority?: boolean
+  style?: CSSProperties
+}) {
+  const { src, w, h } = STACKED_TONES[tone]
+  return (
+    <Image
+      src={src}
+      alt="CateonCook"
+      width={w}
+      height={h}
+      priority={priority}
+      style={{ height, width: 'auto', objectFit: 'contain', flexShrink: 0, ...style }}
+    />
+  )
+}
+
+const WORDMARK_TONES = {
+  positive: { src: '/img/brand/logo-wordmark-positive.png', w: 624, h: 66 },
+} as const
+
+/** Official CateonCook compact wordmark-only lockup ("Responsive" PNG, brand-provided), for tight/inline spots. */
+export function LogoWordmark({
+  tone = 'positive',
+  height = 32,
+  priority,
+  style,
+}: {
+  tone?: keyof typeof WORDMARK_TONES
+  height?: number
+  priority?: boolean
+  style?: CSSProperties
+}) {
+  const { src, w, h } = WORDMARK_TONES[tone]
+  return (
+    <Image
+      src={src}
+      alt="CateonCook"
+      width={w}
+      height={h}
+      priority={priority}
+      style={{ height, width: 'auto', objectFit: 'contain', flexShrink: 0, ...style }}
+    />
+  )
+}
+
+const BADGE_TONES = {
+  natural: { src: '/img/brand/logo-badge-natural.png', w: 672, h: 672 },
+  positive: { src: '/img/brand/logo-badge-positive.png', w: 678, h: 662 },
+} as const
+
+/** Official circular badge lockup (brand-provided "LogoStick" PNG, unmodified), for compact spots (footer, portal nav, hero mark). */
+export function LogoBadge({
+  tone = 'natural',
+  size = 36,
+  priority,
+  style,
+}: {
+  tone?: keyof typeof BADGE_TONES
+  size?: number
+  priority?: boolean
+  style?: CSSProperties
+}) {
+  const { src, w, h } = BADGE_TONES[tone]
+  return (
+    <Image
+      src={src}
+      alt="CateonCook"
+      width={w}
+      height={h}
+      priority={priority}
+      style={{ height: size, width: size, objectFit: 'contain', flexShrink: 0, ...style }}
+    />
   )
 }

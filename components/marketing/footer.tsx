@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { CCLogoMark } from './logo'
+import { BrandLogo } from './logo'
 
 export default function Footer() {
   return (
@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="footer__inner">
         <div className="footer__top">
           <div className="footer__brand">
-            <CCLogoMark size={44} color="#E6C77A" />
+            <BrandLogo tone="positive" height={44} />
             <div className="footer__brand-line">
               Una <em>fábrica de sueños</em><br />
               que nutre comunidades.

@@ -43,7 +43,7 @@ function GuiaVentas() {
               {[
                 ['"Es muy caro"', '"Entiendo. ¿Puedo mostrarte el costo real por año? Con la garantía vitalicia, es la última batería de cocina que comprarás."'],
                 ['"Necesito consultarlo con mi pareja"', '"Perfecto. ¿Cuándo podemos hacer la demostración juntos? Los dos merecen ver el producto en acción."'],
-                ['"Ya tengo ollas"', '"Claro, y seguramente te han servido bien. Déjame cocinarte algo con esto y comparas tú mismo."'],
+                ['"Ya tengo un sistema de cocina"', '"Claro, y seguramente te ha servido bien. Déjame cocinarte algo con esto y comparas tú mismo."'],
                 ['"No tengo tiempo"', '"La demostración toma 40 minutos y te llevo la comida lista. ¿El sábado a las 10 estaría bien?"'],
               ].map(([obj, resp]) => (
                 <tr key={obj}>

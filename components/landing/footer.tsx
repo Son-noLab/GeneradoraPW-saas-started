@@ -10,10 +10,10 @@ export default function Footer() {
           <div className="footer__brand">
             <div className="footer__logo">
               <Image
-                src="/img/logo-cateoncook.png"
+                src="/img/brand/logo-stacked-natural.png"
                 alt="CateonCook"
-                width={508}
-                height={491}
+                width={896}
+                height={1092}
                 style={{ width: '110px', height: 'auto' }}
               />
             </div>

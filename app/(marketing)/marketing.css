@@ -84,11 +84,6 @@ body:has(.mk) {
   max-width: 1440px; margin: 0 auto;
 }
 .mk .header__logo { display: flex; align-items: center; gap: 12px; }
-.mk .header__wordmark {
-  font-weight: 900; font-size: 14px;
-  letter-spacing: 0.2em; line-height: 1;
-  transition: color .35s ease;
-}
 .mk .header__nav { display: flex; gap: 32px; }
 .mk .header__nav a {
   font-size: 12px; font-weight: 500;
@@ -232,13 +227,16 @@ body:has(.mk) {
   pointer-events: none;
 }
 .mk .hero__corner-tag {
+  /* Anchored to .hero (fixed min-height:100vh) instead of flowing inside
+     .hero__stage, so it never shifts when .hero__stage's own content height
+     changes (logo/tcube margin tweaks) and its flex centering recalculates. */
+  position: absolute; top: 79px; left: 50%; transform: translateX(-50%); z-index: 6;
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-mono); font-size: 10.5px;
   letter-spacing: 0.18em; color: rgba(255,255,255,0.62);
   padding: 6px 14px;
   border: 1px solid rgba(255,255,255,0.14);
   background: rgba(255,255,255,0.03);
-  align-self: center; margin-bottom: 8px;
 }
 .mk .hero__corner-tag .dot {
   width: 6px; height: 6px; border-radius: 999px;
@@ -250,7 +248,7 @@ body:has(.mk) {
 .mk .hero__stage {
   position: relative; z-index: 5;
   display: flex; flex-direction: column; align-items: center;
-  gap: 22px; padding: 0; text-align: center;
+  gap: 22px; padding: 53px 0 0; text-align: center; /* padding-top replaces the tag's old in-flow footprint */
   width: 100%; max-width: 1200px;
 }
 .mk .hero__logo-mark {
@@ -258,6 +256,8 @@ body:has(.mk) {
   position: static; top: auto; left: auto; transform: none; z-index: auto;
   opacity: 0; animation: mk-fadeUp .9s .15s ease-out forwards;
 }
+.mk .hero__logo-mark img { animation: mk-logoSwap .4s ease .13s backwards; }
+@keyframes mk-logoSwap { from { opacity: 0; } to { opacity: 1; } }
 
 /* Title Cube */
 .mk .tcube {
@@ -265,12 +265,12 @@ body:has(.mk) {
   display: block; max-height: none; /* cancel globals.css display:grid / max-height:70vh */
   width: min(1060px, 95vw);
   aspect-ratio: 16 / 6;
-  margin: 0 auto; border-radius: 12px;
+  margin: -30px auto 0; border-radius: 12px;
   transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1), aspect-ratio 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* cancel globals.css complex ::before (letterbox bars + glass that duplicate .tcube-panel__bars) */
 .mk .tcube::before { content: none; }
-.mk .tcube:not(.tcube--title) { width: min(1160px, 97vw); aspect-ratio: 16 / 7; }
+.mk .tcube:not(.tcube--title) { width: min(1160px, 97vw); aspect-ratio: 16 / 7; margin-top: -40px; }
 .mk .tcube-panel {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -801,7 +801,7 @@ body:has(.mk) {
   display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 56px;
   padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.mk .footer__brand { display: flex; flex-direction: column; gap: 22px; max-width: 360px; }
+.mk .footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 360px; }
 .mk .footer__brand-line {
   font-family: var(--font-serif); font-style: italic; font-weight: 300;
   font-size: 26px; line-height: 1.25; color: rgba(255,255,255,0.85);
@@ -1774,7 +1774,6 @@ body:has(.mk) {
    ════════════════════════════════════ */
 @media (max-width: 1180px) {
   .mk .header__nav { gap: 22px; }
-  .mk .header__wordmark { display: none; }
 }
 @media (max-width: 960px) {
   .mk .header__nav { display: none; }

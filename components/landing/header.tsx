@@ -60,10 +60,10 @@ export default function Header({ user, solid }: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="header__logo" aria-label="CateonCook — Inicio">
             <Image
-              src="/img/logo-cateoncook.png"
+              src="/img/brand/logo-stacked-natural.png"
               alt="CateonCook"
-              width={508}
-              height={491}
+              width={896}
+              height={1092}
               priority
               style={{ height: '48px', width: 'auto' }}
             />

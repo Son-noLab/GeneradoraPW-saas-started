@@ -65,7 +65,7 @@ function ProductoFeatures() {
     { n: 'i',   title: 'Acero quirúrgico T304', desc: 'Nueve capas de acero y aluminio puro que distribuyen el calor con precisión clínica. Hecho para durar generaciones.' },
     { n: 'ii',  title: 'Cocina sin agua, sin grasa', desc: 'Sistema de sellado al vapor que conserva los nutrientes, los colores y el sabor real de cada alimento.' },
     { n: 'iii', title: 'Termo-control inteligente', desc: 'Indicador térmico que avisa el momento exacto. Menos energía, menos errores, más tiempo para los tuyos.' },
-    { n: 'iv',  title: 'Garantía vitalicia', desc: 'Una sola inversión. Toda una vida cocinando con la misma olla que cocinará para tus nietos.' },
+    { n: 'iv',  title: 'Garantía vitalicia', desc: 'Una sola inversión. Toda una vida cocinando con el mismo sistema de cocina que cocinará para tus nietos.' },
   ]
   return (
     <section className="section section--dark" aria-label="Tecnología">
@@ -82,7 +82,7 @@ function ProductoFeatures() {
           </p>
         </div>
         <div className="producto__grid">
-          <div className="producto__visual" role="img" aria-label="Olla Royal Prestige">
+          <div className="producto__visual" role="img" aria-label="Sistema de cocina Royal Prestige">
             <Image fill src="/img/prod-01-innove.jpg" alt="Innove 9-ply T304" sizes="(max-width: 960px) 100vw, 45vw" style={{ objectFit: 'cover' }} />
             <span className="producto__visual-caption">RP · Innove™ · 9-ply T304</span>
           </div>

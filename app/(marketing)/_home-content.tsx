@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { CCLogoMark } from '@/components/marketing/logo'
+import { LogoStacked, BrandLogo } from '@/components/marketing/logo'
 import SectionDivider from '@/components/marketing/section-divider'
 import { useModal } from '@/components/marketing/shell'
 import { useLenis } from '@/components/lenis-provider'
@@ -243,12 +243,18 @@ function Hero() {
     <section className={`hero${isTitle ? '' : ' hero--img-active'}`} id="inicio">
       <div className="hero__bg" />
       <div className="hero__vignette" />
+      {/* Anchored to .hero (fixed min-height:100vh), NOT .hero__stage — so it never
+          drifts when logo/tcube margins change and recenter the stage's flex flow. */}
+      <div className="hero__corner-tag">
+        <span className="dot" /> DISTRIBUIDOR AUTORIZADO ROYAL PRESTIGE · ECUADOR
+      </div>
       <div className="hero__stage">
-        <div className="hero__corner-tag">
-          <span className="dot" /> DISTRIBUIDOR AUTORIZADO ROYAL PRESTIGE · ECUADOR
-        </div>
-        <div className="hero__logo-mark">
-          <CCLogoMark size={56} color="rgba(255,255,255,0.85)" />
+        <div className="hero__logo-mark" style={{ height: isTitle ? 140 : 147, marginTop: isTitle ? 34 : -56, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'margin-top .4s ease .13s' }}>
+          {isTitle ? (
+            <LogoStacked key="stacked" tone="positive" height={90} style={{ transform: 'scale(1.87)' }} />
+          ) : (
+            <BrandLogo key="horizontal" tone="positive" height={40} style={{ transform: 'scale(1.9178125)' }} />
+          )}
         </div>
         <TitleCube onActiveChange={setIsTitle} />
         <p className="hero__subtitle">

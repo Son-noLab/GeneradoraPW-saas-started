@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { CCLogoMark } from './logo'
+import { BrandLogo } from './logo'
 import { useModal } from './shell'
 import { createClient } from '@/lib/supabase/client'
 
@@ -113,8 +113,7 @@ export default function Header({ initialLoggedIn = false, initialProfile = null 
 
   const showFab = hidden && !menuOpen
   const cls = `header${solid ? ' is-solid' : ''}${hidden && !menuOpen ? ' is-hidden' : ''}`
-  const logoColor = solid ? '#0B1738' : '#fff'
-  const wordColor = solid ? '#0B1738' : '#fff'
+  const logoTone = solid ? 'natural' : 'positive'
 
   return (
     <>
@@ -139,10 +138,7 @@ export default function Header({ initialLoggedIn = false, initialProfile = null 
               }
             }}
           >
-            <CCLogoMark size={36} color={logoColor} />
-            <span className="header__wordmark" style={{ color: wordColor }}>
-              CATEON<span style={{ letterSpacing: '0.28em' }}>COOK</span>
-            </span>
+            <BrandLogo tone={logoTone} height={38.88} priority />
           </Link>
 
           <nav className="header__nav">
@@ -199,10 +195,7 @@ export default function Header({ initialLoggedIn = false, initialProfile = null 
       />
       <nav className={`mobile-menu${menuOpen ? ' is-open' : ''}`}>
         <div className="mobile-menu__brand">
-          <CCLogoMark size={36} color="#fff" />
-          <span style={{ fontWeight: 900, fontSize: 14, letterSpacing: '0.2em', color: '#fff' }}>
-            CATEON<span style={{ letterSpacing: '0.28em' }}>COOK</span>
-          </span>
+          <BrandLogo tone="positive" height={38.88} />
         </div>
         {NAV.map(n => (
           <Link key={n.href} href={n.href} className="mobile-menu__link" onClick={() => { setMenuOpen(false); goTop() }}>{n.label}</Link>

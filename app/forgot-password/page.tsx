@@ -4,6 +4,7 @@ import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { BrandLogo } from '@/components/marketing/logo'
 
 function ForgotPasswordForm() {
   const searchParams = useSearchParams()
@@ -67,17 +68,7 @@ function ForgotPasswordForm() {
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 'var(--s-lg)' }}>
           <Link href="/" style={{ display: 'inline-block' }} aria-label="CateonCook — Inicio">
-            <svg viewBox="0 0 260 80" xmlns="http://www.w3.org/2000/svg" fill="none" style={{ height: 40, color: 'var(--c-navy)' }}>
-              <circle cx="40" cy="40" r="37" stroke="currentColor" strokeWidth="3.5"/>
-              <circle cx="40" cy="40" r="28" stroke="currentColor" strokeWidth="1.2"/>
-              <rect x="36" y="16" width="8" height="7" rx="3" fill="currentColor"/>
-              <path d="M20 27 Q20 24 40 24 Q60 24 60 27 Q60 31 40 31 Q20 31 20 27Z" fill="currentColor"/>
-              <path d="M22 31 L22 52 Q22 61 40 61 Q58 61 58 52 L58 31 Z" fill="currentColor"/>
-              <path d="M22 36 Q13 36 13 44 Q13 52 22 49" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/>
-              <path d="M58 36 Q67 36 67 44 Q67 52 58 49" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/>
-              <text x="90" y="38" fontFamily="'Arial Black','Helvetica Neue',Arial,sans-serif" fontSize="22" fontWeight="900" letterSpacing="2.5" fill="currentColor">CATEON</text>
-              <text x="92" y="63" fontFamily="'Arial Black','Helvetica Neue',Arial,sans-serif" fontSize="22" fontWeight="900" letterSpacing="6" fill="currentColor">COOK</text>
-            </svg>
+            <BrandLogo tone="natural" height={40} priority />
           </Link>
           <h1 style={{ fontFamily: 'var(--font-cormorant),Georgia,serif', fontSize: 'clamp(1.8rem,4vw,2.4rem)', color: 'var(--c-navy)', fontWeight: 400, marginTop: 'var(--s-sm)' }}>
             Recuperar contraseña

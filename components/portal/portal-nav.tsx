@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { CCLogoMark } from '@/components/marketing/logo'
+import { LogoBadge } from '@/components/marketing/logo'
 import { useProfile } from './profile-context'
 
 const NAV = [
@@ -46,7 +46,7 @@ export function PortalNav({ email }: { email: string }) {
         <div className="portal-header__divider" />
 
         <Link href="/portal" className="portal-header__logo">
-          <CCLogoMark size={26} color="#E6C77A" />
+          <LogoBadge tone="positive" size={26} />
           <span className="portal-header__wordmark">PORTAL DEL SOCIO</span>
         </Link>
 

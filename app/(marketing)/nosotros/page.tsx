@@ -27,7 +27,7 @@ function HistoriaSection() {
 
           <div className="nosotros__right">
             <p className="nosotros__lede">
-              Empezamos con <em>una sola olla</em> y una promesa: que la cocina volvería a ser
+              Empezamos con <em>un solo sistema de cocina</em> y una promesa: que la cocina volvería a ser
               el centro de la casa. Veintidós años después, cada socio que se suma extiende esa
               misma promesa a una familia más.
             </p>
@@ -60,7 +60,7 @@ function HistoriaSection() {
 /* ── Timeline ── */
 function TimelineSection() {
   const rows = [
-    { year: '2003', title: <>La primera <em>olla</em></>,
+    { year: '2003', title: <>El primer <em>sistema de cocina</em></>,
       desc: 'Catalina y Eón fundan CateonCook en su propia cocina, en Quito. Una caja de Royal Prestige y diez clientes que terminaron siendo socios.' },
     { year: '2008', title: <>El primer <em>territorio</em></>,
       desc: 'Apertura de la oficina de Guayaquil. Los primeros 50 socios cruzan las cifras de Quito y demuestran que el modelo viaja.' },
@@ -262,7 +262,7 @@ export default function NosotrosPage() {
         current="Nosotros"
         cornerFig="Cap. IV · Nosotros"
         title={<>Una familia<br /><em>que ya trazó</em><br />el camino.</>}
-        lede="No somos una marca. Somos veintidós años de cocinas, decisiones y socios reales. Esta es la historia detrás de cada olla que entregamos."
+        lede="No somos una marca. Somos veintidós años de cocinas, decisiones y socios reales. Esta es la historia detrás de cada sistema de cocina que entregamos."
         meta={[
           { value: '2003', label: 'AÑO DE FUNDACIÓN' },
           { value: 'QUITO', label: 'CASA MATRIZ' },
