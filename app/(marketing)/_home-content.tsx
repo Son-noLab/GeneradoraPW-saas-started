@@ -10,8 +10,8 @@ import { useLenis } from '@/components/lenis-provider'
 /* ── Title Cube ── */
 const PANELS = [
   { type: 'title' as const },
-  { type: 'image' as const, label: 'comunidad · celebración', src: '/img/cc-evento-001.jpg', pos: 'center 35%' },
-  { type: 'image' as const, label: 'cateon star · premiación', src: '/img/cc-star.jpg',       pos: 'center 25%' },
+  { type: 'image' as const, label: 'comunidad · celebración', src: '/img/eventos/571a1008.jpg', pos: 'center 30%' },
+  { type: 'image' as const, label: 'cateon star · premiación', src: '/img/eventos/571a1131.jpg', pos: 'center 20%' },
   { type: 'image' as const, label: 'logros · 2024',            src: '/img/cc-confeti.jpg',    pos: 'center 20%' },
   { type: 'image' as const, label: 'la mesa · comunidad',      src: '/img/cc-mesa.jpg',       pos: 'center 45%' },
 ]

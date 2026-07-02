@@ -41,6 +41,14 @@ const FOTOS: Foto[] = [
     story: 'No en una oficina. En una cocina real, con un producto real, frente a personas reales. Así se construyó cada socio activo de CateonCook: desde el calor de una demostración que termina en cena.',
   },
   {
+    src: '/img/eventos/571a0977.jpg',
+    caption: 'comunidad · confianza',
+    tag: 'Comunidad · Confianza',
+    title: 'La bandera que',
+    titleItalic: 'se levanta sola',
+    story: 'Nadie tuvo que pedirles que la alzaran. Cuando un socio cree de verdad en lo que representa, el gesto sale solo: un pulgar arriba, una bandera al aire, la prueba más honesta de que aquí la confianza no se actúa, se vive.',
+  },
+  {
     src: '/img/nos-3.jpg',
     caption: 'capacitación · escuela cc',
     tag: 'Escuela CC · Formación',
@@ -64,6 +72,14 @@ const FOTOS: Foto[] = [
     title: 'Ecuador',
     titleItalic: 'de pie',
     story: 'Cuando el mapa de socios activos cubrió las cuatro regiones, organizamos la primera entrega nacional de reconocimientos. Cada medalla lleva el nombre de alguien que decidió no rendirse cuando el camino se puso difícil.',
+  },
+  {
+    src: '/img/eventos/571a0986.jpg',
+    caption: 'identidad · royal prestige',
+    tag: 'Identidad · Royal Prestige',
+    title: 'El símbolo que',
+    titleItalic: 'todos reconocen',
+    story: 'En cada evento, cientos de banderas se levantan al mismo tiempo. No es coreografía: es la señal de una red que entendió que representar la marca es también representarse a sí misma.',
   },
   {
     src: '/img/nos-4.jpg',

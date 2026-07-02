@@ -1742,6 +1742,73 @@ body:has(.mk) {
 }
 
 /* ════════════════════════════════════
+   EVENTOS · GALERÍA COMPLETA
+   ════════════════════════════════════ */
+.mk .eventos { padding-left: 0; padding-right: 0; overflow: hidden; }
+.mk .eventos .section__inner { padding-left: var(--pad-x); padding-right: var(--pad-x); padding-bottom: 0; }
+.mk .eventos__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 160px;
+  gap: 3px;
+}
+.mk .eventos__item {
+  position: relative; overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  border: none; padding: 0; margin: 0; cursor: pointer; display: block;
+}
+.mk .eventos__img {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+.mk .eventos__item:hover .eventos__img { transform: scale(1.07); }
+.mk .eventos__more-row {
+  display: flex; justify-content: center;
+  padding: clamp(32px, 5vw, 56px) var(--pad-x) 0;
+}
+.mk .eventos__more {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.2); background: transparent;
+  padding: 14px 32px; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.mk .eventos__more:hover { border-color: var(--c-gold-hi); color: var(--c-gold-hi); background: rgba(212,175,55,0.06); }
+.mk .eventos__count {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35); text-align: center;
+  padding: 14px var(--pad-x) 48px;
+}
+.mk .lightbox--simple { grid-template-columns: 1fr; }
+.mk .eventos-lb__prev, .mk .eventos-lb__next {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  z-index: 1;
+}
+.mk .eventos-lb__prev { left: 20px; }
+.mk .eventos-lb__next { right: 20px; }
+.mk .eventos-lb__prev:hover:not(:disabled), .mk .eventos-lb__next:hover:not(:disabled) {
+  border-color: var(--c-gold-hi); background: rgba(212,175,55,0.1);
+}
+.mk .eventos-lb__prev:disabled, .mk .eventos-lb__next:disabled { opacity: 0.2; cursor: default; }
+.mk .eventos-lb__counter {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.5);
+}
+@media (max-width: 900px) {
+  .mk .eventos__grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 130px; }
+}
+@media (max-width: 560px) {
+  .mk .eventos__grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 108px; }
+}
+
+/* ════════════════════════════════════
    REDES SOCIALES
    ════════════════════════════════════ */
 .mk .redes__header {

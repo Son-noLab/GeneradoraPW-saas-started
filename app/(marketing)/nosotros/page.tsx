@@ -1,9 +1,17 @@
 import type { Metadata } from 'next'
+import fs from 'node:fs'
+import path from 'node:path'
 import Link from 'next/link'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
 import GaleriaGrid from '@/components/marketing/galeria'
 import HistoriaPhotos from '@/components/marketing/historia-photos'
+import EventosGrid from '@/components/marketing/eventos-grid'
+
+function getEventosFiles(): string[] {
+  const dir = path.join(process.cwd(), 'public', 'img', 'eventos')
+  return fs.readdirSync(dir).filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f)).sort()
+}
 
 export const metadata: Metadata = {
   title: 'Nosotros · CateonCook — Fábrica de Sueños',
@@ -149,6 +157,29 @@ function FotoSection() {
   )
 }
 
+/* ── Todos los momentos ── */
+function EventosSection() {
+  const files = getEventosFiles()
+  return (
+    <section className="section section--dark eventos" aria-label="Todos los momentos">
+      <span className="section__corner-fig">Fig. 04b · Archivo</span>
+      <div className="section__inner">
+        <div className="section__header reveal">
+          <div>
+            <span className="section__eyebrow"><span className="section__eyebrow-rule" />El archivo completo</span>
+            <h2 className="section__title">Todos los<br /><em>momentos.</em></h2>
+          </div>
+          <p className="section__lede">
+            Cada convención, cada premiación, cada mesa compartida. Estas son las {files.length} fotos
+            que cuentan lo que somos, sin editar.
+          </p>
+        </div>
+      </div>
+      <EventosGrid files={files} />
+    </section>
+  )
+}
+
 /* ── Redes sociales ── */
 const REDES = [
   {
@@ -275,6 +306,7 @@ export default function NosotrosPage() {
       <ValoresSection />
       <SectionDivider direction="cream-to-dark" targetSelector=".fotos" />
       <FotoSection />
+      <EventosSection />
       <RedesSection />
     </main>
   )
