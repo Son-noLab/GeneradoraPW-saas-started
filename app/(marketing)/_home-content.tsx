@@ -431,7 +431,7 @@ function SplitPreview() {
           <h2 className="split__title">Expande tu red<br /><em>y tus ganancias</em></h2>
           <p className="split__desc">Lleva CateonCook más lejos. Condiciones preferenciales, mayor margen y la posibilidad de abrir nuevos territorios.</p>
           <ul className="split__features">
-            {['Todo lo incluido como Emprendedor', 'Compras al por mayor preferenciales', 'Mayor margen y bonos por volumen', 'Apertura de nuevos territorios'].map(f => (
+            {['Mayores responsabilidades que nivel Emprendedor', 'Compras al por mayor preferenciales', 'Mayor margen y bonos por volumen', 'Apertura de nuevos territorios'].map(f => (
               <li key={f} className="split__feature">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5" /></svg>
                 {f}
@@ -452,12 +452,15 @@ function SplitPreview() {
 }
 
 /* ── VocesSection ── */
+// Retratos reales del set de eventos: 571a0991/571a1213/571a1202/571a1215/571a1171
+// son las únicas fotos con una sola persona en cuadro (o recorte muy cerrado sobre
+// una persona dentro de una foto grupal); `pos`/`size` ajustan el encuadre por foto.
 const VOCES = [
-  { fig: 'Fig. 03·a', name: <>María <em>Fernanda</em></>, role: 'Distribuidora', city: 'Loja',      years: '8',  yearsLabel: 'AÑOS · CC', quote: <>Aquí no encontré un negocio. Encontré una <span className="em-gold">familia</span> que me empujó a convertirme en la mejor versión de mí misma.</>, portrait: '/img/voces-1.jpg', initial: 'M' },
-  { fig: 'Fig. 03·b', name: <>Verónica <em>Pacheco</em></>, role: 'Distribuidora', city: 'Cuenca',   years: '6',  yearsLabel: 'AÑOS · CC', quote: <>Empecé vendiendo a tres amigas. Hoy mi equipo de cuarenta socias cocina por <span className="em-gold">todo el austro.</span></>, portrait: '/img/voces-2.jpg', initial: 'V' },
-  { fig: 'Fig. 03·c', name: <>Andrés <em>Maldonado</em></>, role: 'Emprendedor',  city: 'Quito',     years: '2',  yearsLabel: 'AÑOS · CC', quote: <>Lo que me sostuvo no fueron las comisiones — fue saber que mi sponsor estaba <span className="em-gold">a un mensaje.</span></>, portrait: '/img/voces-3.jpg', initial: 'A' },
-  { fig: 'Fig. 03·d', name: <>Luisa <em>Terán</em></>, role: 'Mentora',      city: 'Guayaquil', years: '4',  yearsLabel: 'AÑOS · CC', quote: <>Llegué buscando un ingreso extra. Encontré una <span className="em-gold">segunda profesión</span> y una segunda familia.</>, portrait: '/img/voces-4.jpg', initial: 'L' },
-  { fig: 'Fig. 03·e', name: <>Carolina <em>Ávila</em></>, role: 'Directora',   city: 'Ambato',    years: '12', yearsLabel: 'AÑOS · CC', quote: <>Construí mi propia oficina, mi propio equipo y, sobre todo, <span className="em-gold">mi propia voz.</span></>, portrait: '/img/voces-5.jpg', initial: 'C' },
+  { fig: 'Fig. 03·a', name: <>María <em>Fernanda</em></>, role: 'Distribuidora', city: 'Loja',      years: '8',  yearsLabel: 'AÑOS · CC', quote: <>Aquí no encontré un negocio. Encontré una <span className="em-gold">familia</span> que me empujó a convertirme en la mejor versión de mí misma.</>, portrait: '/img/eventos/571a0991.jpg', pos: '22% 24%', size: '350% auto', initial: 'M' },
+  { fig: 'Fig. 03·b', name: <>Verónica <em>Pacheco</em></>, role: 'Distribuidora', city: 'Cuenca',   years: '6',  yearsLabel: 'AÑOS · CC', quote: <>Empecé vendiendo a tres amigas. Hoy mi equipo de cuarenta socias cocina por <span className="em-gold">todo el austro.</span></>, portrait: '/img/eventos/571a1213.jpg', pos: '50% 19%', size: '350% auto', initial: 'V' },
+  { fig: 'Fig. 03·c', name: <>Andrés <em>Maldonado</em></>, role: 'Emprendedor',  city: 'Quito',     years: '2',  yearsLabel: 'AÑOS · CC', quote: <>Lo que me sostuvo no fueron las comisiones — fue saber que mi sponsor estaba <span className="em-gold">a un mensaje.</span></>, portrait: '/img/eventos/571a1202.jpg', pos: '42% 20%', size: '350% auto', initial: 'A' },
+  { fig: 'Fig. 03·d', name: <>Luisa <em>Terán</em></>, role: 'Mentora',      city: 'Guayaquil', years: '4',  yearsLabel: 'AÑOS · CC', quote: <>Llegué buscando un ingreso extra. Encontré una <span className="em-gold">segunda profesión</span> y una segunda familia.</>, portrait: '/img/eventos/571a1215.jpg', pos: '35% 29%', size: '300% auto', initial: 'L' },
+  { fig: 'Fig. 03·e', name: <>Carolina <em>Ávila</em></>, role: 'Directora',   city: 'Ambato',    years: '12', yearsLabel: 'AÑOS · CC', quote: <>Construí mi propia oficina, mi propio equipo y, sobre todo, <span className="em-gold">mi propia voz.</span></>, portrait: '/img/eventos/571a1171.jpg', pos: '32% 20%', size: '350% auto', initial: 'C' },
 ]
 const CALLOUT_IMGS = ['/img/prod-01-innove.jpg', '/img/prod-03-novel.jpg', '/img/prod-04-nonstick.jpg', '/img/prod-02-5ply.jpg']
 
@@ -531,7 +534,7 @@ function VocesSection() {
           <div className="voces__portrait">
             <span className="voces__portrait-fig">{current.fig}</span>
             {VOCES.map((v, i) => (
-              <div key={i} className={`voces__portrait-img${i === idx ? ' is-active' : ''}`} style={{ backgroundImage: `url(${v.portrait})` }} aria-hidden={i !== idx} />
+              <div key={i} className={`voces__portrait-img${i === idx ? ' is-active' : ''}`} style={{ backgroundImage: `url(${v.portrait})`, backgroundPosition: v.pos, backgroundSize: v.size }} aria-hidden={i !== idx} />
             ))}
             <span className="voces__portrait-mark" aria-hidden="true">{current.initial}.</span>
           </div>
@@ -547,7 +550,7 @@ function VocesSection() {
               </div>
               {VOCES.map((v, i) => (
                 <button key={i} role="tab" aria-selected={i === idx} className={`voces__thumb${i === idx ? ' is-active' : ''}`} onClick={() => setIdx(i)}>
-                  <div className="voces__thumb-img" style={{ backgroundImage: `url(${v.portrait})` }} />
+                  <div className="voces__thumb-img" style={{ backgroundImage: `url(${v.portrait})`, backgroundPosition: v.pos, backgroundSize: v.size }} />
                   <div className="voces__thumb-bar" aria-hidden="true"><span className="voces__thumb-bar-fill" /></div>
                   <span className="voces__thumb-name">{v.initial}. {v.role}</span>
                   <span className="voces__thumb-meta">{v.city} · {v.years} años</span>
