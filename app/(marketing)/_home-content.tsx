@@ -24,6 +24,7 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
   const cycleRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const glareRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const consecutiveImagesRef = useRef(0)
   const lenis = useLenis()
 
   // Parallax: desplaza objectPosition-Y al scroll para efecto de profundidad
@@ -45,7 +46,12 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
   }, [lenis])
 
   useEffect(() => { onActiveChange(CYCLE[0] === 0) }, [])
-  useEffect(() => { onActiveChange(active === 0) }, [active])
+  useEffect(() => {
+    onActiveChange(active === 0)
+    // keeps the click-streak counter honest whenever text shows up for any reason
+    // (click, automatic cycle, or the scroll-out reset below)
+    if (active === 0) consecutiveImagesRef.current = 0
+  }, [active])
 
   // Reset to title when hero < 50% visible; restart cycle when hero >= 85%
   useEffect(() => {
@@ -95,17 +101,22 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
 
   // Click interaction (manual override of the automatic cycle — does not alter it):
   // from the text panel, a click always jumps to a random image; from an image panel,
-  // a click jumps to another random image 89% of the time, or back to text 11% of the time.
+  // a click jumps to another random image 89% of the time, or back to text 11% of the
+  // time — capped so a click never shows a 4th image in a row (forces text instead).
+  const MAX_CONSECUTIVE_IMAGES = 3
   const handleCubeClick = () => {
     const imageIndices = PANELS.map((_, i) => i).filter(i => i !== 0)
     let nextIdx: number
     if (active === 0) {
       nextIdx = imageIndices[Math.floor(Math.random() * imageIndices.length)]
-    } else if (Math.random() < 0.11) {
+      consecutiveImagesRef.current = 1
+    } else if (consecutiveImagesRef.current >= MAX_CONSECUTIVE_IMAGES || Math.random() < 0.11) {
       nextIdx = 0
+      consecutiveImagesRef.current = 0
     } else {
       const others = imageIndices.filter(i => i !== active)
       nextIdx = others[Math.floor(Math.random() * others.length)]
+      consecutiveImagesRef.current++
     }
     cycleRef.current = 0
     setActive(nextIdx)
