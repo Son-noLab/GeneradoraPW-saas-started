@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -65,36 +65,6 @@ export default function CatalogClient() {
   const [disp,    setDisp]    = useState<Disponibilidad | 'todo'>('todo')
   const [advOpen, setAdvOpen] = useState(false)
 
-  /* ── Loader state ── */
-  const [count,       setCount]       = useState(0)
-  const [loaderOut,   setLoaderOut]   = useState(false)
-  const [loaderDone,  setLoaderDone]  = useState(false)
-  const [cardsReady,  setCardsReady]  = useState(false)
-
-  useEffect(() => {
-    const DURATION = 280 // ms for 0→100
-    const start = performance.now()
-    let raf: number
-
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / DURATION, 1)
-      const eased = 1 - Math.pow(1 - t, 3)
-      setCount(Math.floor(eased * 100))
-
-      if (t < 1) {
-        raf = requestAnimationFrame(tick)
-      } else {
-        setCount(100)
-        setTimeout(() => setLoaderOut(true),  60)   // brief pause then wipe
-        setTimeout(() => setCardsReady(true), 120)  // cards start as curtain lifts
-        setTimeout(() => setLoaderDone(true), 340)  // remove overlay from DOM
-      }
-    }
-
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [])
-
   /* ── Filter logic ── */
   const visibles = useMemo(() => PRODUCTOS.filter(p => {
     if (cat  !== 'todo' && p.categoria      !== cat)         return false
@@ -108,15 +78,6 @@ export default function CatalogClient() {
 
   return (
     <main className="ccat-main">
-
-      {/* ── Loader overlay ── */}
-      {!loaderDone && (
-        <div className={`ccat-loader${loaderOut ? ' ccat-loader--out' : ''}`} aria-hidden="true">
-          <div className="ccat-loader__bar" style={{ width: `${count}%` }} />
-          <span className="ccat-loader__label">Royal Prestige · Catálogo</span>
-          <span className="ccat-loader__count">{count}</span>
-        </div>
-      )}
 
       {/* ── Cabecera ── */}
       <div className="ccat-head">
@@ -238,7 +199,7 @@ export default function CatalogClient() {
               <button className="btn btn--sky" onClick={clearFilters}>Ver todos</button>
             </div>
           ) : (
-            <div className={`ccat-grid${cardsReady ? ' ccat-grid--ready' : ''}`}>
+            <div className="ccat-grid ccat-grid--ready">
               {visibles.map((p, i) => (
                 <Link
                   key={p.id}
