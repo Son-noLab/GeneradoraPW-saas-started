@@ -429,11 +429,16 @@ body:has(.mk) {
    transparent here so this single layer shows through both. */
 .mk .hero-continuum { position: relative; }
 .mk .hero-continuum__bg {
+  /* A single hump (one peak, no internal dip) across the FULL combined
+     height. The previous two-peak curve had a dark stop at 42% that,
+     given Hero's own share of the combined height, landed partway down
+     Hero itself — behind TitleCube — reading as an unwanted horizontal
+     shadow band. One smooth peak avoids any dip inside either section. */
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background:
     radial-gradient(ellipse 1400px 900px at 50% 8%, #1a2b5e 0%, transparent 45%),
     radial-gradient(ellipse 1200px 800px at 100% 92%, #0e2350 0%, transparent 45%),
-    linear-gradient(180deg, #081640 0%, #0a1a4a 20%, #050d2c 42%, #0a1a4a 64%, #050d2c 100%);
+    linear-gradient(180deg, #081640 0%, #0a1a4a 38%, #050d2c 100%);
 }
 /* Same fix, same reason, for the edge-darkening vignette: Hero's own
    vignette and the dark PageHero's own vignette are each sized to their
