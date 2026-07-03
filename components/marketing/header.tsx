@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { BrandLogo } from './logo'
-import { useModal } from './shell'
 import { createClient } from '@/lib/supabase/client'
 
 const NAV = [
@@ -27,7 +26,6 @@ export default function Header({ initialLoggedIn = false, initialProfile = null 
   const [userProfile, setUserProfile] = useState<{ name: string | null; avatar: string | null } | null>(initialProfile)
   const pathname = usePathname()
   const isHome = pathname === '/'
-  const { openModal } = useModal()
 
   useEffect(() => {
     const supabase = createClient()
@@ -172,9 +170,9 @@ export default function Header({ initialLoggedIn = false, initialProfile = null 
                 Iniciar sesión
               </Link>
             )}
-            <button className="btn btn--primary" onClick={openModal}>
-              Sé parte de la fábrica
-            </button>
+            <Link href="/unete" className="btn btn--primary" onClick={goTop}>
+              Conoce el camino
+            </Link>
           </div>
 
           <button
@@ -218,9 +216,9 @@ export default function Header({ initialLoggedIn = false, initialProfile = null 
               Iniciar sesión
             </Link>
           )}
-          <button className="btn btn--primary" style={{ textAlign: 'center', justifyContent: 'center' }} onClick={() => { setMenuOpen(false); openModal() }}>
-            Sé parte de la fábrica
-          </button>
+          <Link href="/unete" className="btn btn--primary" style={{ textAlign: 'center', justifyContent: 'center' }} onClick={() => { setMenuOpen(false); goTop() }}>
+            Conoce el camino
+          </Link>
         </div>
       </nav>
     </>

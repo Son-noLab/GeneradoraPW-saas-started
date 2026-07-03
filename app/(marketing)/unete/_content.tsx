@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
+import { useModal } from '@/components/marketing/shell'
 import { createClient } from '@/lib/supabase/client'
 
 const PROVINCIAS = [
@@ -324,6 +325,8 @@ function ContactSection() {
 }
 
 export default function UnetePage() {
+  const { openModal } = useModal()
+
   useEffect(() => {
     if (window.location.hash !== '#formulario') return
     const el = document.getElementById('formulario')
@@ -340,6 +343,7 @@ export default function UnetePage() {
         current="Únete"
         cornerFig="Cap. III · Únete"
         title={<>Tu <em>camino</em><br />empieza con<br />una conversación.</>}
+        cta={<button className="btn btn--lg btn--primary" onClick={openModal}>Sé parte de la fábrica</button>}
         lede="No tienes que decidir hoy. Solo agendar 30 minutos. Lo demás, lo decides tú a tu propio ritmo, con un sponsor que ya hizo este mismo camino."
         meta={[
           { value: '30min', label: 'PRIMERA LLAMADA' },

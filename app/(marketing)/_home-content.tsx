@@ -90,25 +90,28 @@ function TCubeImagePanel({ img, isActive, onClick }: { img: { src: string; pos: 
 
 function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => void }) {
   const [isTitle, setIsTitle] = useState(true)
-  const [activeImgIdx, setActiveImgIdx] = useState<number | null>(null)
-  const [prevImgIdx, setPrevImgIdx] = useState<number | null>(null)
+  // `active` carries a unique instance id alongside the image index (not just the index)
+  // so that when it later moves into `retiring`, it keeps the exact same React key —
+  // that's what lets the same DOM node persist and its CSS opacity *transition* smoothly
+  // instead of remounting fresh (which would skip straight to the end state, no fade).
+  const [active, setActive] = useState<{ id: number; idx: number } | null>(null)
+  // Every photo that's fading out lives here independently, each removing itself off its
+  // own timer. A click must always respond immediately — it can't wait for whatever was
+  // showing before to finish fading — so instead of a single "prev" slot (which forces a
+  // choice between dropping the still-fading photo or delaying the click), each outgoing
+  // photo gets its own slot and finishes on its own clock no matter how fast the next
+  // click arrives.
+  const [retiring, setRetiring] = useState<{ id: number; idx: number }[]>([])
   const [glare, setGlare] = useState(false)
 
   const isTitleRef = useRef(true)
-  const activeImgIdxRef = useRef<number | null>(null)
+  const activeRef = useRef<{ id: number; idx: number } | null>(null)
+  const nextIdRef = useRef(0)
   const cycleRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const glareRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const prevClearRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const consecutiveImagesRef = useRef(0)
   const recentShownRef = useRef<Map<number, number>>(new Map())
-  // A transition (crossfade of prev→active panel) is in flight for IMG_TRANSITION_MS.
-  // Only two panel slots ever exist, so firing a new transition mid-fade would drop the
-  // panel currently fading out instead of letting it finish — it'd just vanish instead
-  // of crossfading. Queue instead: at most one request waits and runs the instant the
-  // current transition's exit animation completes.
-  const transitioningRef = useRef(false)
-  const pendingTransitionRef = useRef<(() => void) | null>(null)
   const lenis = useLenis()
 
   // Parallax: desplaza objectPosition-Y al scroll para efecto de profundidad
@@ -151,45 +154,33 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
     return chosen
   }
 
-  // Runs `mutate` immediately if no crossfade is in flight; otherwise queues it to run
-  // the moment the current one finishes, so it always fully completes first.
-  function runTransition(mutate: () => void) {
-    if (transitioningRef.current) {
-      pendingTransitionRef.current = mutate
-      return
-    }
-    transitioningRef.current = true
-    mutate()
-    prevClearRef.current = setTimeout(() => {
-      setPrevImgIdx(null)
-      transitioningRef.current = false
-      const next = pendingTransitionRef.current
-      if (next) {
-        pendingTransitionRef.current = null
-        runTransition(next)
-      }
+  // Moves whatever's currently active into the retiring set, on its own removal timer —
+  // independent of anything that happens afterward, so it always gets to finish its fade.
+  function retireCurrentImage() {
+    const cur = activeRef.current
+    if (!cur) return
+    setRetiring(list => [...list, cur])
+    setTimeout(() => {
+      setRetiring(list => list.filter(r => r.id !== cur.id))
     }, IMG_TRANSITION_MS)
   }
 
   function goToImage() {
-    runTransition(() => {
-      const nextIdx = pickPoolImage(activeImgIdxRef.current)
-      setPrevImgIdx(activeImgIdxRef.current)
-      activeImgIdxRef.current = nextIdx
-      setActiveImgIdx(nextIdx)
-      isTitleRef.current = false
-      setIsTitle(false)
-    })
+    retireCurrentImage()
+    const nextIdx = pickPoolImage(activeRef.current?.idx ?? null)
+    const next = { id: nextIdRef.current++, idx: nextIdx }
+    activeRef.current = next
+    setActive(next)
+    isTitleRef.current = false
+    setIsTitle(false)
   }
 
   function goToTitle() {
-    runTransition(() => {
-      setPrevImgIdx(activeImgIdxRef.current)
-      activeImgIdxRef.current = null
-      setActiveImgIdx(null)
-      isTitleRef.current = true
-      setIsTitle(true)
-    })
+    retireCurrentImage()
+    activeRef.current = null
+    setActive(null)
+    isTitleRef.current = true
+    setIsTitle(true)
   }
 
   // Reset to title when hero < 50% visible; restart cycle when hero >= 85%
@@ -285,12 +276,19 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
           <em className={glare ? 'glare' : ''}>Sueños</em>
         </h1>
       </div>
-      {prevImgIdx !== null && (
-        <TCubeImagePanel key={`img-${prevImgIdx}`} img={IMAGES[prevImgIdx]} isActive={false} onClick={handleCubeClick} />
-      )}
-      {activeImgIdx !== null && (
-        <TCubeImagePanel key={`img-${activeImgIdx}`} img={IMAGES[activeImgIdx]} isActive={true} onClick={handleCubeClick} />
-      )}
+      {/* One flat list for every image panel, retiring + active together. Splitting these
+          into a mapped array plus a separate conditional element (as before) nests the
+          mapped array as a single child slot, which breaks React's key-based reuse across
+          the two — a panel moving from `active` into `retiring` would remount as a fresh
+          DOM node instead of keeping its element, silently skipping its fade-out
+          transition. One `.map()` over a combined list keeps all keys in the same flat
+          array, so the same panel is always recognized as the same element. */}
+      {[
+        ...retiring.map(r => ({ ...r, isActive: false })),
+        ...(active ? [{ ...active, isActive: true }] : []),
+      ].map(p => (
+        <TCubeImagePanel key={`panel-${p.id}`} img={IMAGES[p.idx]} isActive={p.isActive} onClick={handleCubeClick} />
+      ))}
     </div>
   )
 }
@@ -554,7 +552,7 @@ function Hero() {
           <span className="hero__subtitle-rule" />
         </p>
         <div className="hero__cta-row">
-          <Link href="/unete" className="btn btn--lg btn--primary" onClick={() => window.scrollTo(0, 0)}>Conoce el camino</Link>
+          <button className="btn btn--lg btn--primary" onClick={openModal}>Sé parte de la fábrica</button>
           <Link href="/producto" className="btn btn--lg btn--ghost-light" onClick={() => window.scrollTo(0, 0)}>Conoce el producto</Link>
         </div>
       </div>
@@ -815,23 +813,26 @@ function CommunityMarquee() {
 export default function HomePage() {
   return (
     <main>
-      <Hero />
-      <div className="chapter-bridge">
-        <div className="hseam" aria-hidden="true" />
-        <CloudCrossingTall id="hero" />
-        <HeroTransition />
+      <div className="hero-continuum">
+        <div className="hero-continuum__bg" aria-hidden="true" />
+        <div className="hero-continuum__vignette" aria-hidden="true" />
+        <Hero />
+        <div className="chapter-bridge">
+          <CloudCrossingTall id="hero" />
+          <HeroTransition />
+        </div>
+        <PageHero
+          variant="dark"
+          cornerFig="Cap. IV · Nosotros"
+          title={<>Una familia<br /><em>que ya trazó</em><br />el camino.</>}
+          lede="No somos una marca. Somos veintidós años de cocinas, decisiones y socios reales. Esta es la historia detrás de cada sistema de cocina que entregamos."
+          meta={[
+            { value: '2003', label: 'AÑO DE FUNDACIÓN' },
+            { value: 'QUITO', label: 'CASA MATRIZ' },
+            { value: '5 PAÍSES', label: 'PRESENCIA' },
+          ]}
+        />
       </div>
-      <PageHero
-        variant="dark"
-        cornerFig="Cap. IV · Nosotros"
-        title={<>Una familia<br /><em>que ya trazó</em><br />el camino.</>}
-        lede="No somos una marca. Somos veintidós años de cocinas, decisiones y socios reales. Esta es la historia detrás de cada sistema de cocina que entregamos."
-        meta={[
-          { value: '2003', label: 'AÑO DE FUNDACIÓN' },
-          { value: 'QUITO', label: 'CASA MATRIZ' },
-          { value: '5 PAÍSES', label: 'PRESENCIA' },
-        ]}
-      />
       <SplitPreview />
       <div className="split-bridge" aria-hidden="true">
         <CloudCrossingBand id="split" />

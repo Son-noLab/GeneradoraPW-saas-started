@@ -7,10 +7,11 @@ interface PageHeroProps {
   cornerFig: string
   title: ReactNode
   lede: string
+  cta?: ReactNode
   meta?: { value: string; label: string }[]
 }
 
-export default function PageHero({ variant, chapter, current, cornerFig, title, lede, meta }: PageHeroProps) {
+export default function PageHero({ variant, chapter, current, cornerFig, title, lede, cta, meta }: PageHeroProps) {
   return (
     <section className={`phero phero--${variant}`}>
       <div className="phero__vignette" />
@@ -32,6 +33,7 @@ export default function PageHero({ variant, chapter, current, cornerFig, title, 
           <h1 className="phero__title">{title}</h1>
         </div>
         <div className="phero__right">
+          {cta && <div className="phero__cta">{cta}</div>}
           <p className="phero__lede">{lede}</p>
           {meta && meta.length > 0 && (
             <div className="phero__meta">

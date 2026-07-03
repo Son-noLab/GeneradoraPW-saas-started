@@ -221,11 +221,10 @@ body:has(.mk) {
   padding-bottom: 0;   /* cancel globals.css padding-bottom: 7rem */
 }
 .mk .hero__bg {
+  /* background cleared — .hero-continuum__bg paints one continuous field
+     spanning Hero + the Capítulo IV section behind it, so there's no seam */
   position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse at 50% 0%, #1a2b5e 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 100%, #0e2350 0%, transparent 60%),
-    linear-gradient(180deg, #081640 0%, #0a1a4a 50%, #050d2c 100%);
+  background: none;
 }
 .mk .hero--warm .hero__bg {
   background:
@@ -243,8 +242,12 @@ body:has(.mk) {
   pointer-events: none;
 }
 .mk .hero__vignette {
+  /* background cleared — .hero-continuum__vignette paints one continuous
+     vignette spanning Hero + the Capítulo IV section, so its edge-darkening
+     doesn't stop dead at Hero's own bottom edge (that mismatch against
+     Phero's separately-sized vignette was the visible black line) */
   position: absolute; inset: 0; z-index: 1;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.45) 100%);
+  background: none;
   pointer-events: none;
 }
 .mk .hero__corner-tag {
@@ -416,19 +419,40 @@ body:has(.mk) {
 /* ════════════════════════════════════
    HERO TRANSITION
    ════════════════════════════════════ */
+/* Hero and the Capítulo IV (dark) section used to be two independently
+   painted gradients meeting at a seam — even with matched color stops,
+   each one's own 0%→100% curve landed at a different pixel, so the seam
+   never fully disappeared. Instead, .hero-continuum wraps both sections
+   with ONE background layer spanning their combined height: there is no
+   seam to patch because there is only one continuous paint. Hero's own
+   .hero__bg and the dark PageHero's own background are cleared to
+   transparent here so this single layer shows through both. */
+.mk .hero-continuum { position: relative; }
+.mk .hero-continuum__bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 1400px 900px at 50% 8%, #1a2b5e 0%, transparent 45%),
+    radial-gradient(ellipse 1200px 800px at 100% 92%, #0e2350 0%, transparent 45%),
+    linear-gradient(180deg, #081640 0%, #0a1a4a 20%, #050d2c 42%, #0a1a4a 64%, #050d2c 100%);
+}
+/* Same fix, same reason, for the edge-darkening vignette: Hero's own
+   vignette and the dark PageHero's own vignette are each sized to their
+   own box, so their darkening curves don't line up — Hero's bottom edge
+   sits at a different point on its own curve than Phero's top edge sits
+   on its own, and that mismatch reads as a hard dark line at the seam.
+   One vignette sized to the combined box has no seam to mismatch. */
+.mk .hero-continuum__vignette {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 32%, transparent 42%, rgba(0,0,0,0.4) 100%);
+}
+.mk .chapter-bridge + .phero--dark .phero__vignette { background: none; }
 /* Dark-to-dark crossing (Hero → Capítulo dark section): no boxed band —
-   Hero's own background flows directly into the Capítulo section's, and the
-   cloud layers + line-draw float across that seam as a borderless overlay,
-   masked to nothing at their own edges so no rectangle is ever visible.
-   Clouds stay confined to the crossing itself, not bleeding into Hero. */
+   the cloud layers + line-draw float across the seam as a borderless
+   overlay, masked to nothing at their own edges so no rectangle is ever
+   visible. Clouds stay confined to the crossing itself, not bleeding
+   into Hero. */
 .mk .chapter-bridge {
   position: relative; height: 0; z-index: 5; pointer-events: none;
-}
-/* Erases the 1px rasterization seam where the two independently-painted
-   gradients meet, regardless of how closely their colors are matched */
-.mk .chapter-bridge .hseam {
-  position: absolute; left: 0; right: 0; top: -30px; height: 60px; z-index: 0;
-  background: linear-gradient(to bottom, transparent 0%, #050d2c 35%, #050d2c 65%, transparent 100%);
 }
 .mk .chapter-bridge .hclouds {
   position: absolute; left: 0; right: 0; top: -160px; bottom: auto; height: 320px;
@@ -443,18 +467,10 @@ body:has(.mk) {
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
 }
-.mk .chapter-bridge .htrans__path--thick { opacity: 0.1; }
-.mk .chapter-bridge .htrans__path--thin { opacity: 0.05; }
-/* Hero's bottom edge and Capítulo's top edge are two independently-computed
-   gradients — without this, their colors jump at the seam and read as a hard
-   line no matter what floats on top. Match Capítulo's top stop to Hero's
-   bottom stop and push its glow down so the two flow into one continuous field. */
-.mk .chapter-bridge + .phero--dark {
-  background:
-    radial-gradient(ellipse at 50% 30%, #1a2b5e 0%, transparent 50%),
-    radial-gradient(ellipse at 100% 100%, #0e2350 0%, transparent 60%),
-    linear-gradient(180deg, #050d2c 0%, #0a1a4a 45%, #050d2c 100%);
-}
+.mk .chapter-bridge .htrans__path--thick { opacity: 0; }
+.mk .chapter-bridge .htrans__path--thin { opacity: 0; }
+/* Cleared so .hero-continuum__bg (the single shared paint) shows through instead */
+.mk .chapter-bridge + .phero--dark { background: none; }
 /* Boxed crossing below the split view: real gradient (the two sides
    genuinely differ in color, so — unlike the seamless bridge above — an
    actual filled band is correct here). Starts at the exact navy the
@@ -470,12 +486,17 @@ body:has(.mk) {
   mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 65%, transparent 100%);
 }
 .mk .hclouds { z-index: 1; pointer-events: none; }
-.mk .hclouds__layer { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; }
+/* soft-light instead of normal alpha: plain white shapes normally-blended
+   over navy desaturate toward gray as they overlap, reading as a washed-out
+   haze band where clouds are densest. soft-light adds glow while keeping
+   the navy hue underneath, so the crossing stays color-matched to the
+   navy above and below it. */
+.mk .hclouds__layer { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; mix-blend-mode: soft-light; }
 .mk .hclouds__shape { fill: #fff; }
-.mk .hclouds__layer--back .hclouds__shape { fill: rgba(255,255,255,0.07); }
-.mk .hclouds__layer--mid .hclouds__shape { fill: rgba(255,255,255,0.13); }
+.mk .hclouds__layer--back .hclouds__shape { fill: rgba(255,255,255,0.1); }
+.mk .hclouds__layer--mid .hclouds__shape { fill: rgba(255,255,255,0.16); }
 .mk .hclouds__layer--front .hclouds__shape {
-  fill: rgba(255,255,255,0.2);
+  fill: rgba(255,255,255,0.22);
   stroke: rgba(230,199,122,0.18); stroke-width: 1.2;
 }
 .mk .chapter-bridge .htrans { z-index: 2; }
@@ -871,6 +892,7 @@ body:has(.mk) {
   -webkit-text-fill-color: transparent; color: transparent;
 }
 .mk .phero__right { display: flex; flex-direction: column; gap: 22px; padding-bottom: 8px; }
+.mk .phero__cta { align-self: flex-start; }
 .mk .phero__lede { margin: 0; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.7); max-width: 460px; }
 .mk .phero--cream .phero__lede { color: var(--c-muted); }
 .mk .phero__meta {
@@ -890,6 +912,25 @@ body:has(.mk) {
   color: var(--c-gold-hi); text-transform: none;
 }
 .mk .phero--cream .phero__meta-item strong { color: var(--c-gold); }
+
+/* ════════════════════════════════════
+   FORM MODAL — brand-colored card, subtle float
+   ════════════════════════════════════ */
+/* Entrance and idle-float are separate keyframe animations applied in
+   sequence (never simultaneously) via a JS animationend handoff — mixing a
+   transition-based entrance with a permanently-attached float animation on
+   the same transform property is what caused the TitleCube crossfade bug
+   earlier this session, so this sidesteps that class of problem entirely. */
+@keyframes mk-modal-enter {
+  from { opacity: 0; transform: translateY(28px) scale(0.965); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes mk-modal-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+.mk .modal-card--enter { animation: mk-modal-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.mk .modal-card--floating { animation: mk-modal-float 5.5s ease-in-out infinite; }
 
 /* ════════════════════════════════════
    FOOTER

@@ -57,7 +57,7 @@ function DarkSelect({ name, required = false, placeholder, options }: {
       {open && (
         <div style={{
           position: 'absolute', zIndex: 200, top: 'calc(100% + 3px)', left: 0, right: 0,
-          maxHeight: 220, overflowY: 'auto', background: '#0d1a2e',
+          maxHeight: 220, overflowY: 'auto', background: 'var(--c-navy-950)',
           border: '1px solid rgba(230,199,122,0.35)', borderRadius: 2,
           boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
         }}>
@@ -101,10 +101,23 @@ export default function FormModal({ onClose }: { onClose: () => void }) {
   const [nombre, setNombre] = useState('')
   const [telefono, setTelefono] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
+  // Two separate animations in sequence, never simultaneous: the card floats
+  // in once on mount, then — only after that entrance fully finishes —
+  // switches to a permanent gentle idle float.
+  const [cardPhase, setCardPhase] = useState<'enter' | 'floating'>('enter')
+  const cardClass = `modal-card--${cardPhase}`
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }
+  }, [])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onEnd = (e: AnimationEvent) => { if (e.animationName === 'mk-modal-enter') setCardPhase('floating') }
+    el.addEventListener('animationend', onEnd)
+    return () => el.removeEventListener('animationend', onEnd)
   }, [])
 
   useEffect(() => {
@@ -154,14 +167,23 @@ export default function FormModal({ onClose }: { onClose: () => void }) {
     display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px 16px',
   }
   const card: React.CSSProperties = {
-    background: '#0d0d11', border: '1px solid rgba(230,199,122,0.25)',
+    // Brand navy (from the logo's dark ground) with a soft sky-blue glow
+    // (the logo's ring color) and the site's gold as the accent — same
+    // palette Hero/PageHero use, instead of a generic near-black card.
+    background: `
+      radial-gradient(ellipse at 20% -10%, rgba(27,168,224,0.16) 0%, transparent 55%),
+      radial-gradient(ellipse at 100% 100%, rgba(230,199,122,0.08) 0%, transparent 60%),
+      linear-gradient(165deg, var(--c-navy-900) 0%, var(--c-navy-950) 100%)
+    `,
+    border: '1px solid rgba(230,199,122,0.28)',
+    boxShadow: '0 32px 80px -24px rgba(8,22,64,0.7), 0 0 0 1px rgba(27,168,224,0.06)',
     width: '100%', maxWidth: 560, maxHeight: '90vh',
     display: 'flex', flexDirection: 'column', position: 'relative', borderRadius: 3,
   }
 
   if (sent) return (
     <div style={overlay} onClick={onClose}>
-      <div style={{ ...card, padding: 'clamp(40px,6vw,64px) 40px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+      <div className={cardClass} style={{ ...card, padding: 'clamp(40px,6vw,64px) 40px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
         <div style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid #E6C77A', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E6C77A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6L9 17l-5-5" />
@@ -195,7 +217,7 @@ export default function FormModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div style={overlay} onClick={onClose}>
-      <div style={card} ref={scrollRef} onClick={e => e.stopPropagation()}>
+      <div className={cardClass} style={card} ref={scrollRef} onClick={e => e.stopPropagation()}>
 
         {/* Header */}
         <div style={{ padding: '24px 28px 18px', borderBottom: '1px solid rgba(255,255,255,0.08)', flexShrink: 0 }}>
