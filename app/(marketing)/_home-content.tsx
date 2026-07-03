@@ -32,9 +32,35 @@ const randomMs = () => Math.random() * 3200 + 2500
 const NO_REPEAT_MS = 7000
 const IMG_TRANSITION_MS = 1500
 
-function TCubeImagePanel({ img, isActive, entering, onClick }: { img: { src: string; pos: string }; isActive: boolean; entering: boolean; onClick: () => void }) {
+function TCubeImagePanel({ img, isActive, onClick }: { img: { src: string; pos: string }; isActive: boolean; onClick: () => void }) {
+  // Stable per-mount Ken Burns offset — computed once and kept for the panel's whole
+  // lifetime via useRef, so it never depends on the panel's DOM position (nth-child).
+  // Previously the delay was assigned by nth-child, which reassigns itself the instant
+  // a sibling panel unmounts — snapping the still-visible photo's zoom scale backwards
+  // mid-animation. Tying it to the mounted instance instead makes the zoom continuous
+  // for the panel's entire life, independent of any sibling mounting/unmounting.
+  const kenBurnsDelay = useRef(-(Math.random() * 12)).current
+
+  // The entrance keyframe animation only needs to run once, on mount. Left in place
+  // forever, it collides with the exit fade later: when this panel eventually loses
+  // `is-active`, the opacity change is meant to be handled by the plain CSS transition,
+  // but a still-attached `forwards`-filled animation on the same property breaks that
+  // transition's starting point, so it snaps straight to 0 instead of fading — reading
+  // as a "fade to black" before the next photo appears instead of a clean crossfade.
+  // Dropping the animation class the moment it actually finishes (not a guessed
+  // timeout) leaves the transition as the sole owner of opacity from then on.
+  const [entering, setEntering] = useState(true)
+  const elRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = elRef.current
+    if (!el) return
+    const onEnd = (e: AnimationEvent) => { if (e.animationName === 'mk-tcubeEnter') setEntering(false) }
+    el.addEventListener('animationend', onEnd)
+    return () => el.removeEventListener('animationend', onEnd)
+  }, [])
+
   return (
-    <div className={`tcube-panel${isActive ? ' is-active' : ''}${entering ? ' tcube-panel--enter' : ''}`}>
+    <div ref={elRef} className={`tcube-panel${isActive ? ' is-active' : ''}${entering ? ' tcube-panel--enter' : ''}`}>
       <div
         className="tcube-image"
         onClick={onClick}
@@ -43,7 +69,13 @@ function TCubeImagePanel({ img, isActive, entering, onClick }: { img: { src: str
         aria-label="Cambiar imagen"
         onKeyDown={e => e.key === 'Enter' && onClick()}
       >
-        <img src={img.src} alt="comunidad · cateoncook" className="tcube-image__photo" style={{ objectPosition: img.pos }} data-pos-y={img.pos.split(' ')[1]?.replace('%', '') ?? '50'} />
+        <img
+          src={img.src}
+          alt="comunidad · cateoncook"
+          className="tcube-image__photo"
+          style={{ objectPosition: img.pos, animationDelay: `${kenBurnsDelay}s` }}
+          data-pos-y={img.pos.split(' ')[1]?.replace('%', '') ?? '50'}
+        />
         <div className="tcube-image__grain" />
       </div>
       <div className="tcube-panel__bars" aria-hidden="true" />
@@ -70,6 +102,13 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
   const prevClearRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const consecutiveImagesRef = useRef(0)
   const recentShownRef = useRef<Map<number, number>>(new Map())
+  // A transition (crossfade of prev→active panel) is in flight for IMG_TRANSITION_MS.
+  // Only two panel slots ever exist, so firing a new transition mid-fade would drop the
+  // panel currently fading out instead of letting it finish — it'd just vanish instead
+  // of crossfading. Queue instead: at most one request waits and runs the instant the
+  // current transition's exit animation completes.
+  const transitioningRef = useRef(false)
+  const pendingTransitionRef = useRef<(() => void) | null>(null)
   const lenis = useLenis()
 
   // Parallax: desplaza objectPosition-Y al scroll para efecto de profundidad
@@ -112,25 +151,45 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
     return chosen
   }
 
-  function goToImage(excludeIdx: number | null) {
-    if (prevClearRef.current) clearTimeout(prevClearRef.current)
-    const nextIdx = pickPoolImage(excludeIdx)
-    setPrevImgIdx(activeImgIdxRef.current)
-    activeImgIdxRef.current = nextIdx
-    setActiveImgIdx(nextIdx)
-    isTitleRef.current = false
-    setIsTitle(false)
-    prevClearRef.current = setTimeout(() => setPrevImgIdx(null), IMG_TRANSITION_MS)
+  // Runs `mutate` immediately if no crossfade is in flight; otherwise queues it to run
+  // the moment the current one finishes, so it always fully completes first.
+  function runTransition(mutate: () => void) {
+    if (transitioningRef.current) {
+      pendingTransitionRef.current = mutate
+      return
+    }
+    transitioningRef.current = true
+    mutate()
+    prevClearRef.current = setTimeout(() => {
+      setPrevImgIdx(null)
+      transitioningRef.current = false
+      const next = pendingTransitionRef.current
+      if (next) {
+        pendingTransitionRef.current = null
+        runTransition(next)
+      }
+    }, IMG_TRANSITION_MS)
+  }
+
+  function goToImage() {
+    runTransition(() => {
+      const nextIdx = pickPoolImage(activeImgIdxRef.current)
+      setPrevImgIdx(activeImgIdxRef.current)
+      activeImgIdxRef.current = nextIdx
+      setActiveImgIdx(nextIdx)
+      isTitleRef.current = false
+      setIsTitle(false)
+    })
   }
 
   function goToTitle() {
-    if (prevClearRef.current) clearTimeout(prevClearRef.current)
-    setPrevImgIdx(activeImgIdxRef.current)
-    activeImgIdxRef.current = null
-    setActiveImgIdx(null)
-    isTitleRef.current = true
-    setIsTitle(true)
-    prevClearRef.current = setTimeout(() => setPrevImgIdx(null), IMG_TRANSITION_MS)
+    runTransition(() => {
+      setPrevImgIdx(activeImgIdxRef.current)
+      activeImgIdxRef.current = null
+      setActiveImgIdx(null)
+      isTitleRef.current = true
+      setIsTitle(true)
+    })
   }
 
   // Reset to title when hero < 50% visible; restart cycle when hero >= 85%
@@ -165,7 +224,7 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
         const next = (cycleRef.current + 1) % ROLE_CYCLE.length
         cycleRef.current = next
         if (ROLE_CYCLE[next] === 'title') goToTitle()
-        else goToImage(activeImgIdxRef.current)
+        else goToImage()
         schedule()
       }, randomMs())
     }
@@ -184,13 +243,13 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
   const MAX_CONSECUTIVE_IMAGES = 3
   const handleCubeClick = () => {
     if (isTitleRef.current) {
-      goToImage(null)
+      goToImage()
       consecutiveImagesRef.current = 1
     } else if (consecutiveImagesRef.current >= MAX_CONSECUTIVE_IMAGES || Math.random() < 0.11) {
       goToTitle()
       consecutiveImagesRef.current = 0
     } else {
-      goToImage(activeImgIdxRef.current)
+      goToImage()
       consecutiveImagesRef.current++
     }
     cycleRef.current = 0
@@ -227,10 +286,10 @@ function TitleCube({ onActiveChange }: { onActiveChange: (isTitle: boolean) => v
         </h1>
       </div>
       {prevImgIdx !== null && (
-        <TCubeImagePanel key={`img-${prevImgIdx}`} img={IMAGES[prevImgIdx]} isActive={false} entering={false} onClick={handleCubeClick} />
+        <TCubeImagePanel key={`img-${prevImgIdx}`} img={IMAGES[prevImgIdx]} isActive={false} onClick={handleCubeClick} />
       )}
       {activeImgIdx !== null && (
-        <TCubeImagePanel key={`img-${activeImgIdx}`} img={IMAGES[activeImgIdx]} isActive={true} entering={true} onClick={handleCubeClick} />
+        <TCubeImagePanel key={`img-${activeImgIdx}`} img={IMAGES[activeImgIdx]} isActive={true} onClick={handleCubeClick} />
       )}
     </div>
   )
@@ -485,7 +544,7 @@ function Hero() {
           {isTitle ? (
             <LogoStacked key="stacked" tone="positive" height={90} priority style={{ transform: 'scale(1.87)' }} />
           ) : (
-            <BrandLogo key="horizontal" tone="positive" height={40} priority style={{ transform: 'scale(1.9178125)' }} />
+            <BrandLogo key="horizontal" tone="positive" height={40} priority style={{ transform: 'scale(1.821921875)' }} />
           )}
         </div>
         <TitleCube onActiveChange={setIsTitle} />

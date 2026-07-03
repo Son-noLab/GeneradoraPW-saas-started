@@ -347,10 +347,8 @@ body:has(.mk) {
   animation: mk-kenBurns 12s ease-in-out infinite alternate;
 }
 @keyframes mk-kenBurns { from { transform: scale(1); } to { transform: scale(1.1); } }
-.mk .tcube-panel:nth-child(2) .tcube-image__photo { animation-delay: -2s; }
-.mk .tcube-panel:nth-child(3) .tcube-image__photo { animation-delay: -5s; }
-.mk .tcube-panel:nth-child(4) .tcube-image__photo { animation-delay: -8s; }
-.mk .tcube-panel:nth-child(5) .tcube-image__photo { animation-delay: -11s; }
+/* Per-panel delay is set inline (see TCubeImagePanel) — tied to the mounted
+   instance, not DOM position, so it can never snap when a sibling panel unmounts. */
 .mk .tcube-image__grain {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.5) 100%);
