@@ -39,9 +39,8 @@ function SplitFull() {
           <p className="split__desc">Empieza a generar ingresos desde el primer día con el respaldo de un equipo comprometido. Un modelo probado y sostenible.</p>
           <ul className="split__features">
             {[
-              'Inversión inicial accesible · plan de pagos',
               'Acompañamiento de un sponsor durante 90 días',
-              'Comisiones del 25–35% desde tu primera venta',
+              'Comisiones desde tu primera venta',
               'Capacitaciones semanales (online + presencial)',
               'Acceso a la comunidad activa de socios',
             ].map(f => (
@@ -97,10 +96,10 @@ function SplitFull() {
 
 function LevelsSection() {
   const levels = [
-    { n: 'I',   name: 'Anfitrión', title: <>Tu primer <em>círculo</em></>, desc: 'Comparte el producto con tu círculo cercano. Sin metas mensuales obligatorias.', bonus: '25 % comisión directa' },
-    { n: 'II',  name: 'Líder',     title: <>Tu primer <em>equipo</em></>,  desc: 'Sumas a tres socios activos. Empiezas a recibir bonos de equipo.', bonus: '+ 5 % bono de equipo' },
-    { n: 'III', name: 'Mentor',    title: <>Tu primera <em>red</em></>,    desc: 'Una estructura de quince personas activas. Acceso a capacitación avanzada.', bonus: '+ 8 % bono de estructura' },
-    { n: 'IV',  name: 'Director',  title: <>Tu propio <em>territorio</em></>, desc: 'Abres un territorio con apoyo institucional, oficinas y eventos propios.', bonus: '+ 12 % bono de territorio' },
+    { n: '1', name: 'Emprendedor',         title: <>Tu primer <em>círculo</em></>, desc: 'Sin metas mensuales obligatorias.', bonus: 'Comisión directa' },
+    { n: '2', name: 'Distribuidor Junior', title: <>Tu primer <em>equipo</em></>,  desc: 'Sumas a tres socios activos. Empiezas a recibir bonos de equipo.', bonus: 'Bono de equipo' },
+    { n: '3', name: 'Distribuidor 1-3',    title: <>Tu primera <em>red</em></>,    desc: 'Una estructura de quince personas activas. Acceso a capacitación avanzada.', bonus: 'Bono de estructura' },
+    { n: '4', name: 'Royal & Blue',        title: <>Tu propio <em>territorio</em></>, desc: 'Abres un territorio con apoyo institucional, oficinas y eventos propios.', bonus: 'Bono de territorio' },
   ]
   return (
     <section className="section section--dark" aria-label="Plan de mercadeo">
@@ -113,7 +112,7 @@ function LevelsSection() {
           </div>
           <p className="section__lede">
             Cada rango se construye desde lo cotidiano. Sin saltos imposibles, sin promesas
-            irreales. Lo que ves abajo es lo mismo que firma cada socio el día que entra.
+            irreales.
           </p>
         </div>
         <div className="levels">
@@ -154,7 +153,7 @@ function TestimonialsSection() {
             </h2>
           </div>
           <p className="section__lede">
-            No publicamos lo que no podemos sostener. Cada testimonio aquí presente acepta que lo
+            Cada testimonio aquí presente acepta que lo
             llames y le hagas todas las preguntas que quieras antes de unirte.
           </p>
         </div>
@@ -196,7 +195,7 @@ export default function OportunidadPage() {
         current="Oportunidad"
         cornerFig="Cap. I · Oportunidad"
         title={<>La <em>oportunidad</em><br />de cambiar<br />tu mesa.</>}
-        lede="No es un negocio que te sumas. Es una fábrica que te recibe. Dos modelos, cuatro niveles, una sola promesa: que aquí encuentres lo que viniste a buscar."
+        lede="Una familia, una fábrica de sueños te recibe con una promesa: aquí encontrarás lo que tanto buscas."
         meta={[
           { value: '+500', label: 'FAMILIAS SOCIAS' },
           { value: '24', label: 'PROVINCIAS' },
