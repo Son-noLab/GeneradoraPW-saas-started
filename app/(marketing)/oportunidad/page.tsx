@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import PageHero from '@/components/marketing/page-hero'
 import SectionDivider from '@/components/marketing/section-divider'
+import SplitChart from '@/components/marketing/split-chart'
 
 export const metadata: Metadata = {
   title: 'Oportunidad · CateonCook — Fábrica de Sueños',
@@ -25,6 +26,7 @@ function SplitFull() {
 
       {/* ── NIVEL 01 · Emprendedor ── */}
       <div className="split__half split__half--premium">
+        <SplitChart level={1} />
         <div className="split__content reveal reveal-delay-1">
           <span className="split__level">NIVEL · 01</span>
           <span className="split__badge">
@@ -55,6 +57,7 @@ function SplitFull() {
 
       {/* ── NIVEL 02 · Distribuidor ── */}
       <div className="split__half split__half--master">
+        <SplitChart level={2} />
         <div className="split__content reveal reveal-delay-2">
           <span className="split__level">NIVEL · 02</span>
           <span className="split__badge">

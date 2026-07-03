@@ -418,10 +418,69 @@ body:has(.mk) {
 /* ════════════════════════════════════
    HERO TRANSITION
    ════════════════════════════════════ */
-.mk .htrans-bg {
-  position: relative; height: 80px;
-  background: linear-gradient(180deg, #050d2c 0%, var(--c-cream) 100%);
+/* Dark-to-dark crossing (Hero → Capítulo dark section): no boxed band —
+   Hero's own background flows directly into the Capítulo section's, and the
+   cloud layers + line-draw float across that seam as a borderless overlay,
+   masked to nothing at their own edges so no rectangle is ever visible.
+   Clouds stay confined to the crossing itself, not bleeding into Hero. */
+.mk .chapter-bridge {
+  position: relative; height: 0; z-index: 5; pointer-events: none;
 }
+/* Erases the 1px rasterization seam where the two independently-painted
+   gradients meet, regardless of how closely their colors are matched */
+.mk .chapter-bridge .hseam {
+  position: absolute; left: 0; right: 0; top: -30px; height: 60px; z-index: 0;
+  background: linear-gradient(to bottom, transparent 0%, #050d2c 35%, #050d2c 65%, transparent 100%);
+}
+.mk .chapter-bridge .hclouds {
+  position: absolute; left: 0; right: 0; top: -160px; bottom: auto; height: 320px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+}
+/* Undrawn at rest — reveals on the first scroll past Hero (JS toggles .is-drawn) */
+.mk .hclouds--reveal { opacity: 0; transform: translateY(18px); transition: opacity 1.6s ease, transform 1.6s ease; }
+.mk .hclouds--reveal.is-drawn { opacity: 1; transform: translateY(0); }
+.mk .chapter-bridge .htrans {
+  position: absolute; left: 0; right: 0; top: -40px; bottom: auto; height: 80px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+}
+.mk .chapter-bridge .htrans__path--thick { opacity: 0.1; }
+.mk .chapter-bridge .htrans__path--thin { opacity: 0.05; }
+/* Hero's bottom edge and Capítulo's top edge are two independently-computed
+   gradients — without this, their colors jump at the seam and read as a hard
+   line no matter what floats on top. Match Capítulo's top stop to Hero's
+   bottom stop and push its glow down so the two flow into one continuous field. */
+.mk .chapter-bridge + .phero--dark {
+  background:
+    radial-gradient(ellipse at 50% 30%, #1a2b5e 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, #0e2350 0%, transparent 60%),
+    linear-gradient(180deg, #050d2c 0%, #0a1a4a 45%, #050d2c 100%);
+}
+/* Boxed crossing below the split view: real gradient (the two sides
+   genuinely differ in color, so — unlike the seamless bridge above — an
+   actual filled band is correct here). Starts at the exact navy the
+   Distribuidor half ends on (no seam at the top), resolves straight into
+   the page's cream for a seamless landing in Voces. */
+.mk .split-bridge {
+  position: relative; height: 240px; overflow: hidden; z-index: 1;
+  background: linear-gradient(180deg, #081640 0%, var(--c-cream) 100%);
+}
+.mk .split-bridge .hclouds {
+  position: absolute; inset: 0;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 65%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 65%, transparent 100%);
+}
+.mk .hclouds { z-index: 1; pointer-events: none; }
+.mk .hclouds__layer { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; }
+.mk .hclouds__shape { fill: #fff; }
+.mk .hclouds__layer--back .hclouds__shape { fill: rgba(255,255,255,0.07); }
+.mk .hclouds__layer--mid .hclouds__shape { fill: rgba(255,255,255,0.13); }
+.mk .hclouds__layer--front .hclouds__shape {
+  fill: rgba(255,255,255,0.2);
+  stroke: rgba(230,199,122,0.18); stroke-width: 1.2;
+}
+.mk .chapter-bridge .htrans { z-index: 2; }
 .mk .htrans {
   position: absolute; inset: 0;
   background: transparent;
@@ -455,11 +514,25 @@ body:has(.mk) {
 .mk .split__half--premium .split__desc { color: rgba(11,23,56,0.75); }
 .mk .split__half--premium .split__feature { color: rgba(11,23,56,0.82); }
 .mk .split__half--premium .split__badge { color: rgba(11,23,56,0.75); border-color: rgba(11,23,56,0.2); }
+.mk .split__half--premium::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background:
+    linear-gradient(100deg, var(--c-cream) 0%, var(--c-cream) 66%, rgba(246,241,232,0.92) 78%, rgba(246,241,232,0.76) 90%, rgba(246,241,232,0.6) 100%),
+    url('/img/eventos/img-0785.jpg') right top / cover no-repeat;
+  filter: saturate(0.55) contrast(0.9) brightness(1.05);
+}
 .mk .split__half--master {
   background: linear-gradient(180deg, var(--c-navy-900) 0%, var(--c-navy-950) 100%); color: #fff;
 }
 .mk .split__half--master::before {
-  content: ""; position: absolute; inset: 0;
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background:
+    linear-gradient(100deg, var(--c-navy-950) 0%, var(--c-navy-950) 58%, rgba(8,22,64,0.9) 70%, rgba(8,22,64,0.72) 84%, rgba(8,22,64,0.52) 100%),
+    url('/img/eventos/571a1035.jpg') center 18% / cover no-repeat;
+  filter: saturate(0.7) brightness(0.85);
+}
+.mk .split__half--master::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
   background: radial-gradient(ellipse at 80% 0%, rgba(27,168,224,0.12) 0%, transparent 50%);
 }
 .mk .split__content { position: relative; z-index: 1; max-width: 480px; display: flex; flex-direction: column; gap: 22px; }
@@ -486,6 +559,16 @@ body:has(.mk) {
   text-transform: uppercase; color: rgba(11,23,56,0.22); margin-bottom: -10px;
 }
 .mk .split__half--master .split__level { color: rgba(255,255,255,0.18); }
+
+/* Growth bars — one continuous ascending sequence split across both halves */
+.mk .split__chart {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 60%; bottom: 0; height: 78%;
+  opacity: 0.22;
+}
+.mk .split__half--premium .split__chart { right: 0; color: var(--c-gold); }
+.mk .split__half--master .split__chart { left: 0; color: var(--c-sky); }
+.mk .split__chart-base { stroke: currentColor; stroke-opacity: 0.14; stroke-width: 1; }
 
 /* Upgrade hint line (Distribuidor) */
 .mk .split__upgrade {
@@ -1918,7 +2001,7 @@ body:has(.mk) {
   .mk .hero__cta-row .btn { width: 100%; justify-content: center; }
   .mk .split { grid-template-columns: 1fr; }
   .mk .split__half { padding: 56px 24px; }
-  .mk .htrans-bg { height: 60px; }
+  .mk .split-bridge { height: 160px; }
   .mk .compare th, .mk .compare td { padding: 12px 10px; }
   .mk .compare { font-size: 12.5px; }
   .mk .cform { grid-template-columns: 1fr; padding: 24px; }

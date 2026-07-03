@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { LogoStacked, BrandLogo } from '@/components/marketing/logo'
 import SectionDivider from '@/components/marketing/section-divider'
+import SplitChart from '@/components/marketing/split-chart'
+import PageHero from '@/components/marketing/page-hero'
 import { useModal } from '@/components/marketing/shell'
 import { useLenis } from '@/components/lenis-provider'
 
@@ -325,6 +327,146 @@ const HeroTransition = React.memo(function HeroTransition() {
   )
 })
 
+/* ── CloudCrossing ── */
+// A puffy cumulus silhouette built from many overlapping circles (soft radii,
+// no two the same size) so the blurred result reads as one rounded puff
+// instead of a scalloped chain of hard bumps.
+function CloudShape({ x, y, scale, filterId, className }: { x: number; y: number; scale: number; filterId: string; className: string }) {
+  return (
+    <g className={className} transform={`translate(${x} ${y}) scale(${scale})`} filter={`url(#${filterId})`}>
+      <ellipse cx="60" cy="40" rx="62" ry="22" />
+      <circle cx="26" cy="26" r="21" />
+      <circle cx="54" cy="14" r="27" />
+      <circle cx="86" cy="22" r="21" />
+      <circle cx="112" cy="33" r="15" />
+    </g>
+  )
+}
+
+function CloudFilterDefs({ fBack, fMid, fFront }: { fBack: string; fMid: string; fFront: string }) {
+  return (
+    <svg width="0" height="0" style={{ position: 'absolute' }}>
+      <defs>
+        <filter id={fBack} x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="16" />
+        </filter>
+        <filter id={fMid} x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="9" />
+        </filter>
+        <filter id={fFront} x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="3.5" />
+        </filter>
+      </defs>
+    </svg>
+  )
+}
+
+// Parallax shared by every cloud crossing: each `.hclouds__layer` drifts at
+// its own rate as the wrapper moves through the viewport.
+function useCloudParallax(wrapRef: React.RefObject<HTMLDivElement | null>) {
+  const lenis = useLenis()
+  useEffect(() => {
+    if (!lenis) return
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const layers = Array.from(wrap.querySelectorAll<HTMLElement>('.hclouds__layer'))
+    const speeds = [8, 18, 32]
+    function onScroll() {
+      if (!wrap) return
+      const rect = wrap.getBoundingClientRect()
+      const vh = window.innerHeight || 1
+      const progress = Math.max(-1, Math.min(1, (vh / 2 - (rect.top + rect.height / 2)) / vh))
+      layers.forEach((layer, i) => {
+        const speed = speeds[i] ?? 16
+        layer.style.transform = `translate3d(${progress * speed}px, ${progress * speed * 0.2}px, 0)`
+      })
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    lenis.on('scroll', onScroll as any)
+    onScroll()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return () => lenis.off('scroll', onScroll as any)
+  }, [lenis, wrapRef])
+}
+
+// Tall variant: spans from near the top of Hero down through the seam, so
+// Confined to the crossing itself — clouds only ever appear in the
+// transition band, never bleeding up into Hero's own content. They stay
+// undrawn while Hero fills the viewport and toggle in/out as it's scrolled
+// past — invisible again the moment the visitor scrolls back up into Hero.
+function CloudCrossingTall({ id }: { id: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  useCloudParallax(wrapRef)
+  const fBack = `${id}-cloud-back`, fMid = `${id}-cloud-mid`, fFront = `${id}-cloud-front`
+
+  useEffect(() => {
+    const hero = document.getElementById('inicio')
+    const wrap = wrapRef.current
+    if (!hero || !wrap) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        wrap.classList.toggle('is-drawn', entry.intersectionRatio < 1)
+      },
+      { threshold: [0, 1.0] }
+    )
+    observer.observe(hero)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div className="hclouds hclouds--reveal" ref={wrapRef} aria-hidden="true">
+      <CloudFilterDefs fBack={fBack} fMid={fMid} fFront={fFront} />
+      <svg className="hclouds__layer hclouds__layer--back" viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+        <CloudShape x={60} y={80} scale={1.7} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+        <CloudShape x={540} y={40} scale={1.35} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+        <CloudShape x={1000} y={95} scale={1.9} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+        <CloudShape x={1440} y={45} scale={1.4} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+      </svg>
+      <svg className="hclouds__layer hclouds__layer--mid" viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+        <CloudShape x={220} y={115} scale={1.1} filterId={fMid} className="hclouds__shape hclouds__shape--mid" />
+        <CloudShape x={720} y={65} scale={0.95} filterId={fMid} className="hclouds__shape hclouds__shape--mid" />
+        <CloudShape x={1220} y={120} scale={1.2} filterId={fMid} className="hclouds__shape hclouds__shape--mid" />
+      </svg>
+      <svg className="hclouds__layer hclouds__layer--front" viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice">
+        <CloudShape x={40} y={150} scale={0.7} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+        <CloudShape x={440} y={160} scale={0.6} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+        <CloudShape x={880} y={145} scale={0.78} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+        <CloudShape x={1340} y={155} scale={0.65} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+      </svg>
+    </div>
+  )
+}
+
+// Compact variant: a single-screen band for a boxed crossing (e.g. below the
+// split view), where the cloud field only needs to fill a short strip.
+function CloudCrossingBand({ id }: { id: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  useCloudParallax(wrapRef)
+  const fBack = `${id}-cloud-back`, fMid = `${id}-cloud-mid`, fFront = `${id}-cloud-front`
+
+  return (
+    <div className="hclouds" ref={wrapRef} aria-hidden="true">
+      <CloudFilterDefs fBack={fBack} fMid={fMid} fFront={fFront} />
+      <svg className="hclouds__layer hclouds__layer--back" viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid slice">
+        <CloudShape x={40} y={90} scale={1.4} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+        <CloudShape x={560} y={140} scale={1.1} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+        <CloudShape x={1040} y={70} scale={1.6} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+        <CloudShape x={1440} y={130} scale={1.3} filterId={fBack} className="hclouds__shape hclouds__shape--back" />
+      </svg>
+      <svg className="hclouds__layer hclouds__layer--mid" viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid slice">
+        <CloudShape x={260} y={170} scale={0.9} filterId={fMid} className="hclouds__shape hclouds__shape--mid" />
+        <CloudShape x={780} y={120} scale={0.8} filterId={fMid} className="hclouds__shape hclouds__shape--mid" />
+        <CloudShape x={1280} y={190} scale={0.95} filterId={fMid} className="hclouds__shape hclouds__shape--mid" />
+      </svg>
+      <svg className="hclouds__layer hclouds__layer--front" viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid slice">
+        <CloudShape x={120} y={200} scale={0.55} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+        <CloudShape x={640} y={215} scale={0.62} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+        <CloudShape x={1160} y={205} scale={0.5} filterId={fFront} className="hclouds__shape hclouds__shape--front" />
+      </svg>
+    </div>
+  )
+}
+
 /* ── Hero ── */
 function Hero() {
   const [isTitle, setIsTitle] = useState(true)
@@ -396,6 +538,7 @@ function SplitPreview() {
 
       {/* ── NIVEL 01 · Emprendedor ── */}
       <div className="split__half split__half--premium">
+        <SplitChart level={1} />
         <div className="split__content reveal reveal-delay-1">
           <span className="split__level">NIVEL · 01</span>
           <span className="split__badge">
@@ -420,6 +563,7 @@ function SplitPreview() {
 
       {/* ── NIVEL 02 · Distribuidor ── */}
       <div className="split__half split__half--master">
+        <SplitChart level={2} />
         <div className="split__content reveal reveal-delay-2">
           <span className="split__level">NIVEL · 02</span>
           <span className="split__badge">
@@ -613,11 +757,26 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
-      <div className="htrans-bg">
+      <div className="chapter-bridge">
+        <div className="hseam" aria-hidden="true" />
+        <CloudCrossingTall id="hero" />
         <HeroTransition />
       </div>
+      <PageHero
+        variant="dark"
+        cornerFig="Cap. IV · Nosotros"
+        title={<>Una familia<br /><em>que ya trazó</em><br />el camino.</>}
+        lede="No somos una marca. Somos veintidós años de cocinas, decisiones y socios reales. Esta es la historia detrás de cada sistema de cocina que entregamos."
+        meta={[
+          { value: '2003', label: 'AÑO DE FUNDACIÓN' },
+          { value: 'QUITO', label: 'CASA MATRIZ' },
+          { value: '5 PAÍSES', label: 'PRESENCIA' },
+        ]}
+      />
       <SplitPreview />
-      <div className="htrans-bg" aria-hidden="true" />
+      <div className="split-bridge" aria-hidden="true">
+        <CloudCrossingBand id="split" />
+      </div>
       <VocesSection />
       <CommunityMarquee />
       <SectionDivider direction="cream-to-dark" targetSelector=".footer" />
