@@ -10,23 +10,36 @@ import { useModal } from '@/components/marketing/shell'
 import { useLenis } from '@/components/lenis-provider'
 
 /* ── Title Cube ── */
-// Pool of the best community/event photos — randomized per panel, never repeating
-// the same photo within a 7s window. Mínimo 50 fotos, curadas a mano.
+// Pool restringido únicamente a la carpeta curada "Eventos/TitleCube" (23 fotos) —
+// randomizado por panel, sin repetir la misma foto dentro de una ventana de 7s.
+// El contenedor es un letterbox panorámico (16/7) y las fotos son horizontales (3:2),
+// así que el recorte de object-fit:cover siempre es vertical — `pos` ajusta esa banda
+// por foto según dónde caen las caras (grupos cerrados vs. multitudes con brazos/banderas en alto).
 const IMAGES: { src: string; pos: string }[] = [
-  '571a0852', '571a0853', '571a0880', '571a0881', '571a0882', '571a0883', '571a0886', '571a0887', '571a0896',
-  '571a0913', '571a0918', '571a0922', '571a0926', '571a0930', '571a0938', '571a0944', '571a0945',
-  '571a0977', '571a0979', '571a0986', '571a0991', '571a0993', '571a0995',
-  '571a1006', '571a1008', '571a1011', '571a1013', '571a1016',
-  '571a1023', '571a1029', '571a1030', '571a1039', '571a1042', '571a1043', '571a1045', '571a1047',
-  '571a1067', '571a1069', '571a1071', '571a1078', '571a1080', '571a1083', '571a1087',
-  '571a1111', '571a1112', '571a1114', '571a1115',
-  '571a1121', '571a1125', '571a1130', '571a1131', '571a1142', '571a1144', '571a1146',
-  '571a1165', '571a1169', '571a1171', '571a1176', '571a1180', '571a1183', '571a1188', '571a1192', '571a1195',
-  '571a1196', '571a1202', '571a1205', '571a1208', '571a1210', '571a1211', '571a1213', '571a1214', '571a1215',
-].map(name => ({ src: `/img/eventos/${name}.jpg`, pos: 'center 30%' })).concat(
-  ['img-0149', 'img-0784', 'img-0788', 'img-0789', 'img-0790', 'img-0791', 'img-0792', 'img-0793', 'img-0794']
-    .map(name => ({ src: `/img/eventos/${name}.jpg`, pos: 'center 30%' }))
-)
+  { name: '571a0853', pos: 'center 22%' },
+  { name: '571a0886', pos: 'center 22%' },
+  { name: '571a0926', pos: 'center 22%' },
+  { name: '571a0986', pos: 'center 40%' },
+  { name: '571a1011', pos: 'center 35%' },
+  { name: '571a1082', pos: 'center 42%' },
+  { name: '571a1142', pos: 'center 32%' },
+  { name: '571a1146', pos: 'center 32%' },
+  { name: '571a1173', pos: 'center 20%' },
+  { name: '571a1180', pos: 'center 28%' },
+  { name: '571a1190', pos: 'center 25%' },
+  { name: '571a1210', pos: 'center 28%' },
+  { name: 'img-0149', pos: 'center 42%' },
+  { name: 'img-0784', pos: 'center 20%' },
+  { name: 'img-0785', pos: 'center 32%' },
+  { name: 'img-0787', pos: 'center 32%' },
+  { name: 'img-0788', pos: 'center 20%' },
+  { name: 'img-0789', pos: 'center 22%' },
+  { name: 'img-0790', pos: 'center 25%' },
+  { name: 'img-0791', pos: 'center 22%' },
+  { name: 'img-0792', pos: 'center 20%' },
+  { name: 'img-0793', pos: 'center 30%' },
+  { name: 'img-0794', pos: 'center 28%' },
+].map(({ name, pos }) => ({ src: `/img/eventos/${name}.jpg`, pos }))
 const ROLE_CYCLE = ['title', 'image', 'image', 'title', 'image', 'image'] as const
 const randomMs = () => Math.random() * 3200 + 2500
 const NO_REPEAT_MS = 7000
@@ -653,15 +666,15 @@ function SplitPreview() {
 }
 
 /* ── VocesSection ── */
-// Retratos reales del set de eventos: 571a0991/571a1213/571a1202/571a1215/571a1171
-// son las únicas fotos con una sola persona en cuadro (o recorte muy cerrado sobre
-// una persona dentro de una foto grupal); `pos`/`size` ajustan el encuadre por foto.
+// Retratos reales del set "Testimonios" (curado aparte de la carpeta general de eventos).
+// Fotos usadas sin recorte forzado (`size: 'cover'`); en las grupales, la voz del
+// testimonio es la persona central/protagonista, no todo el grupo.
 const VOCES = [
-  { fig: 'Fig. 03·a', name: <>María <em>Fernanda</em></>, role: 'Distribuidora', city: 'Loja',      years: '8',  yearsLabel: 'AÑOS · CC', quote: <>Aquí no encontré un negocio. Encontré una <span className="em-gold">familia</span> que me empujó a convertirme en la mejor versión de mí misma.</>, portrait: '/img/eventos/571a0991.jpg', pos: '22% 24%', size: '350% auto', initial: 'M' },
-  { fig: 'Fig. 03·b', name: <>Verónica <em>Pacheco</em></>, role: 'Distribuidora', city: 'Cuenca',   years: '6',  yearsLabel: 'AÑOS · CC', quote: <>Empecé vendiendo a tres amigas. Hoy mi equipo de cuarenta socias cocina por <span className="em-gold">todo el austro.</span></>, portrait: '/img/eventos/571a1213.jpg', pos: '50% 19%', size: '350% auto', initial: 'V' },
-  { fig: 'Fig. 03·c', name: <>Andrés <em>Maldonado</em></>, role: 'Emprendedor',  city: 'Quito',     years: '2',  yearsLabel: 'AÑOS · CC', quote: <>Lo que me sostuvo no fueron las comisiones — fue saber que mi sponsor estaba <span className="em-gold">a un mensaje.</span></>, portrait: '/img/eventos/571a1202.jpg', pos: '42% 20%', size: '350% auto', initial: 'A' },
-  { fig: 'Fig. 03·d', name: <>Luisa <em>Terán</em></>, role: 'Mentora',      city: 'Guayaquil', years: '4',  yearsLabel: 'AÑOS · CC', quote: <>Llegué buscando un ingreso extra. Encontré una <span className="em-gold">segunda profesión</span> y una segunda familia.</>, portrait: '/img/eventos/571a1215.jpg', pos: '35% 29%', size: '300% auto', initial: 'L' },
-  { fig: 'Fig. 03·e', name: <>Carolina <em>Ávila</em></>, role: 'Directora',   city: 'Ambato',    years: '12', yearsLabel: 'AÑOS · CC', quote: <>Construí mi propia oficina, mi propio equipo y, sobre todo, <span className="em-gold">mi propia voz.</span></>, portrait: '/img/eventos/571a1171.jpg', pos: '32% 20%', size: '350% auto', initial: 'C' },
+  { fig: 'Fig. 03·a', name: <>Jorge <em>Villacís</em></>, role: 'Emprendedor',      city: 'Ibarra', years: '1',  yearsLabel: 'AÑOS · CC', quote: <>Nadie me dijo que esto también sería <span className="em-gold">divertido.</span> Vine por el ingreso y me quedé por la gente.</>, portrait: '/img/eventos/571a1204.jpg', pos: 'center', size: 'cover', initial: 'J' },
+  { fig: 'Fig. 03·b', name: <>Gabriela <em>Andrade</em></>, role: 'Distribuidor Junior',  city: 'Riobamba',     years: '3',  yearsLabel: 'AÑOS · CC', quote: <>Ganamos este reconocimiento como pareja. Construir el negocio <span className="em-gold">juntos</span> lo cambió todo entre nosotros.</>, portrait: '/img/eventos/571a0943.jpg', pos: 'center 25%', size: 'cover', initial: 'G' },
+  { fig: 'Fig. 03·c', name: <>Diego <em>Salazar</em></>, role: 'Distribuidor 3', city: 'Quito',      years: '6',  yearsLabel: 'AÑOS · CC', quote: <>Subí a ese escenario porque mi equipo me empujó. El logro nunca fue mío — fue de <span className="em-gold">todos.</span></>, portrait: '/img/eventos/571a0880.jpg', pos: 'center 20%', size: 'cover', initial: 'D' },
+  { fig: 'Fig. 03·d', name: <>Fernando <em>Rivas</em></>, role: 'Royal', city: 'Manta',   years: '9',  yearsLabel: 'AÑOS · CC', quote: <>Empecé sin saber hablar en público. Hoy tomo el micrófono porque tengo algo que <span className="em-gold">vale la pena contar.</span></>, portrait: '/img/eventos/571a0908.jpg', pos: 'center 20%', size: 'cover', initial: 'F' },
+  { fig: 'Fig. 03·e', name: <>Patricia <em>Noboa</em></>, role: 'Blue',   city: 'Machala',    years: '14', yearsLabel: 'AÑOS · CC', quote: <>Cada trofeo que cargo representa años de gente que creyó en mí antes que yo misma. Esto apenas <span className="em-gold">empieza.</span></>, portrait: '/img/eventos/571a1214.jpg', pos: 'center 20%', size: 'cover', initial: 'P' },
 ]
 const CALLOUT_IMGS = ['/img/prod-01-innove.jpg', '/img/prod-03-novel.jpg', '/img/prod-04-nonstick.jpg', '/img/prod-02-5ply.jpg']
 
